@@ -2,29 +2,36 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "learn-r",
+    "title": "Learn-R",
     "section": "",
-    "text": "This is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2"
+    "text": "2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。\n现在跟随Hadley Wickham、益辉的脚步，将R语言应用于日常的数据分析、可重复报告等工作。\n本书使用最新的开源出版系统Quarto，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。\n对照典型的数据分析流程(Wickham and Grolemund 2017)，之前学习Understand部分较多，现在利用R搭建博客、写笔记等方式巩固前面所学，强化Communicate方面的能力。\n\n\n\n\n\n厚积薄发！🏃\n\n\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data Science. O’Reilly Media."
   },
   {
     "objectID": "intro.html",
     "href": "intro.html",
-    "title": "1  Introduction",
+    "title": "Introduction",
     "section": "",
-    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+    "text": "本书内容包括数据可视化、金融。"
   },
   {
-    "objectID": "summary.html",
-    "href": "summary.html",
-    "title": "2  Summary",
+    "objectID": "vis-intro.html",
+    "href": "vis-intro.html",
+    "title": "\n1  Visualisation\n",
     "section": "",
-    "text": "1 + 1\n\n[1] 2"
+    "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节目前为初步构想，不建议阅读。"
+  },
+  {
+    "objectID": "fin-intro.html",
+    "href": "fin-intro.html",
+    "title": "\n2  Finance\n",
+    "section": "",
+    "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节目前为初步构想，不建议阅读。"
   },
   {
     "objectID": "references.html",
     "href": "references.html",
     "title": "References",
     "section": "",
-    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+    "text": "Wickham, Hadley, and Garrett Grolemund. 2017. R for Data\nScience. O’Reilly Media."
   }
 ]

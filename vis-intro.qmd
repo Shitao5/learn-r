@@ -1,0 +1,9 @@
+# Visualisation
+
+```{r}
+#| echo: false
+
+source("common.R")
+status("drafting")
+```
+

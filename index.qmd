@@ -1,9 +1,13 @@
-# Preface {.unnumbered}
+# Welcome! {.unnumbered}
 
-This is a Quarto book.
+2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+现在跟随[Hadley Wickham](https://hadley.nz/)、[益辉](https://yihui.org/)的脚步，将R语言应用于日常的数据分析、可重复报告等工作。
 
-```{r}
-1 + 1
-```
+本书使用最新的开源出版系统[Quarto](https://quarto.org/)，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。
+
+对照典型的数据分析流程[@wickham2017]，之前学习Understand部分较多，现在利用R搭建[博客](https://shitao.netlify.app/)、写笔记等方式巩固前面所学，强化Communicate方面的能力。
+
+[![](images/data-science.png)](https://r4ds.had.co.nz/introduction.html)
+
+厚积薄发！🏃

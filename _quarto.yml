@@ -1,23 +1,41 @@
 project:
   type: book
 
+bibliography: references.bib
+
 book:
-  title: "learn-r"
-  author: "Jane Doe"
+  title: "Learn-R"
+  author: "Shitao Wu"
   date: "2022/8/3"
+  cover-image: images/Rlogo.png
+
+  reader-mode: true
+  site-url: https://shitao.quarto.pub/learn-r/
+  repo-url: https://github.com/Shitao5/learn-r
+  repo-actions: [edit, issue]
+
   chapters:
     - index.qmd
     - intro.qmd
-    - summary.qmd
-    - references.qmd
 
-bibliography: references.bib
+    - part: Visualisation
+      chapters:
+        - vis-intro.qmd
+
+    - part: Finance
+      chapters:
+        - fin-intro.qmd
+
+    - references.qmd
 
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+    code-copy: hover
+    code-link: true
+    include-in-header: "plausible.html"
+  # pdf:
+  #   documentclass: scrreprt
 
 
 
