@@ -1,4 +1,4 @@
-# Visualisation
+# Introduction {-}
 
 ```{r}
 #| echo: false

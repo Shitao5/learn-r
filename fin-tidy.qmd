@@ -1,0 +1,10 @@
+# Tidy Finance with R
+
+```{r}
+#| echo: false
+
+source("common.R")
+status("writing")
+```
+
+原先的笔记在[这里](https://shitao5.github.io/tidy-finance/)，会迁移过来。

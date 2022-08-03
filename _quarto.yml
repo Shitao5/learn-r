@@ -16,21 +16,23 @@ book:
 
   chapters:
     - index.qmd
-    - intro.qmd
+    - preface.qmd
 
     - part: Visualisation
       chapters:
         - vis-intro.qmd
+        - vis-ggplot2.qmd
 
     - part: Finance
       chapters:
         - fin-intro.qmd
+        - fin-tidy.qmd
 
     - references.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: [cosmo, custom.scss]
     code-copy: hover
     code-link: true
     include-in-header: "plausible.html"

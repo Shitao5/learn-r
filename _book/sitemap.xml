@@ -2,22 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://shitao.quarto.pub/learn-r/index.html</loc>
-    <lastmod>2022-08-03T05:55:28.202Z</lastmod>
+    <lastmod>2022-08-03T12:44:42.650Z</lastmod>
   </url>
   <url>
-    <loc>https://shitao.quarto.pub/learn-r/intro.html</loc>
-    <lastmod>2022-08-03T05:55:28.204Z</lastmod>
+    <loc>https://shitao.quarto.pub/learn-r/preface.html</loc>
+    <lastmod>2022-08-03T12:44:42.650Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/vis-intro.html</loc>
-    <lastmod>2022-08-03T05:55:28.205Z</lastmod>
+    <lastmod>2022-08-03T12:44:42.651Z</lastmod>
+  </url>
+  <url>
+    <loc>https://shitao.quarto.pub/learn-r/vis-ggplot2.html</loc>
+    <lastmod>2022-08-03T12:45:43.341Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/fin-intro.html</loc>
-    <lastmod>2022-08-03T05:55:28.207Z</lastmod>
+    <lastmod>2022-08-03T12:44:42.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://shitao.quarto.pub/learn-r/fin-tidy.html</loc>
+    <lastmod>2022-08-03T12:44:42.659Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/references.html</loc>
-    <lastmod>2022-08-03T05:55:28.209Z</lastmod>
+    <lastmod>2022-08-03T12:44:42.660Z</lastmod>
   </url>
 </urlset>

@@ -4,34 +4,62 @@
     "href": "index.html",
     "title": "Learn-R",
     "section": "",
-    "text": "2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。\n现在跟随Hadley Wickham、益辉的脚步，将R语言应用于日常的数据分析、可重复报告等工作。\n本书使用最新的开源出版系统Quarto，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。\n对照典型的数据分析流程(Wickham and Grolemund 2017)，之前学习Understand部分较多，现在利用R搭建博客、写笔记等方式巩固前面所学，强化Communicate方面的能力。\n\n\n\n\n\n厚积薄发！🏃\n\n\n\n本书作为整体在知识共享署名-非商业性-相同方式共享4.0国际许可证下授权。\n本书包含的代码在MIT 许可证下提供；这意味着你可以在引用来源的情况下在自己的软件包中自由使用。\n\n\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data Science. O’Reilly Media."
+    "text": "License\n\n本书作为整体在知识共享署名-非商业性-相同方式共享4.0国际许可证下授权。\n本书包含的代码在MIT 许可证下提供；这意味着你可以在引用来源的情况下自由使用。\n\n\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data Science. O’Reilly Media."
   },
   {
-    "objectID": "intro.html",
-    "href": "intro.html",
-    "title": "Introduction",
+    "objectID": "preface.html",
+    "href": "preface.html",
+    "title": "Preface",
     "section": "",
     "text": "本书内容包括数据可视化、金融。"
   },
   {
     "objectID": "vis-intro.html",
     "href": "vis-intro.html",
-    "title": "\n1  Visualisation\n",
+    "title": "Introduction",
     "section": "",
     "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节目前为初步构想，不建议阅读。"
   },
   {
+    "objectID": "vis-ggplot2.html",
+    "href": "vis-ggplot2.html",
+    "title": "\n1  ggplot2\n",
+    "section": "",
+    "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节正在进行写作和结构调整，可能出现混乱或不完整的情况。\nggplot2(Wickham 2016)具有底层的图形语法，ggplot2: Elegant Graphics for Data Analysis重点解释了这套语法， 本章节为其学习笔记。"
+  },
+  {
+    "objectID": "vis-ggplot2.html#ggplot2初步",
+    "href": "vis-ggplot2.html#ggplot2初步",
+    "title": "\n1  ggplot2\n",
+    "section": "\n1.1 ggplot2初步",
+    "text": "1.1 ggplot2初步\nggplot2具有颜色（color）、大小（size）、形状（shape）、填充（fill）等美学属性，适用于不同类型的图形。\n在绘图美学中，少即是多，使用美学映射需要节制。与其用一幅非常复杂的图形一次展示所有，不如创造一些简单的情节，讲述一个故事，让读者的认识从无到有。"
+  },
+  {
+    "objectID": "vis-ggplot2.html#图层layers",
+    "href": "vis-ggplot2.html#图层layers",
+    "title": "\n1  ggplot2\n",
+    "section": "\n1.2 图层（Layers）",
+    "text": "1.2 图层（Layers）\nggplot2的分层结构1使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：\n\n展示数据\n展示数据的统计摘要\n添加额外的元数据：背景、注释和参考文献。\n\n\n1.2.1 基本图形\n\ndf <- data.frame(\n  x = c(3, 1, 5),\n  y = c(2, 4, 6),\n  label = c(\"a\", \"b\", \"c\")\n)\n\np <- ggplot(df, aes(x, y, label = label)) +\n  labs(x = NULL, y = NULL) +\n  theme(plot.title = element_text(size = 12))\n\np + geom_point() + ggtitle(\"point\")\np + geom_text() + ggtitle(\"text\")\np + geom_bar(stat = \"identity\") + ggtitle(\"bar\")\np + geom_tile() + ggtitle(\"raster\")\n\np + geom_line() + ggtitle(\"line\")\np + geom_area() + ggtitle(\"area\")\np + geom_path() + ggtitle(\"path\")\np + geom_polygon() + ggtitle(\"polygon\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWickham, Hadley. 2016. “Ggplot2: Elegant Graphics for Data Analysis.” https://ggplot2.tidyverse.org."
+  },
+  {
     "objectID": "fin-intro.html",
     "href": "fin-intro.html",
-    "title": "\n2  Finance\n",
+    "title": "Introduction",
     "section": "",
     "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节目前为初步构想，不建议阅读。"
+  },
+  {
+    "objectID": "fin-tidy.html",
+    "href": "fin-tidy.html",
+    "title": "\n2  Tidy Finance with R\n",
+    "section": "",
+    "text": "原先的笔记在这里，会迁移过来。"
   },
   {
     "objectID": "references.html",
     "href": "references.html",
     "title": "References",
     "section": "",
-    "text": "Wickham, Hadley, and Garrett Grolemund. 2017. R for Data\nScience. O’Reilly Media."
+    "text": "Wickham, Hadley. 2016. “Ggplot2: Elegant Graphics for Data\nAnalysis.” https://ggplot2.tidyverse.org.\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data\nScience. O’Reilly Media."
   }
 ]

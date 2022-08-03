@@ -1,21 +1,21 @@
 # Welcome! {.unnumbered}
 
-2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。
+欢迎来到[诗涛](https://shitao.netlify.app/)的R语言学习笔记。2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。
 
 现在跟随[Hadley Wickham](https://hadley.nz/)、[益辉](https://yihui.org/)的脚步，将R语言应用于日常的数据分析、可重复报告等工作。
 
 本书使用最新的开源出版系统[Quarto](https://quarto.org/)，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。
 
-对照典型的数据分析流程[@wickham2017]，之前学习Understand部分较多，现在利用R搭建[博客](https://shitao.netlify.app/)、写笔记等方式巩固前面所学，强化Communicate方面的能力。
+对照典型的数据分析流程[@wickham2017]，之前学习Understand部分较多，现在通过使用R搭建博客、写笔记等方式巩固前面所学，强化Communicate方面的能力。
 
 [![](images/data-science.png)](https://r4ds.had.co.nz/introduction.html)
 
 厚积薄发！🏃
 
-## License {-}
+# License {-}
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 本书作为整体在<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性-相同方式共享4.0国际许可证</a>下授权。
 
-本书包含的代码在[MIT 许可证](https://opensource.org/licenses/MIT)下提供；这意味着你可以在引用来源的情况下在自己的软件包中自由使用。
+本书包含的代码在[MIT 许可证](https://opensource.org/licenses/MIT)下提供；这意味着你可以在引用来源的情况下自由使用。
