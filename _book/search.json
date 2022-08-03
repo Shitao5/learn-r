@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Learn-R",
     "section": "",
-    "text": "2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。\n现在跟随Hadley Wickham、益辉的脚步，将R语言应用于日常的数据分析、可重复报告等工作。\n本书使用最新的开源出版系统Quarto，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。\n对照典型的数据分析流程(Wickham and Grolemund 2017)，之前学习Understand部分较多，现在利用R搭建博客、写笔记等方式巩固前面所学，强化Communicate方面的能力。\n\n\n\n\n\n厚积薄发！🏃\n\n\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data Science. O’Reilly Media."
+    "text": "2019年底开始接触R语言，一路自学过来。有从图书馆借过资料，有自己买过图书，现在更倾向于在网络上学习。三年时间，没有精深到可以侃侃而谈，但也不再是小白。\n现在跟随Hadley Wickham、益辉的脚步，将R语言应用于日常的数据分析、可重复报告等工作。\n本书使用最新的开源出版系统Quarto，支持使用Python、R、Julia等语言构建HTML、PDF、MS Word等格式的书籍。\n对照典型的数据分析流程(Wickham and Grolemund 2017)，之前学习Understand部分较多，现在利用R搭建博客、写笔记等方式巩固前面所学，强化Communicate方面的能力。\n\n\n\n\n\n厚积薄发！🏃\n\n\n\n本书作为整体在知识共享署名-非商业性-相同方式共享4.0国际许可证下授权。\n本书包含的代码在MIT 许可证下提供；这意味着你可以在引用来源的情况下在自己的软件包中自由使用。\n\n\n\n\nWickham, Hadley, and Garrett Grolemund. 2017. R for Data Science. O’Reilly Media."
   },
   {
     "objectID": "intro.html",
