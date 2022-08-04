@@ -1,4 +1,4 @@
-# Introduction {-}
+# Finance {-}
 
 ```{r}
 #| echo: false

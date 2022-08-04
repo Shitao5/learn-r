@@ -26,14 +26,12 @@ book:
     - index.qmd
     - preface.qmd
 
-    - part: Visualisation
+    - part: Visualisation.qmd
       chapters:
-        - vis-intro.qmd
         - vis-ggplot2.qmd
 
-    - part: Finance
+    - part: Finance.qmd
       chapters:
-        - fin-intro.qmd
         - fin-tidy.qmd
 
     - references.qmd
