@@ -47,9 +47,18 @@ format:
     include-in-header: "plausible.html"
     number-sections: true
     number-depth: 3
-    toc-depth: 3
+    toc-depth: 4
+
   # pdf:
   #   documentclass: scrreprt
 
-
+# knitr:
+#   opts_chunk:
+#     comment: "#>"
+#     collapse: true
+#     cache: true
+#
+#
+# execute:
+#   cache: true
 

@@ -1,7 +1,7 @@
 # ggplot2
 
 ```{r}
-#| include: false
+#| echo: false
 
 source("common.R")
 status("writing")
@@ -9,9 +9,13 @@ columns(1, 2/3)
 ```
 
 <!-- columns函数控制绘图输出，用法如下： -->
+
 <!-- `r columns(1, 2/3)` -->
+
 <!-- `r columns(2, 2/3)` -->
+
 <!-- `r columns(3, 1)` -->
+
 <!-- `r columns(4, 1)` -->
 
 ```{r}
@@ -19,8 +23,7 @@ columns(1, 2/3)
 library(ggplot2)
 ```
 
-ggplot2[@ggplot2]具有底层的图形语法，[*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/)重点解释了这套语法，
-本章节为其学习笔记。
+ggplot2[@ggplot2]具有底层的图形语法，[*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/)重点解释了这套语法， 本章节为其学习笔记。
 
 ## ggplot2初步
 
@@ -30,17 +33,18 @@ ggplot2具有颜色（color）、大小（size）、形状（shape）、填充�
 
 ## 图层（Layers）
 
-ggplot2的分层结构[^layers]使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：
+ggplot2的分层结构[^vis-ggplot2-1]使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：
 
-[^layers]: 和Photoshop的图层类似。
+[^vis-ggplot2-1]: 和Photoshop的图层类似。
 
-1. 展示数据
-1. 展示数据的统计摘要
-1. 添加额外的元数据：背景、注释和参考文献。
+1.  展示数据
+2.  展示数据的统计摘要
+3.  添加额外的元数据：背景、注释和参考文献。
 
 ### 基本图形
 
 `r columns(4, 1)`
+
 ```{r}
 #| label: basic-plot
 #| layout-ncol: 4
@@ -72,6 +76,7 @@ p + geom_polygon() + ggtitle("polygon")
 根据x轴是否连续和是否展示中间值，比较基本的有：
 
 `r columns(3, 1)`
+
 ```{r}
 #| label: summaries-plot
 #| layout-ncol: 3
@@ -100,6 +105,7 @@ base + geom_ribbon()
 对于点图、线图等简单图形，使用大小（size)美学。
 
 `r columns(2, 2/3)`
+
 ```{r}
 #| label: weighted-data
 #| layout-ncol: 2
@@ -137,8 +143,8 @@ ggplot(midwest, aes(percwhite, percbelowpoverty)) +
 
 绘制地理空间数据是一项常见的可视化任务，它需要专门的工作。通常来讲，可以把任务分成两步：
 
-1. 使用数据源绘制地图；
-1. 从信息源添加元数据到地图上。
+1.  使用数据源绘制地图；
+2.  从信息源添加元数据到地图上。
 
 R语言内置了地图包，虽然不是最新的，但是一个好的起点。这里从中提取密歇根州的县界：
 
@@ -166,17 +172,101 @@ ggplot(mi_counties, aes(lon, lat, group = group)) +
 
 `coord_quickmap()`调整坐标轴，以确保经度和纬度在同一比例上呈现。但地理空间数据往往需要更精准的方法，因此ggplot2提供了`geom_sf()`和`coord_sf()`来处理简单特征格式的空间数据。
 
-#### sf
+#### Simple feature maps
 
+上述方法具有局限性，最典型的是：现实世界的地图不是简单地按照"经度-纬度"的数据格式绘制的。 地图的矢量数据通常使用由开放地理空间联盟制定的"简单特征"（**s**imple **f**eatures）标准进行编码。 sf包[@sf]为处理这类数据提供了优质的工具集，ggplot2中的`geom_sf()`和`coord_sf()`函数就是为与sf包一起工作而设计的。
 
+```{r}
+library(ozmaps) # 提供澳大利亚的地图数据
+library(sf)
 
+ozmap_states
+```
 
+sf数据的一个优势，在于我们可以直观地看到数据的整体结构。澳大利亚由6个州和一些地区组成，共9个地理单元，因此数据中有9行。`geometry`列的每个元素都是一个多边形对象，指定一个或多个多边形顶点，标示着一个地区的边界。
 
+对于这种格式的数据，我们可以使用`geom_sf()`和`coord_sf()`绘制一张可用的地图而不需要制定任何参数，甚至不需要明确美学。
 
+`r columns(1, 2/3)`
 
+```{r}
+ggplot(ozmap_states) +
+  geom_sf() +
+  coord_sf()
+```
 
+`geom_sf()`使用ggplot2中其他地方没有使用的`geometry`美学，这种美学可以通过以下三种方式之一来制定。
 
+1.  用户无需任何操作，`geom_sf()`自动将名为`geometry`的列映射到地图中。
+2.  如果数据是一个sf对象，`geom_sf()`自动检测geometry格式的列，即使该列名不为`geometry`。
+3.  使用`aes(geometry = my_column)`手动指定映射，在数据中有多个geometry格式的列时很有用。
 
+ggplot2支持多层`geom_sf()`叠加。使用rmapshaper包[@rmapshaper]简化边界，以减少渲染绘图的时间。当原始数据集（本例中为`abs_ced`）的存储分辨率高于绘图要求时，这通常是个好主意。
+
+```{r}
+oz_states <- ozmap_states %>% filter(NAME != "Other Territories")
+oz_votes <- rmapshaper::ms_simplify(abs_ced)
+
+ggplot() +
+  geom_sf(data = oz_states, mapping = aes(fill = NAME), show.legend = FALSE) +
+  geom_sf(data = oz_votes, fill = NA) +
+  coord_sf()
+```
+
+图上添加标签：
+
+```{r}
+sydney_map <- abs_ced %>% filter(NAME %in% c(
+  "Sydney", "Wentworth", "Warringah", "Kingsford Smith", "Grayndler", "Lowe", 
+  "North Sydney", "Barton", "Bradfield", "Banks", "Blaxland", "Reid", 
+  "Watson", "Fowler", "Werriwa", "Prospect", "Parramatta", "Bennelong", 
+  "Mackellar", "Greenway", "Mitchell", "Chifley", "McMahon"
+))
+
+ggplot(sydney_map) +
+  geom_sf(aes(fill = NAME), show.legend = FALSE) +
+  coord_sf(xlim = c(150.97, 151.3), ylim = c(-33.98, -33.79)) +
+  geom_sf_label(aes(label = NAME), label.padding = unit(1, "mm"))
+```
+
+:::{.callout-warning}
+`geom_sf_label()`函数内部使用sf包中的函数`st_point_on_surface()`来放置标签，出现上述警告是因为sf用于计算几何量（例如中心点、内部点）的大多数算法都是基于这样一个假设：点位于一个平坦的二维表面上，并以笛卡尔坐标作为参数。这种假设并不严格，在某些情况下（例如，靠近两极的地区），以这种方式处理经度和纬度的计算会得到错误的答案。因此，sf软件包在依赖这种近似方式进行计算时将产生警告。
+:::
+
+添加其他图层：
+
+```{r}
+oz_capitals <- tibble::tribble( 
+  ~city,           ~lat,     ~lon,
+  "Sydney",    -33.8688, 151.2093,  
+  "Melbourne", -37.8136, 144.9631, 
+  "Brisbane",  -27.4698, 153.0251, 
+  "Adelaide",  -34.9285, 138.6007, 
+  "Perth",     -31.9505, 115.8605, 
+  "Hobart",    -42.8821, 147.3272, 
+  "Canberra",  -35.2809, 149.1300, 
+  "Darwin",    -12.4634, 130.8456, 
+)
+
+ggplot() + 
+  geom_sf(data = oz_votes) + 
+  geom_sf(data = oz_states, colour = "black", fill = NA) + 
+  geom_point(data = oz_capitals, mapping = aes(x = lon, y = lat), colour = "red") + 
+  coord_sf()
+```
+
+#### 地图投影
+
+如果关注地图的准确性，利用经纬度在笛卡尔平面上进行绘制并非最佳办法，至少存在两个基本问题：
+
+1. 地球既不是一个平面，也不是一个完美的球体。关于地球形状的一系列假设被称为**大地基准**，虽然它对某些数据的可视化可能并不重要，但对其他数据来说，它是至关重要的。有几种不同的选择可以考虑：如果重点是北美，“北美基准”（NAD83）是一个很好的选择；如果视角是全球，“世界大地测量系统”（WGS84）可能更好。
+
+1. 地图的形状。地球近似椭圆体，但大多数情况下，空间数据需要绘制在一个二维平面上。不可能在不发生扭曲或切割的情况下把椭圆体的表面映射到一个平面上，因此必须对扭曲作出选择。这就是**地图投影**的工作。
+
+地图投影通常按照它们保留的几何属性来分类，例如：
+
+- **面积保护型**投影确保地球上面积相等的区域在地图上的绘制面积相等。
+- **形状保护型**（保形或保角）投影确保区域的局部形状得到保留。
 
 
 
