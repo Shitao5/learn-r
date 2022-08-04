@@ -9,7 +9,7 @@ book:
   date: "2022/8/3"
   cover-image: images/Rlogo.png
   search: true
-  downloads: [pdf, epub]
+  # downloads: [pdf, epub]
   page-footer:
     center: "Copyright 2022, Shitao Wu"
     # background: light
@@ -45,6 +45,9 @@ format:
     code-copy: hover
     code-link: true
     include-in-header: "plausible.html"
+    number-sections: true
+    number-depth: 3
+    toc-depth: 3
   # pdf:
   #   documentclass: scrreprt
 

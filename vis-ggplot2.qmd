@@ -16,10 +16,8 @@ columns(1, 2/3)
 
 ```{r}
 #| message: false
-
 library(ggplot2)
 ```
-
 
 ggplot2[@ggplot2]具有底层的图形语法，[*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/)重点解释了这套语法，
 本章节为其学习笔记。
@@ -97,6 +95,10 @@ base + geom_ribbon()
 
 ### 权重数据
 
+汇总数据的每一行代表多个观测值，因此需要考虑权重变量。权重变量的选择将影响绘图和得出的结论。
+
+对于点图、线图等简单图形，使用大小（size)美学。
+
 `r columns(2, 2/3)`
 ```{r}
 #| label: weighted-data
@@ -112,6 +114,69 @@ ggplot(midwest, aes(percwhite, percbelowpoverty)) +
   scale_size_area("Population\n(millions)",
                   breaks = c(.5, 1, 2, 4))
 ```
+
+对于涉及统计转换等复杂图形，使用`weight`美学指定权重。权重支持平滑、量化回归、箱型图、直方图、密度图等情形。我们无法直接从图中看出权重变量，它也不会产生图例，但会改变统计汇总的结果。
+
+```{r}
+#| message: false
+#| layout-ncol: 2
+
+# Unweighted
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point() +
+  geom_smooth(method = lm, size = 1)
+
+# Weighted by population
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point(aes(size = poptotal / 1e6)) +
+  geom_smooth(aes(weight = poptotal), method = lm, size = 1) +
+  scale_size_area(guide = "none")
+```
+
+### 地图
+
+绘制地理空间数据是一项常见的可视化任务，它需要专门的工作。通常来讲，可以把任务分成两步：
+
+1. 使用数据源绘制地图；
+1. 从信息源添加元数据到地图上。
+
+R语言内置了地图包，虽然不是最新的，但是一个好的起点。这里从中提取密歇根州的县界：
+
+```{r}
+#| message: false
+library(tidyverse) # 用于数据处理
+mi_counties <- map_data("county", "michigan") %>% 
+  select(lon = long, lat, group, id = subregion)
+head(mi_counties)
+```
+
+利用散点图可以看到数据集中每个县的角落，通过`geom_polygon()`将散点图绘制成地图：
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mi_counties, aes(lon, lat)) +
+  geom_point(size = .25, show.legend = FALSE) +
+  coord_quickmap()
+
+ggplot(mi_counties, aes(lon, lat, group = group)) +
+  geom_polygon(fill = "white", color = "grey50") +
+  coord_quickmap()
+```
+
+`coord_quickmap()`调整坐标轴，以确保经度和纬度在同一比例上呈现。但地理空间数据往往需要更精准的方法，因此ggplot2提供了`geom_sf()`和`coord_sf()`来处理简单特征格式的空间数据。
+
+#### sf
+
+
+
+
+
+
+
+
+
+
 
 
 
