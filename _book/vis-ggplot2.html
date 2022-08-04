@@ -232,6 +232,8 @@ div.csl-indent {
 <a href="#%E5%9B%BE%E5%B1%82layers" id="toc-图层layers" class="nav-link" data-scroll-target="#%E5%9B%BE%E5%B1%82layers"> <span class="header-section-number">1.2</span> 图层（Layers）</a>
   <ul class="collapse">
 <li><a href="#%E5%9F%BA%E6%9C%AC%E5%9B%BE%E5%BD%A2" id="toc-基本图形" class="nav-link" data-scroll-target="#%E5%9F%BA%E6%9C%AC%E5%9B%BE%E5%BD%A2"> <span class="header-section-number">1.2.1</span> 基本图形</a></li>
+  <li><a href="#%E6%8F%AD%E7%A4%BA%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7" id="toc-揭示不确定性" class="nav-link" data-scroll-target="#%E6%8F%AD%E7%A4%BA%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"> <span class="header-section-number">1.2.2</span> 揭示不确定性</a></li>
+  <li><a href="#%E6%9D%83%E9%87%8D%E6%95%B0%E6%8D%AE" id="toc-权重数据" class="nav-link" data-scroll-target="#%E6%9D%83%E9%87%8D%E6%95%B0%E6%8D%AE"> <span class="header-section-number">1.2.3</span> 权重数据</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/vis-ggplot2.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -269,6 +271,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<!-- columns函数控制绘图输出，用法如下： -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
 <p>ggplot2<span class="citation" data-cites="ggplot2">(<a href="references.html#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>具有底层的图形语法，<a href="https://ggplot2-book.org/"><em>ggplot2: Elegant Graphics for Data Analysis</em></a>重点解释了这套语法， 本章节为其学习笔记。</p>
 <section id="ggplot2初步" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="ggplot2初步">
 <span class="header-section-number">1.1</span> ggplot2初步</h2>
@@ -331,6 +338,72 @@ div.csl-indent {
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
 <p><img src="vis-ggplot2_files/figure-html/basic-plot-8.png" class="img-fluid" style="max-width: 1.5in"></p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="揭示不确定性" class="level3" data-number="1.2.2"><h3 data-number="1.2.2" class="anchored" data-anchor-id="揭示不确定性">
+<span class="header-section-number">1.2.2</span> 揭示不确定性</h3>
+<p>根据x轴是否连续和是否展示中间值，比较基本的有：</p>
+<div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">11</span>, <span class="fl">16</span><span class="op">)</span>,</span>
+<span>                 se <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.2</span>, <span class="fl">.5</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">df</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>,</span>
+<span>                       ymin <span class="op">=</span> <span class="va">y</span> <span class="op">-</span> <span class="va">se</span>,</span>
+<span>                       ymax <span class="op">=</span> <span class="va">y</span> <span class="op">+</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_crossbar</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_pointrange</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_errorbar</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_linerange</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu">geom_ribbon</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-1.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-2.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-3.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-4.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-5.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/summaries-plot-6.png" class="img-fluid" style="max-width: 2in"></p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="权重数据" class="level3" data-number="1.2.3"><h3 data-number="1.2.3" class="anchored" data-anchor-id="权重数据">
+<span class="header-section-number">1.2.3</span> 权重数据</h3>
+<div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Unweighted</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">midwest</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">percwhite</span>, <span class="va">percbelowpoverty</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Weighted by population</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">midwest</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">percwhite</span>, <span class="va">percbelowpoverty</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>size <span class="op">=</span> <span class="va">poptotal</span> <span class="op">/</span> <span class="fl">1e6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_size_area</span><span class="op">(</span><span class="st">"Population\n(millions)"</span>,</span>
+<span>                  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/weighted-data-1.png" class="img-fluid" style="max-width: 3in"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="vis-ggplot2_files/figure-html/weighted-data-2.png" class="img-fluid" style="max-width: 3in"></p>
 </div>
 </div>
 </div>
