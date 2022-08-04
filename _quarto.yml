@@ -8,6 +8,14 @@ book:
   author: "Shitao Wu"
   date: "2022/8/3"
   cover-image: images/Rlogo.png
+  search: true
+  downloads: [pdf, epub]
+  page-footer:
+    center: "Copyright 2022, Shitao Wu"
+    # background: light
+    # right:
+    #   - icon: github
+    #     href: https://github.com/Shitao5
 
   reader-mode: true
   site-url: https://shitao.quarto.pub/learn-r/
@@ -29,6 +37,9 @@ book:
         - fin-tidy.qmd
 
     - references.qmd
+
+# comments:
+#   hypothesis: true
 
 format:
   html:
