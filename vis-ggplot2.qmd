@@ -406,8 +406,110 @@ ggplot() +
 
 如果有自己的形状文件（`.shp`），可以用`sf::read_sf()`把它们加载到R中。
 
+### 网络图
+
+网络在可视化中占据了一席之地，和地图、空间数据一样，网络具有特定的数据结构和可视化范式，ggplot2并不直接支持网络图，接下来将使用ggraph包[@ggraph]进行网络的可视化。
+
+#### 网络数据
+
+网络数据可以编码为两个相互关联的数据帧，分别编码节点和边，这就是tidygraph包[@tidygraph]使用的方法，它是ggraph的基础数据处理包。
+
+```{r}
+#| message: false
+library(tidygraph)
+library(ggraph)
+
+graph <- play_erdos_renyi(n = 10, p = .2) %>% 
+  activate(nodes) %>% 
+  mutate(class = sample(letters[1:4], n(), replace = TRUE)) %>% 
+  activate(edges) %>% 
+  arrange(.N()$class[from])
+graph
+```
+
+一些新函数：`activate()`指定在网络的哪个部分工作（节点或者边）；即使在处理边的时候，`.N()`也可以访问当前图形的节点数据（与之对应的`.E()`函数访问边的数据，以及`.G()`访问整个图形）。
+
+tidygraph包的`as_tbl_graph()`可以将大部分不同形式的网络数据进行转换:
+
+```{r}
+head(highschool)
+
+hs_graph <- as_tbl_graph(highschool, directed = FALSE) # 不带方向
+hs_graph
+```
+
+```{r}
+luv_clust <- hclust(dist(luv_colours[, 1:3]))
+luv_graph <- as_tbl_graph(luv_clust)
+luv_graph
+```
+
+我们可以看到，tidygraph在转换时自动添加了额外的信息，例如，`highschool`数据中的`year`列，以及分层聚类`luv_clust`中的`label`和`leaf`节点。
+
+```{r}
+# 中心度计算
+graph %>% 
+  activate(nodes) %>% 
+  mutate(centrality = centrality_pagerank()) %>% 
+  arrange(desc(centrality))
+```
 
 
+tidygraph支持一系列丰富的算法，比如中心度计算（哪个节点最中心）、排序（对节点进行排序，使节点位于与之相连的节点附近）、分组（在网络内寻找群组）等，具体见[这里](https://tidygraph.data-imaginist.com/)。
+
+网络图更关注拓扑结构而不是两个变量之间的关系，我们采用**布局（Layouts）**的概念来显示网络拓扑结构。布局是利用网络结构来计算每个节点的`x`和`y`值（通常是任意的）的算法，最终用于可视化。换句话说，在绘制表格数据时，`x`和`y`的美学几乎总是被数据中的现有变量（或现有数据的统计转换）映射，而在绘制网络数据时，`x`和`y`被来自网络拓扑结构的值映射，这些值本身没有意义。
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(hs_graph) +
+  geom_edge_link() +
+  geom_node_point()
+
+ggraph(hs_graph, layout = "drl") +
+  geom_edge_link() +
+  geom_node_point()
+```
+
+```{r}
+#| layout-ncol: 2
+
+hs_graph <- hs_graph %>% 
+  activate(edges) %>% 
+  mutate(edge_weights = runif(n()))
+ggraph(hs_graph, layout = "stress", weights = edge_weights) +
+  geom_edge_link(aes(alpha = edge_weights)) +
+  geom_node_point() +
+  scale_edge_alpha_identity()
+
+# 环形
+ggraph(luv_graph, layout = "dendrogram", circular = TRUE) +
+  geom_edge_link() +
+  coord_fixed()
+```
+
+#### 绘制节点（nodes）
+
+```{r}
+#| layout-ncol: 2
+
+# 只显示2个以上的节点，按中心度着色
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point(
+    aes(filter = centrality_degree() > 2,
+        color = centrality_power()),
+    size = 2
+  )
+
+# 树状图
+ggraph(luv_graph, layout = "treemap") +
+  geom_node_tile(aes(fill = depth))
+```
+
+#### 绘制边缘（edges）
 
 
 

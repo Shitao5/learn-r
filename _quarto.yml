@@ -30,6 +30,10 @@ book:
       chapters:
         - vis-ggplot2.qmd
 
+    - part: Shiny.qmd
+      chapters:
+        - shiny1.qmd
+
     - part: Finance.qmd
       chapters:
         - fin-tidy.qmd

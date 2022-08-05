@@ -59,7 +59,7 @@ status <- function(type) {
   ))
 }
 
-columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
+columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.8 else 1) {
 
   out_width <- paste0(round(max_width * 100 / n, 1), "%")
   width <- 6 / n * max_width
