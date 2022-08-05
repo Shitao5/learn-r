@@ -141,6 +141,10 @@ ggplot(midwest, aes(percwhite, percbelowpoverty)) +
 
 ### 地图
 
+::: callout-note
+这里部分内容不甚熟悉，因此有大段的原文翻译。
+:::
+
 绘制地理空间数据是一项常见的可视化任务，它需要专门的工作。通常来讲，可以把任务分成两步：
 
 1.  使用数据源绘制地图；
@@ -157,6 +161,8 @@ head(mi_counties)
 ```
 
 利用散点图可以看到数据集中每个县的角落，通过`geom_polygon()`将散点图绘制成地图：
+
+`r columns(2, 1)`
 
 ```{r}
 #| layout-ncol: 2
@@ -187,7 +193,7 @@ sf数据的一个优势，在于我们可以直观地看到数据的整体结构
 
 对于这种格式的数据，我们可以使用`geom_sf()`和`coord_sf()`绘制一张可用的地图而不需要制定任何参数，甚至不需要明确美学。
 
-`r columns(1, 2/3)`
+`r columns(1, 1, max_width = .8)`
 
 ```{r}
 ggplot(ozmap_states) +
@@ -229,7 +235,7 @@ ggplot(sydney_map) +
   geom_sf_label(aes(label = NAME), label.padding = unit(1, "mm"))
 ```
 
-:::{.callout-warning}
+::: callout-warning
 `geom_sf_label()`函数内部使用sf包中的函数`st_point_on_surface()`来放置标签，出现上述警告是因为sf用于计算几何量（例如中心点、内部点）的大多数算法都是基于这样一个假设：点位于一个平坦的二维表面上，并以笛卡尔坐标作为参数。这种假设并不严格，在某些情况下（例如，靠近两极的地区），以这种方式处理经度和纬度的计算会得到错误的答案。因此，sf软件包在依赖这种近似方式进行计算时将产生警告。
 :::
 
@@ -259,28 +265,146 @@ ggplot() +
 
 如果关注地图的准确性，利用经纬度在笛卡尔平面上进行绘制并非最佳办法，至少存在两个基本问题：
 
-1. 地球既不是一个平面，也不是一个完美的球体。关于地球形状的一系列假设被称为**大地基准**，虽然它对某些数据的可视化可能并不重要，但对其他数据来说，它是至关重要的。有几种不同的选择可以考虑：如果重点是北美，“北美基准”（NAD83）是一个很好的选择；如果视角是全球，“世界大地测量系统”（WGS84）可能更好。
+1.  地球既不是一个平面，也不是一个完美的球体。关于地球形状的一系列假设被称为**大地基准**，虽然它对某些数据的可视化可能并不重要，但对其他数据来说，它是至关重要的。有几种不同的选择可以考虑：如果重点是北美，"北美基准"（NAD83）是一个很好的选择；如果视角是全球，"世界大地测量系统"（WGS84）可能更好。
 
-1. 地图的形状。地球近似椭圆体，但大多数情况下，空间数据需要绘制在一个二维平面上。不可能在不发生扭曲或切割的情况下把椭圆体的表面映射到一个平面上，因此必须对扭曲作出选择。这就是**地图投影**的工作。
+2.  地图的形状。地球近似椭圆体，但大多数情况下，空间数据需要绘制在一个二维平面上。不可能在不发生扭曲或切割的情况下把椭圆体的表面映射到一个平面上，因此必须对扭曲作出选择。这就是**地图投影**的工作。 地图投影通常按照它们保留的几何属性来分类，例如：
 
-地图投影通常按照它们保留的几何属性来分类，例如：
+-   **面积保护型**投影确保地球上面积相等的区域在地图上的绘制面积相等。
+-   **形状保护型**（保形或保角）投影确保区域的局部形状得到保留。
 
-- **面积保护型**投影确保地球上面积相等的区域在地图上的绘制面积相等。
-- **形状保护型**（保形或保角）投影确保区域的局部形状得到保留。
+任何投影都无法做到既保形又保面积，sf允许我们可以指定想使用的地图投影。关于地图投影的更多信息，参见[Geocomputation with R](https://geocompr.robinlovelace.net/)。
 
+综上，大地基准（如WGS84）、地图投影类型（如墨卡托）和投影参数（如原点位置）共同指定了一个坐标参考系统（**c**oordinate **r**eference **s**ystem，CRS）。这是一套用于将经纬度信息转换为二维地图的完整假设。一个sf对象通常包括一个默认的CRS，如下所示：
 
+```{r}
+st_crs(oz_votes)
+```
 
+这些输出大多对应于一个众所周知的文本（**w**ell-**k**now **t**ext，WKT）字符串，它详细描述了CRS。sf内部使用这种冗长的WKT表示法，但是有几种方法可以提供sf理解的用户输入。其中一种方法是以[EPSG代码](https://epsg.org/home.html)的形式提供数字输入。`oz_votes`数据中的默认CRS与EPSG代码4283相对应。
 
+```{r}
+st_crs(oz_votes) == st_crs(4283)
+```
 
+在ggplot2中，`coord_sf()`控制CRS，以确保每一层都使用相同的投影。sf数据通常会提供一个合理的CRS选择，`coord_sf()`默认使用数据geometry列相关的CRS。当需要指定CRS时，可以通过向`st_crs()`传递`crs`参数：
 
+`r columns(2, 1)`
 
+```{r}
+#| layout-ncol: 2
 
+ggplot(oz_votes) + geom_sf()
+ggplot(oz_states) + geom_sf() + coord_sf(crs = st_crs(3112))
+```
 
+#### Raster maps
 
+绘制地理空间信息的第二种方式是依靠栅格数据（raster data）。与sf数据不同，栅格数据中，地理实体是以一组线、点和多边形的形式来指定的，而栅格则是以图像的形式出现。在最简单的情况下，光栅数据可能是一个有许多不同的图像格式位图文件。具体到地理空间方面，有一些图像格式包括元数据（如大地测量基准、坐标参考系统），可用于将图像信息映射到地球表面。
 
+在[GDAL（地理空间数据抽象库）](https://gdal.org/)的帮助下，大多数格式可以很容易地读入R。例如，sf包中的`sf::gdal_read()`函数提供了从R中访问GDAL的功能。不过，很少需要直接调用这个函数，因为还有其他高级函数可以处理这个问题。
 
+举个例子，假设我们想绘制澳大利亚气象局（BOM）在其FTP服务器上公开提供的卫星图像。bomrang包[@bomrang]提供了一个方便的服务器接口，包括一个返回文件名向量的`get_available_imagery()`函数和一个下载文件并直接导入R中的`get_satellite_imagery()`函数。
 
+这里使用更灵活的方式，可以适用任何FTP服务器，并使用`download.file()`函数：
 
+```{r}
+#| eval: false
+
+# list of all file names with time stamp 2022-08-04 21:00 GMT 
+# (BOM images are retained for 24 hours, so this will return an
+# empty vector if you run this code without editing the time stamp)
+files <- bomrang::get_available_imagery() %>% 
+  str_subset("202208042100")
+
+walk2(
+  .x = paste0("ftp://ftp.bom.gov.au/anon/gen/gms/", files),
+  .y = file.path("raster", files),
+  .f = ~ download.file(url = .x, destfile = .y)
+)
+```
+
+所有14个文件[^vis-ggplot2-2]都是由日本气象厅运营的Himawari-8地球静止卫星拍摄的图像构建的，并在13个不同的波段拍摄图像。澳大利亚BOM发布的图像包括可见光谱（频道3）和红外光谱（频道13）的数据。
+
+[^vis-ggplot2-2]: 由于众所周知的原因，国内无法使用R直接下载，这里只手动下载了2个文件，用于后续的绘图。
+
+为了将可见图片导入R，使用stars包[@stars]将其导入为stars对象：
+
+```{r}
+img_vis  <- file.path("raster", "IDE00422.202208042100.tif")
+img_inf <- file.path("raster", "IDE00421.202208042100.tif")
+
+library(stars)
+sat_vis <- read_stars(img_vis, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+sat_inf <- read_stars(img_inf, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+```
+
+`RasterIO`参数用来向GDAL传递一列低级参数，使用了`nBufXSize`和`nBufYSize`来确保R以低分辨率读取数据（作为600x600像素的图像）。
+
+```{r}
+sat_vis
+```
+
+注意，空间数据也与一个坐标参考系统相关联（在输出中被称为 "refsys"）。
+
+利用stars包提供的`geom_stars()`函数，可以使用ggplot2进行绘图：
+
+`r columns(1, 2/3, max_width = 1)`
+
+```{r}
+ggplot() +
+  geom_stars(data = sat_vis) +
+  coord_equal()
+```
+
+`geom_stars()`函数要求数据是stars对象，并将栅格数据映射到填充（fill）美学。因此，上面的卫星图像中的蓝色阴影是由ggplot2的比例决定的，而不是图像本身。也就是说，尽管`sat_vis`包含三个波段，但上面的绘图只显示第一个波段，原始数据值（范围从0到255）被映射到ggplot2用于连续数据的默认蓝色调色板上。为了看到图像文件的真实面貌，我们可以用`facet_wrap()`分离这些波段：
+
+`r columns(1, 2/3, max_width = 1)`
+
+```{r}
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  facet_wrap(vars(band)) +
+  coord_equal() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+只显示原始图像不易弄清楚相关的陆地在哪里，我们可能希望将卫星数据与`oz_states`矢量地图重叠，以显示澳大利亚政治实体的轮廓。这样做需注意，这两个数据源具有不同的坐标参考系统。为了正确投影`oz_states`的数据，需使用sf包中的`st_transform()`函数对数据进行转换。下面的代码将从`sat_vis`栅格对象中提取CRS，并应用于`oz_states`，而后进行可视化：
+
+```{r}
+oz_states <- st_transform(oz_states, crs = st_crs(sat_vis))
+
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  geom_sf(data = oz_states, fill = NA, color = "white") +
+  coord_sf() +
+  theme_void() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+可以看到在这个拍摄时间，澳大利亚即将日出。
+
+如何在上面绘制更多的常规数据呢？一个简单的例子是根据包含经纬度的`oz_capitals`数据框来绘制澳大利亚首都的位置。然而，由于这些数据没有与CRS相关联，并且与`sat_vis`中的栅格数据的比例不一样，所以这些数据也需要进行转换。为此，首先需要使用`st_as_sf()`从`oz_capitals`数据中创建sf对象：
+
+```{r}
+cities <- oz_capitals %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+```
+
+这个投影是使用EPSG代码4326设置的，这是使用经纬度值作为坐标并依靠WGS84基准的椭圆形投影。而后可以将经纬度几何坐标转换为与`sat_vis`数据的几何形状相匹配。
+
+```{r}
+cities <- st_transform(cities, st_crs(sat_vis))
+
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  geom_sf(data = oz_states, fill = NA, color = "white") +
+  geom_sf(data = cities, color = "red") +
+  coord_sf() +
+  theme_void() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+如果有自己的形状文件（`.shp`），可以用`sf::read_sf()`把它们加载到R中。
 
 
 

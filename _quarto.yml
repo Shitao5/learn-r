@@ -51,14 +51,3 @@ format:
 
   # pdf:
   #   documentclass: scrreprt
-
-# knitr:
-#   opts_chunk:
-#     comment: "#>"
-#     collapse: true
-#     cache: true
-#
-#
-# execute:
-#   cache: true
-

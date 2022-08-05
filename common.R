@@ -67,7 +67,8 @@ columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
   knitr::opts_chunk$set(
     fig.width = width,
     fig.height = width * aspect_ratio,
-    fig.align = if (max_width < 1) "center" else "default",
+    # fig.align = if (max_width < 1) "center" else "default",
+    fig.align = "center",
     fig.show = if (n == 1) "asis" else "hold",
     fig.retina = NULL,
     out.width = out_width,
