@@ -454,7 +454,6 @@ graph %>%
   arrange(desc(centrality))
 ```
 
-
 tidygraph支持一系列丰富的算法，比如中心度计算（哪个节点最中心）、排序（对节点进行排序，使节点位于与之相连的节点附近）、分组（在网络内寻找群组）等，具体见[这里](https://tidygraph.data-imaginist.com/)。
 
 网络图更关注拓扑结构而不是两个变量之间的关系，我们采用**布局（Layouts）**的概念来显示网络拓扑结构。布局是利用网络结构来计算每个节点的`x`和`y`值（通常是任意的）的算法，最终用于可视化。换句话说，在绘制表格数据时，`x`和`y`的美学几乎总是被数据中的现有变量（或现有数据的统计转换）映射，而在绘制网络数据时，`x`和`y`被来自网络拓扑结构的值映射，这些值本身没有意义。
@@ -511,7 +510,125 @@ ggraph(luv_graph, layout = "treemap") +
 
 #### 绘制边缘（edges）
 
+```{r}
+#| layout-ncol: 2
 
+ggraph(graph, layout = "stress") +
+  geom_edge_link(aes(alpha = after_stat(index)))
+
+ggraph(graph, layout = "stress") +
+  geom_edge_link2(
+    aes(color = node.class),
+    width = 3, lineend = "round"
+  )
+```
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_fan()
+
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_parallel()
+```
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(luv_graph, layout = "dendrogram", height = height) +
+  geom_edge_elbow()
+
+ggraph(luv_graph, layout = "dendrogram", height = height) +
+  geom_edge_bend()
+```
+
+```{r}
+#| layout-ncol: 2
+
+# 节点会遮盖箭头
+ggraph(graph, layout = "stress") +
+  geom_edge_link(arrow = arrow()) +
+  geom_node_point(aes(color = class), size = 6)
+
+# 解决上述问题
+ggraph(graph, layout = "stress") +
+  geom_edge_link(
+    arrow = arrow(),
+    start_cap = circle(3, "mm"),
+    end_cap = circle(3, "mm")
+  ) +
+  geom_node_point(aes(color = class), size = 6)
+```
+
+#### 分面
+
+`r columns(1, 2/3)`
+
+```{r}
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point() +
+  facet_edges(~year)
+```
+
+```{r}
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point() +
+  facet_nodes(~ group_spinglass())
+```
+
+### 注释
+
+从概念上讲，注释为绘图提供了元数据，它提供了关于数据的额外信息。
+
+#### 图形和轴标题
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = factor(cyl))) +
+  labs(
+    x = "Engine displacement (litres)",
+    y = "Highway miles per gallon",
+    color = "Number of cylinders",
+    title = "Mileage by engine size and cylinders",
+    subtitle = "Source: http://fueleconomy.gov"
+  )
+```
+
+通常给`labs()`提供文本字符串，并用`\n`指定换行，也可以提供用`quote()`包裹的数学表达式：
+
+```{r}
+values <- seq(from = -2, to = 2, by = .01)
+df <- data.frame(x = values, y = values ^ 3)
+ggplot(df, aes(x, y)) +
+  geom_line() +
+  labs(y = quote(f(x) == x^3))
+```
+
+在ggtext包[@ggtext]和ggplot2主题系统下，可以使用Markdown语法进行标记：
+
+`r columns(2, 1)`
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(x = 1:3, y = 1:3)
+base <- ggplot(df, aes(x, y)) +
+  geom_point() +
+  labs(x = "Axis title with *italics* and **boldface**")
+
+base
+base + theme(axis.title.x = ggtext::element_markdown())
+```
+
+::: callout-important
+未出现斜体和加粗效果，暂未发现原因。日后会处理。
+:::
+
+
+#### 文本标签
 
 
 

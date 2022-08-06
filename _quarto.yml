@@ -11,7 +11,7 @@ book:
   search: true
   # downloads: [pdf, epub]
   page-footer:
-    center: "Copyright 2022, Shitao Wu"
+    center: "© Shitao Wu 2022"
     # background: light
     # right:
     #   - icon: github

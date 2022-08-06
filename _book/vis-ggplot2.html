@@ -253,6 +253,14 @@ div.csl-indent {
 <li><a href="#%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE" id="toc-网络数据" class="nav-link" data-scroll-target="#%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE">网络数据</a></li>
   <li><a href="#%E7%BB%98%E5%88%B6%E8%8A%82%E7%82%B9nodes" id="toc-绘制节点nodes" class="nav-link" data-scroll-target="#%E7%BB%98%E5%88%B6%E8%8A%82%E7%82%B9nodes">绘制节点（nodes）</a></li>
   <li><a href="#%E7%BB%98%E5%88%B6%E8%BE%B9%E7%BC%98edges" id="toc-绘制边缘edges" class="nav-link" data-scroll-target="#%E7%BB%98%E5%88%B6%E8%BE%B9%E7%BC%98edges">绘制边缘（edges）</a></li>
+  <li><a href="#%E5%88%86%E9%9D%A2" id="toc-分面" class="nav-link" data-scroll-target="#%E5%88%86%E9%9D%A2">分面</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%E6%B3%A8%E9%87%8Aannotations" id="toc-注释annotations" class="nav-link" data-scroll-target="#%E6%B3%A8%E9%87%8Aannotations"> <span class="header-section-number">1.2.6</span> 注释（Annotations）</a>
+  <ul class="collapse">
+<li><a href="#%E5%9B%BE%E5%BD%A2%E5%92%8C%E8%BD%B4%E6%A0%87%E9%A2%98" id="toc-图形和轴标题" class="nav-link" data-scroll-target="#%E5%9B%BE%E5%BD%A2%E5%92%8C%E8%BD%B4%E6%A0%87%E9%A2%98">图形和轴标题</a></li>
+  <li><a href="#%E6%96%87%E6%9C%AC%E6%A0%87%E7%AD%BE" id="toc-文本标签" class="nav-link" data-scroll-target="#%E6%96%87%E6%9C%AC%E6%A0%87%E7%AD%BE">文本标签</a></li>
   </ul>
 </li>
   </ul>
@@ -1099,6 +1107,209 @@ Warning
 </div>
 </div>
 </section><section id="绘制边缘edges" class="level4"><h4 class="anchored" data-anchor-id="绘制边缘edges">绘制边缘（edges）</h4>
+<div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html">after_stat</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link2</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">node.class</span><span class="op">)</span>,</span>
+<span>    width <span class="op">=</span> <span class="fl">3</span>, lineend <span class="op">=</span> <span class="st">"round"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2_cache/html/unnamed-chunk-32_70457d9feac373b5ebb2401002c7db56">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-32-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">hs_graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_fan.html">geom_edge_fan</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">hs_graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_parallel.html">geom_edge_parallel</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2_cache/html/unnamed-chunk-33_67d49614d2d5717f003389b4c1242b58">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-33-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">luv_graph</span>, layout <span class="op">=</span> <span class="st">"dendrogram"</span>, height <span class="op">=</span> <span class="va">height</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_elbow.html">geom_edge_elbow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">luv_graph</span>, layout <span class="op">=</span> <span class="st">"dendrogram"</span>, height <span class="op">=</span> <span class="va">height</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_bend.html">geom_edge_bend</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2_cache/html/unnamed-chunk-34_89003f3c6aeb68aa93a9c659a9de43ac">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 节点会遮盖箭头</span></span>
+<span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span>arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html">arrow</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">class</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 解决上述问题</span></span>
+<span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span></span>
+<span>    arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html">arrow</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    start_cap <span class="op">=</span> <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geometry.html">circle</a></span><span class="op">(</span><span class="fl">3</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
+<span>    end_cap <span class="op">=</span> <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geometry.html">circle</a></span><span class="op">(</span><span class="fl">3</span>, <span class="st">"mm"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">class</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2_cache/html/unnamed-chunk-35_b925e4469de2445b3b803a2acc425d6f">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-35-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="分面" class="level4"><h4 class="anchored" data-anchor-id="分面">分面</h4>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2_cache/html/unnamed-chunk-36_4707021d0e382fd0708d693f39b0bf55">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">hs_graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/facet_edges.html">facet_edges</a></span><span class="op">(</span><span class="op">~</span><span class="va">year</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2_cache/html/unnamed-chunk-37_89b3699579804ebb6520ee99390cecda">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span><span class="va">hs_graph</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html">geom_edge_link</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/facet_nodes.html">facet_nodes</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/group_graph.html">group_spinglass</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="注释annotations" class="level3" data-number="1.2.6"><h3 data-number="1.2.6" class="anchored" data-anchor-id="注释annotations">
+<span class="header-section-number">1.2.6</span> 注释（Annotations）</h3>
+<p>从概念上讲，注释为绘图提供了元数据，它提供了关于数据的额外信息。</p>
+<section id="图形和轴标题" class="level4"><h4 class="anchored" data-anchor-id="图形和轴标题">图形和轴标题</h4>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2_cache/html/unnamed-chunk-38_5a20d6136c52442d4fae987813192ceb">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Engine displacement (litres)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Highway miles per gallon"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"Number of cylinders"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Mileage by engine size and cylinders"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Source: http://fueleconomy.gov"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>通常给<code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code>提供文本字符串，并用<code>\n</code>指定换行，也可以提供用<code><a href="https://rdrr.io/r/base/substitute.html">quote()</a></code>包裹的数学表达式：</p>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2_cache/html/unnamed-chunk-39_26910905a4ccdbfe45dc5039a11c9cb3">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, to <span class="op">=</span> <span class="fl">2</span>, by <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">values</span>, y <span class="op">=</span> <span class="va">values</span> <span class="op">^</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>在ggtext包<span class="citation" data-cites="ggtext">(<a href="references.html#ref-ggtext" role="doc-biblioref">Wilke 2020</a>)</span>和ggplot2主题系统下，可以使用Markdown语法进行标记：</p>
+<div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Axis title with *italics* and **boldface**"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.title.x <span class="op">=</span> <span class="fu">ggtext</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2_cache/html/unnamed-chunk-40_3ded55d70d12d7b4d9aae03a018684ef">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2_files/figure-html/unnamed-chunk-40-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>❗未出现斜体和加粗效果，暂未发现原因。日后会处理。</p>
+</div>
+</div>
+</section><section id="文本标签" class="level4"><h4 class="anchored" data-anchor-id="文本标签">文本标签</h4>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
@@ -1122,6 +1333,9 @@ Teucher, Andy, and Kenton Russell. 2022. <span>“Rmapshaper: Client for ’Maps
 </div>
 <div id="ref-ggplot2" class="csl-entry" role="doc-biblioentry">
 Wickham, Hadley. 2016. <span>“Ggplot2: Elegant Graphics for Data Analysis.”</span> <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
+<div id="ref-ggtext" class="csl-entry" role="doc-biblioentry">
+Wilke, Claus O. 2020. <span>“Ggtext: Improved Text Rendering Support for ’Ggplot2’.”</span> <a href="https://CRAN.R-project.org/package=ggtext">https://CRAN.R-project.org/package=ggtext</a>.
 </div>
 </div>
 </section></section></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
@@ -1237,7 +1451,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-      <div class="nav-footer-center">Copyright 2022, Shitao Wu</div>
+      <div class="nav-footer-center">© Shitao Wu 2022</div>
   </div>
 </footer>
 
