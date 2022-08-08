@@ -2,6 +2,7 @@ project:
   type: book
 
 bibliography: references.bib
+number-sections: true
 
 book:
   title: "Learn-R"
@@ -28,7 +29,9 @@ book:
 
     - part: Visualisation.qmd
       chapters:
-        - vis-ggplot2.qmd
+        - vis-ggplot2-layers.qmd
+        - vis-ggplot2-scales.qmd
+        - vis-ggplot2-grammar.qmd
 
     - part: Shiny.qmd
       chapters:

@@ -1,0 +1,838 @@
+# ggplot2-layers {#sec-layers}
+
+```{r}
+#| echo: false
+
+source("common.R")
+status("writing")
+columns(1, 2/3)
+```
+
+```{r}
+#| message: false
+library(ggplot2)
+```
+
+ggplot2[@ggplot2]具有底层的图形语法，[*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/)重点解释了这套语法，@sec-layers、@sec-scales、@sec-grammar 为其学习笔记。
+
+ggplot2具有颜色（color）、大小（size）、形状（shape）、填充（fill）等美学属性，适用于不同类型的图形。
+
+在绘图美学中，少即是多，使用美学映射需要节制。与其用一幅非常复杂的图形一次展示所有，不如创造一些简单的情节，讲述一个故事，让读者的认识从无到有。
+
+ggplot2的分层结构[^vis-ggplot2-1]使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：
+
+[^vis-ggplot2-1]: 和Photoshop的图层类似。
+
+1.  展示数据
+2.  展示数据的统计摘要
+3.  添加额外的元数据：背景、注释和参考文献。
+
+## 基本图形
+
+`r columns(4, 1)`
+
+```{r}
+#| label: basic-plot
+#| layout-ncol: 4
+#| layout-nrow: 2
+
+df <- data.frame(
+  x = c(3, 1, 5),
+  y = c(2, 4, 6),
+  label = c("a", "b", "c")
+)
+
+p <- ggplot(df, aes(x, y, label = label)) +
+  labs(x = NULL, y = NULL) +
+  theme(plot.title = element_text(size = 12))
+
+p + geom_point() + ggtitle("point")
+p + geom_text() + ggtitle("text")
+p + geom_bar(stat = "identity") + ggtitle("bar")
+p + geom_tile() + ggtitle("raster")
+
+p + geom_line() + ggtitle("line")
+p + geom_area() + ggtitle("area")
+p + geom_path() + ggtitle("path")
+p + geom_polygon() + ggtitle("polygon")
+```
+
+## 揭示不确定性
+
+根据x轴是否连续和是否展示中间值，比较基本的有：
+
+`r columns(3, 1)`
+
+```{r}
+#| label: summaries-plot
+#| layout-ncol: 3
+#| layout-nrow: 2
+
+df <- data.frame(x = 1:3,
+                 y = c(18, 11, 16),
+                 se = c(1.2, .5, 1.0))
+
+base <- ggplot(df, aes(x, y,
+                       ymin = y - se,
+                       ymax = y + se))
+base + geom_crossbar()
+base + geom_pointrange()
+base + geom_smooth(stat = "identity")
+
+base + geom_errorbar()
+base + geom_linerange()
+base + geom_ribbon()
+```
+
+## 权重数据
+
+汇总数据的每一行代表多个观测值，因此需要考虑权重变量。权重变量的选择将影响绘图和得出的结论。
+
+对于点图、线图等简单图形，使用大小（size)美学。
+
+`r columns(2, 2/3)`
+
+```{r}
+#| label: weighted-data
+#| layout-ncol: 2
+
+# Unweighted
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point()
+
+# Weighted by population
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point(aes(size = poptotal / 1e6)) +
+  scale_size_area("Population\n(millions)",
+                  breaks = c(.5, 1, 2, 4))
+```
+
+对于涉及统计转换等复杂图形，使用`weight`美学指定权重。权重支持平滑、量化回归、箱型图、直方图、密度图等情形。我们无法直接从图中看出权重变量，它也不会产生图例，但会改变统计汇总的结果。
+
+```{r}
+#| message: false
+#| layout-ncol: 2
+
+# Unweighted
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point() +
+  geom_smooth(method = lm, size = 1)
+
+# Weighted by population
+ggplot(midwest, aes(percwhite, percbelowpoverty)) +
+  geom_point(aes(size = poptotal / 1e6)) +
+  geom_smooth(aes(weight = poptotal), method = lm, size = 1) +
+  scale_size_area(guide = "none")
+```
+
+## 地图
+
+::: callout-note
+这里部分内容不甚熟悉，因此有大段的原文翻译。
+:::
+
+绘制地理空间数据是一项常见的可视化任务，它需要专门的工作。通常来讲，可以把任务分成两步：
+
+1.  使用数据源绘制地图；
+2.  从信息源添加元数据到地图上。
+
+R语言内置了地图包，虽然不是最新的，但是一个好的起点。这里从中提取密歇根州的县界：
+
+```{r}
+#| message: false
+library(tidyverse) # 用于数据处理
+mi_counties <- map_data("county", "michigan") %>% 
+  select(lon = long, lat, group, id = subregion)
+head(mi_counties)
+```
+
+利用散点图可以看到数据集中每个县的角落，通过`geom_polygon()`将散点图绘制成地图：
+
+`r columns(2, 1)`
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mi_counties, aes(lon, lat)) +
+  geom_point(size = .25, show.legend = FALSE) +
+  coord_quickmap()
+
+ggplot(mi_counties, aes(lon, lat, group = group)) +
+  geom_polygon(fill = "white", color = "grey50") +
+  coord_quickmap()
+```
+
+`coord_quickmap()`调整坐标轴，以确保经度和纬度在同一比例上呈现。但地理空间数据往往需要更精准的方法，因此ggplot2提供了`geom_sf()`和`coord_sf()`来处理简单特征格式的空间数据。
+
+### Simple feature maps
+
+上述方法具有局限性，最典型的是：现实世界的地图不是简单地按照"经度-纬度"的数据格式绘制的。 地图的矢量数据通常使用由开放地理空间联盟制定的"简单特征"（**s**imple **f**eatures）标准进行编码。 sf包[@sf]为处理这类数据提供了优质的工具集，ggplot2中的`geom_sf()`和`coord_sf()`函数就是为与sf包一起工作而设计的。
+
+```{r}
+library(ozmaps) # 提供澳大利亚的地图数据
+library(sf)
+
+ozmap_states
+```
+
+sf数据的一个优势，在于我们可以直观地看到数据的整体结构。澳大利亚由6个州和一些地区组成，共9个地理单元，因此数据中有9行。`geometry`列的每个元素都是一个多边形对象，指定一个或多个多边形顶点，标示着一个地区的边界。
+
+对于这种格式的数据，我们可以使用`geom_sf()`和`coord_sf()`绘制一张可用的地图而不需要制定任何参数，甚至不需要明确美学。
+
+`r columns(1, 1, max_width = .8)`
+
+```{r}
+ggplot(ozmap_states) +
+  geom_sf() +
+  coord_sf()
+```
+
+`geom_sf()`使用ggplot2中其他地方没有使用的`geometry`美学，这种美学可以通过以下三种方式之一来制定。
+
+1.  用户无需任何操作，`geom_sf()`自动将名为`geometry`的列映射到地图中。
+2.  如果数据是一个sf对象，`geom_sf()`自动检测geometry格式的列，即使该列名不为`geometry`。
+3.  使用`aes(geometry = my_column)`手动指定映射，在数据中有多个geometry格式的列时很有用。
+
+ggplot2支持多层`geom_sf()`叠加。使用rmapshaper包[@rmapshaper]简化边界，以减少渲染绘图的时间。当原始数据集（本例中为`abs_ced`）的存储分辨率高于绘图要求时，这通常是个好主意。
+
+```{r}
+oz_states <- ozmap_states %>% filter(NAME != "Other Territories")
+oz_votes <- rmapshaper::ms_simplify(abs_ced)
+
+ggplot() +
+  geom_sf(data = oz_states, mapping = aes(fill = NAME), show.legend = FALSE) +
+  geom_sf(data = oz_votes, fill = NA) +
+  coord_sf()
+```
+
+图上添加标签：
+
+```{r}
+sydney_map <- abs_ced %>% filter(NAME %in% c(
+  "Sydney", "Wentworth", "Warringah", "Kingsford Smith", "Grayndler", "Lowe", 
+  "North Sydney", "Barton", "Bradfield", "Banks", "Blaxland", "Reid", 
+  "Watson", "Fowler", "Werriwa", "Prospect", "Parramatta", "Bennelong", 
+  "Mackellar", "Greenway", "Mitchell", "Chifley", "McMahon"
+))
+
+ggplot(sydney_map) +
+  geom_sf(aes(fill = NAME), show.legend = FALSE) +
+  coord_sf(xlim = c(150.97, 151.3), ylim = c(-33.98, -33.79)) +
+  geom_sf_label(aes(label = NAME), label.padding = unit(1, "mm"))
+```
+
+::: callout-warning
+`geom_sf_label()`函数内部使用sf包中的函数`st_point_on_surface()`来放置标签，出现上述警告是因为sf用于计算几何量（例如中心点、内部点）的大多数算法都是基于这样一个假设：点位于一个平坦的二维表面上，并以笛卡尔坐标作为参数。这种假设并不严格，在某些情况下（例如，靠近两极的地区），以这种方式处理经度和纬度的计算会得到错误的答案。因此，sf软件包在依赖这种近似方式进行计算时将产生警告。
+:::
+
+添加其他图层：
+
+```{r}
+oz_capitals <- tibble::tribble( 
+  ~city,           ~lat,     ~lon,
+  "Sydney",    -33.8688, 151.2093,  
+  "Melbourne", -37.8136, 144.9631, 
+  "Brisbane",  -27.4698, 153.0251, 
+  "Adelaide",  -34.9285, 138.6007, 
+  "Perth",     -31.9505, 115.8605, 
+  "Hobart",    -42.8821, 147.3272, 
+  "Canberra",  -35.2809, 149.1300, 
+  "Darwin",    -12.4634, 130.8456, 
+)
+
+ggplot() + 
+  geom_sf(data = oz_votes) + 
+  geom_sf(data = oz_states, colour = "black", fill = NA) + 
+  geom_point(data = oz_capitals, mapping = aes(x = lon, y = lat), colour = "red") + 
+  coord_sf()
+```
+
+### 地图投影
+
+如果关注地图的准确性，利用经纬度在笛卡尔平面上进行绘制并非最佳办法，至少存在两个基本问题：
+
+1.  地球既不是一个平面，也不是一个完美的球体。关于地球形状的一系列假设被称为**大地基准**，虽然它对某些数据的可视化可能并不重要，但对其他数据来说，它是至关重要的。有几种不同的选择可以考虑：如果重点是北美，"北美基准"（NAD83）是一个很好的选择；如果视角是全球，"世界大地测量系统"（WGS84）可能更好。
+
+2.  地图的形状。地球近似椭圆体，但大多数情况下，空间数据需要绘制在一个二维平面上。不可能在不发生扭曲或切割的情况下把椭圆体的表面映射到一个平面上，因此必须对扭曲作出选择。这就是**地图投影**的工作。 地图投影通常按照它们保留的几何属性来分类，例如：
+
+-   **面积保护型**投影确保地球上面积相等的区域在地图上的绘制面积相等。
+-   **形状保护型**（保形或保角）投影确保区域的局部形状得到保留。
+
+任何投影都无法做到既保形又保面积，sf允许我们可以指定想使用的地图投影。关于地图投影的更多信息，参见[Geocomputation with R](https://geocompr.robinlovelace.net/)。
+
+综上，大地基准（如WGS84）、地图投影类型（如墨卡托）和投影参数（如原点位置）共同指定了一个坐标参考系统（**c**oordinate **r**eference **s**ystem，CRS）。这是一套用于将经纬度信息转换为二维地图的完整假设。一个sf对象通常包括一个默认的CRS，如下所示：
+
+```{r}
+st_crs(oz_votes)
+```
+
+这些输出大多对应于一个众所周知的文本（**w**ell-**k**now **t**ext，WKT）字符串，它详细描述了CRS。sf内部使用这种冗长的WKT表示法，但是有几种方法可以提供sf理解的用户输入。其中一种方法是以[EPSG代码](https://epsg.org/home.html)的形式提供数字输入。`oz_votes`数据中的默认CRS与EPSG代码4283相对应。
+
+```{r}
+st_crs(oz_votes) == st_crs(4283)
+```
+
+在ggplot2中，`coord_sf()`控制CRS，以确保每一层都使用相同的投影。sf数据通常会提供一个合理的CRS选择，`coord_sf()`默认使用数据geometry列相关的CRS。当需要指定CRS时，可以通过向`st_crs()`传递`crs`参数：
+
+`r columns(2, 1)`
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(oz_votes) + geom_sf()
+ggplot(oz_states) + geom_sf() + coord_sf(crs = st_crs(3112))
+```
+
+### Raster maps
+
+绘制地理空间信息的第二种方式是依靠栅格数据（raster data）。与sf数据不同，栅格数据中，地理实体是以一组线、点和多边形的形式来指定的，而栅格则是以图像的形式出现。在最简单的情况下，光栅数据可能是一个有许多不同的图像格式位图文件。具体到地理空间方面，有一些图像格式包括元数据（如大地测量基准、坐标参考系统），可用于将图像信息映射到地球表面。
+
+在[GDAL（地理空间数据抽象库）](https://gdal.org/)的帮助下，大多数格式可以很容易地读入R。例如，sf包中的`sf::gdal_read()`函数提供了从R中访问GDAL的功能。不过，很少需要直接调用这个函数，因为还有其他高级函数可以处理这个问题。
+
+举个例子，假设我们想绘制澳大利亚气象局（BOM）在其FTP服务器上公开提供的卫星图像。bomrang包[@bomrang]提供了一个方便的服务器接口，包括一个返回文件名向量的`get_available_imagery()`函数和一个下载文件并直接导入R中的`get_satellite_imagery()`函数。
+
+这里使用更灵活的方式，可以适用任何FTP服务器，并使用`download.file()`函数：
+
+```{r}
+#| eval: false
+
+# list of all file names with time stamp 2022-08-04 21:00 GMT 
+# (BOM images are retained for 24 hours, so this will return an
+# empty vector if you run this code without editing the time stamp)
+files <- bomrang::get_available_imagery() %>% 
+  str_subset("202208042100")
+
+walk2(
+  .x = paste0("ftp://ftp.bom.gov.au/anon/gen/gms/", files),
+  .y = file.path("raster", files),
+  .f = ~ download.file(url = .x, destfile = .y)
+)
+```
+
+所有14个文件[^vis-ggplot2-2]都是由日本气象厅运营的Himawari-8地球静止卫星拍摄的图像构建的，并在13个不同的波段拍摄图像。澳大利亚BOM发布的图像包括可见光谱（频道3）和红外光谱（频道13）的数据。
+
+[^vis-ggplot2-2]: 由于众所周知的原因，国内无法使用R直接下载，这里只手动下载了2个文件，用于后续的绘图。
+
+为了将可见图片导入R，使用stars包[@stars]将其导入为stars对象：
+
+```{r}
+img_vis  <- file.path("raster", "IDE00422.202208042100.tif")
+img_inf <- file.path("raster", "IDE00421.202208042100.tif")
+
+library(stars)
+sat_vis <- read_stars(img_vis, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+sat_inf <- read_stars(img_inf, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+```
+
+`RasterIO`参数用来向GDAL传递一列低级参数，使用了`nBufXSize`和`nBufYSize`来确保R以低分辨率读取数据（作为600x600像素的图像）。
+
+```{r}
+sat_vis
+```
+
+注意，空间数据也与一个坐标参考系统相关联（在输出中被称为 "refsys"）。
+
+利用stars包提供的`geom_stars()`函数，可以使用ggplot2进行绘图：
+
+`r columns(1, 2/3, max_width = 1)`
+
+```{r}
+ggplot() +
+  geom_stars(data = sat_vis) +
+  coord_equal()
+```
+
+`geom_stars()`函数要求数据是stars对象，并将栅格数据映射到填充（fill）美学。因此，上面的卫星图像中的蓝色阴影是由ggplot2的比例决定的，而不是图像本身。也就是说，尽管`sat_vis`包含三个波段，但上面的绘图只显示第一个波段，原始数据值（范围从0到255）被映射到ggplot2用于连续数据的默认蓝色调色板上。为了看到图像文件的真实面貌，我们可以用`facet_wrap()`分离这些波段：
+
+`r columns(1, 2/3, max_width = 1)`
+
+```{r}
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  facet_wrap(vars(band)) +
+  coord_equal() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+只显示原始图像不易弄清楚相关的陆地在哪里，我们可能希望将卫星数据与`oz_states`矢量地图重叠，以显示澳大利亚政治实体的轮廓。这样做需注意，这两个数据源具有不同的坐标参考系统。为了正确投影`oz_states`的数据，需使用sf包中的`st_transform()`函数对数据进行转换。下面的代码将从`sat_vis`栅格对象中提取CRS，并应用于`oz_states`，而后进行可视化：
+
+```{r}
+oz_states <- st_transform(oz_states, crs = st_crs(sat_vis))
+
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  geom_sf(data = oz_states, fill = NA, color = "white") +
+  coord_sf() +
+  theme_void() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+可以看到在这个拍摄时间，澳大利亚即将日出。
+
+如何在上面绘制更多的常规数据呢？一个简单的例子是根据包含经纬度的`oz_capitals`数据框来绘制澳大利亚首都的位置。然而，由于这些数据没有与CRS相关联，并且与`sat_vis`中的栅格数据的比例不一样，所以这些数据也需要进行转换。为此，首先需要使用`st_as_sf()`从`oz_capitals`数据中创建sf对象：
+
+```{r}
+cities <- oz_capitals %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+```
+
+这个投影是使用EPSG代码4326设置的，这是使用经纬度值作为坐标并依靠WGS84基准的椭圆形投影。而后可以将经纬度几何坐标转换为与`sat_vis`数据的几何形状相匹配。
+
+```{r}
+cities <- st_transform(cities, st_crs(sat_vis))
+
+ggplot() +
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  geom_sf(data = oz_states, fill = NA, color = "white") +
+  geom_sf(data = cities, color = "red") +
+  coord_sf() +
+  theme_void() +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+如果有自己的形状文件（`.shp`），可以用`sf::read_sf()`把它们加载到R中。
+
+## 网络图
+
+网络在可视化中占据了一席之地，和地图、空间数据一样，网络具有特定的数据结构和可视化范式，ggplot2并不直接支持网络图，接下来将使用ggraph包[@ggraph]进行网络的可视化。
+
+### 网络数据
+
+网络数据可以编码为两个相互关联的数据帧，分别编码节点和边，这就是tidygraph包[@tidygraph]使用的方法，它是ggraph的基础数据处理包。
+
+```{r}
+#| message: false
+library(tidygraph)
+library(ggraph)
+
+graph <- play_erdos_renyi(n = 10, p = .2) %>% 
+  activate(nodes) %>% 
+  mutate(class = sample(letters[1:4], n(), replace = TRUE)) %>% 
+  activate(edges) %>% 
+  arrange(.N()$class[from])
+graph
+```
+
+一些新函数：`activate()`指定在网络的哪个部分工作（节点或者边）；即使在处理边的时候，`.N()`也可以访问当前图形的节点数据（与之对应的`.E()`函数访问边的数据，以及`.G()`访问整个图形）。
+
+tidygraph包的`as_tbl_graph()`可以将大部分不同形式的网络数据进行转换:
+
+```{r}
+head(highschool)
+
+hs_graph <- as_tbl_graph(highschool, directed = FALSE) # 不带方向
+hs_graph
+```
+
+```{r}
+luv_clust <- hclust(dist(luv_colours[, 1:3]))
+luv_graph <- as_tbl_graph(luv_clust)
+luv_graph
+```
+
+我们可以看到，tidygraph在转换时自动添加了额外的信息，例如，`highschool`数据中的`year`列，以及分层聚类`luv_clust`中的`label`和`leaf`节点。
+
+```{r}
+# 中心度计算
+graph %>% 
+  activate(nodes) %>% 
+  mutate(centrality = centrality_pagerank()) %>% 
+  arrange(desc(centrality))
+```
+
+tidygraph支持一系列丰富的算法，比如中心度计算（哪个节点最中心）、排序（对节点进行排序，使节点位于与之相连的节点附近）、分组（在网络内寻找群组）等，具体见[这里](https://tidygraph.data-imaginist.com/)。
+
+网络图更关注拓扑结构而不是两个变量之间的关系，我们采用**布局（Layouts）**的概念来显示网络拓扑结构。布局是利用网络结构来计算每个节点的`x`和`y`值（通常是任意的）的算法，最终用于可视化。换句话说，在绘制表格数据时，`x`和`y`的美学几乎总是被数据中的现有变量（或现有数据的统计转换）映射，而在绘制网络数据时，`x`和`y`被来自网络拓扑结构的值映射，这些值本身没有意义。
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(hs_graph) +
+  geom_edge_link() +
+  geom_node_point()
+
+ggraph(hs_graph, layout = "drl") +
+  geom_edge_link() +
+  geom_node_point()
+```
+
+```{r}
+#| layout-ncol: 2
+
+hs_graph <- hs_graph %>% 
+  activate(edges) %>% 
+  mutate(edge_weights = runif(n()))
+ggraph(hs_graph, layout = "stress", weights = edge_weights) +
+  geom_edge_link(aes(alpha = edge_weights)) +
+  geom_node_point() +
+  scale_edge_alpha_identity()
+
+# 环形
+ggraph(luv_graph, layout = "dendrogram", circular = TRUE) +
+  geom_edge_link() +
+  coord_fixed()
+```
+
+### 绘制节点（nodes）
+
+```{r}
+#| layout-ncol: 2
+
+# 只显示2个以上的节点，按中心度着色
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point(
+    aes(filter = centrality_degree() > 2,
+        color = centrality_power()),
+    size = 2
+  )
+
+# 树状图
+ggraph(luv_graph, layout = "treemap") +
+  geom_node_tile(aes(fill = depth))
+```
+
+### 绘制边缘（edges）
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(graph, layout = "stress") +
+  geom_edge_link(aes(alpha = after_stat(index)))
+
+ggraph(graph, layout = "stress") +
+  geom_edge_link2(
+    aes(color = node.class),
+    width = 3, lineend = "round"
+  )
+```
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_fan()
+
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_parallel()
+```
+
+```{r}
+#| layout-ncol: 2
+
+ggraph(luv_graph, layout = "dendrogram", height = height) +
+  geom_edge_elbow()
+
+ggraph(luv_graph, layout = "dendrogram", height = height) +
+  geom_edge_bend()
+```
+
+```{r}
+#| layout-ncol: 2
+
+# 节点会遮盖箭头
+ggraph(graph, layout = "stress") +
+  geom_edge_link(arrow = arrow()) +
+  geom_node_point(aes(color = class), size = 6)
+
+# 解决上述问题
+ggraph(graph, layout = "stress") +
+  geom_edge_link(
+    arrow = arrow(),
+    start_cap = circle(3, "mm"),
+    end_cap = circle(3, "mm")
+  ) +
+  geom_node_point(aes(color = class), size = 6)
+```
+
+### 分面
+
+`r columns(1, 2/3)`
+
+```{r}
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point() +
+  facet_edges(~year)
+```
+
+```{r}
+ggraph(hs_graph, layout = "stress") +
+  geom_edge_link() +
+  geom_node_point() +
+  facet_nodes(~ group_spinglass())
+```
+
+## 注释
+
+从概念上讲，注释为绘图提供了元数据，它提供了关于数据的额外信息。
+
+### 图形和轴标题
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = factor(cyl))) +
+  labs(
+    x = "Engine displacement (litres)",
+    y = "Highway miles per gallon",
+    color = "Number of cylinders",
+    title = "Mileage by engine size and cylinders",
+    subtitle = "Source: http://fueleconomy.gov"
+  )
+```
+
+通常给`labs()`提供文本字符串，并用`\n`指定换行，也可以提供用`quote()`包裹的数学表达式：
+
+```{r}
+values <- seq(from = -2, to = 2, by = .01)
+df <- data.frame(x = values, y = values ^ 3)
+ggplot(df, aes(x, y)) +
+  geom_line() +
+  labs(y = quote(f(x) == x^3))
+```
+
+在ggtext包[@ggtext]和ggplot2主题系统下，可以使用Markdown语法进行标记：
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(x = 1:3, y = 1:3)
+base <- ggplot(df, aes(x, y)) +
+  geom_point() +
+  labs(x = "Axis title with *italics* and **boldface**")
+
+base
+base + theme(axis.title.x = ggtext::element_markdown())
+```
+
+::: callout-important
+未出现斜体和加粗效果，暂未发现原因。日后会处理。
+:::
+
+### 文本标签
+
+**字体**
+
+`r columns(1, 2/3)`
+
+```{r}
+df <- data.frame(x = 1, y = 3:1, family = c("sans", "serif", "mono"))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = family, family = family))
+```
+
+如需更多字体，使用showtext包[@showtext]：
+
+```{r}
+library(showtext)
+
+# font_install(source_han_serif()) # 安装字体库
+font_families()
+head(font_files()) # 查看系统字体
+```
+
+```{r}
+showtext_auto()
+
+font_add("simkai", "simkai.ttf")
+font_add("constan", "constan.ttf", italic = "constani.ttf")
+
+ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
+    theme(axis.title = element_blank(), axis.ticks = element_blank(),
+          axis.text = element_blank()) +
+    annotate("text", 1, 1.1, family = "simkai", size = 15,
+             label = "你好，世界！") +
+    annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
+             family = "constan", fontface = "italic", size = 8)
+```
+
+**加粗、斜体**
+
+```{r}
+df <- data.frame(x = 1, y = 3:1, face = c("plain", "bold", "italic"))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = face, fontface = face))
+```
+
+**对齐方式**
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(
+  x = c(1, 1, 2, 2, 1.5),
+  y = c(1, 2, 1, 2, 1.5),
+  text = c(
+    "bottom-left", "top-left",
+    "bottom-right", "top-right", "center"
+  )
+)
+
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text), vjust = "inward", hjust = "inward")
+```
+
+**微调**
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(resp = c(1.2, 3.4, 2.5), trt = letters[1:3])
+
+ggplot(df, aes(resp, trt)) +
+  geom_point() +
+  geom_text(aes(label = paste0("(", resp, ")"))) +
+  xlim(1, 3.6)
+ggplot(df, aes(resp, trt)) +
+  geom_point() +
+  geom_text(aes(label = paste0("(", resp, ")")), nudge_y = -.25) +
+  xlim(1, 3.6)
+```
+
+**重叠检查**
+
+按照标签在数据框中出现的先后顺序绘制标签。如后来的标签覆盖已绘制的标签，则忽略后来的标签。实际使用中，可以对标签进行优先级排序，后绘制带有标签的图，以强调重要的数据。
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_text(aes(label = model)) +
+  xlim(1, 8)
+ggplot(mpg, aes(displ, hwy)) +
+  geom_text(aes(label = model), check_overlap = TRUE) +
+  xlim(1, 8)
+```
+
+另一种方法是利用ggrepel包[@ggrepel]的`geom_text_repel()`函数进行绘制：
+
+`r columns(1, 2/3)`
+
+```{r}
+mini_mpg <- mpg[sample(nrow(mpg), 20), ]
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(color = "red") +
+  ggrepel::geom_text_repel(data = mini_mpg, aes(label = class))
+```
+
+ggfittext包[@ggfittext]可以确保文本标签适应其放置的空间：
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+library(ggfittext)
+ggplot(animals, aes(type, flies, label = animal)) +
+  geom_tile(fill = "white", color = "black") +
+  geom_fit_text()
+ggplot(animals, aes(type, flies, label = animal)) +
+  geom_tile(fill = "white", color = "black") +
+  geom_fit_text(reflow = TRUE)
+```
+
+### 自定义注释
+
+`r columns(1, 3/8, 1)`
+
+```{r}
+#| layout-nrow: 2
+
+ggplot(economics, aes(date, unemploy)) +
+  geom_line()
+
+# 美国总统任期和党派
+presidential <- subset(presidential, start > economics$date[1])
+ggplot(economics) +
+  geom_rect(data = presidential,
+            aes(xmin = start, xmax = end, fill = party),
+            ymin = -Inf, ymax = Inf, alpha = .2) +
+  geom_vline(data = presidential,
+             aes(xintercept = as.numeric(start)),
+             color = "grey50", alpha = .5) +
+  geom_text(data = presidential,
+            aes(start, y = 2500, label = name),
+            size = 3, vjust = 0, hjust = 0, nudge_x = 50) +
+  geom_line(aes(date, unemploy)) +
+  scale_fill_manual(values = c("blue", "red")) +
+  labs(x = "date", y = "unemployment")
+```
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+p <- ggplot(mpg, aes(displ, hwy)) +
+  geom_point(data = filter(mpg, manufacturer == "subaru"),
+             color = "orange", size = 3) +
+  geom_point()
+
+p + 
+  annotate("point", x = 5.5, y = 40, color = "orange", size = 3) +
+  annotate("point", x = 5.5, y = 40) +
+  annotate("text", x = 5.6, y = 40, label = "subaru", hjust = "left")
+
+# 更好的方法
+p +
+  annotate("curve", x = 4, y = 35, xend = 2.65, yend = 27,
+           curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
+  annotate("text", x = 4.1, y = 35, label = "subaru", hjust = "left")
+```
+
+### 直接标注
+
+directlabels包[@directlabels]：
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(displ, hwy, color = class)) +
+  geom_point()
+
+ggplot(mpg, aes(displ, hwy, color = class)) +
+  geom_point(show.legend = FALSE) +
+  directlabels::geom_dl(aes(label = class), method = "smart.grid")
+```
+
+ggforce包[@ggforce]:
+
+`r columns(1, 2/3)`
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  ggforce::geom_mark_ellipse(aes(label = cyl, group = cyl))
+```
+
+gghighlight包[@gghighlight]：
+
+```{r}
+#| warning: false
+
+data(Oxboys, package = "nlme")
+ggplot(Oxboys, aes(age, height, group = Subject)) +
+  geom_line() +
+  geom_point() +
+  gghighlight::gghighlight(Subject %in% 1:3)
+```
+
+分面注释：
+
+`r columns(1)`
+
+```{r}
+ggplot(mpg, aes(displ, hwy, color = factor(cyl))) +
+  geom_point() +
+  gghighlight::gghighlight() +
+  facet_wrap(vars(cyl))
+```
+

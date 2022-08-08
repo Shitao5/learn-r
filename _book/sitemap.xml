@@ -2,38 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://shitao.quarto.pub/learn-r/index.html</loc>
-    <lastmod>2022-08-06T12:54:16.178Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.891Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/preface.html</loc>
-    <lastmod>2022-08-06T12:54:16.179Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.891Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/Visualisation.html</loc>
-    <lastmod>2022-08-06T12:54:16.179Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.893Z</lastmod>
   </url>
   <url>
-    <loc>https://shitao.quarto.pub/learn-r/vis-ggplot2.html</loc>
-    <lastmod>2022-08-08T08:43:04.575Z</lastmod>
+    <loc>https://shitao.quarto.pub/learn-r/vis-ggplot2-layers.html</loc>
+    <lastmod>2022-08-08T15:15:45.915Z</lastmod>
+  </url>
+  <url>
+    <loc>https://shitao.quarto.pub/learn-r/vis-ggplot2-scales.html</loc>
+    <lastmod>2022-08-08T15:15:45.917Z</lastmod>
+  </url>
+  <url>
+    <loc>https://shitao.quarto.pub/learn-r/vis-ggplot2-grammar.html</loc>
+    <lastmod>2022-08-08T15:15:45.918Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/Shiny.html</loc>
-    <lastmod>2022-08-06T12:54:16.190Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.919Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/shiny1.html</loc>
-    <lastmod>2022-08-06T12:54:16.192Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.920Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/Finance.html</loc>
-    <lastmod>2022-08-06T12:54:16.193Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.921Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/fin-tidy.html</loc>
-    <lastmod>2022-08-06T12:54:16.194Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.923Z</lastmod>
   </url>
   <url>
     <loc>https://shitao.quarto.pub/learn-r/references.html</loc>
-    <lastmod>2022-08-06T12:54:16.196Z</lastmod>
+    <lastmod>2022-08-08T15:15:45.923Z</lastmod>
   </url>
 </urlset>

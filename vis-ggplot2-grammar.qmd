@@ -1,0 +1,14 @@
+# ggplot2-grammar {#sec-grammar}
+
+```{r}
+#| echo: false
+
+source("common.R")
+status("drafting")
+columns(1, 2/3)
+```
+
+```{r}
+#| message: false
+library(ggplot2)
+```
