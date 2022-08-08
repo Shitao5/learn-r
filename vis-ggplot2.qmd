@@ -8,16 +8,6 @@ status("writing")
 columns(1, 2/3)
 ```
 
-<!-- columns函数控制绘图输出，用法如下： -->
-
-<!-- `r columns(1, 2/3)` -->
-
-<!-- `r columns(2, 2/3)` -->
-
-<!-- `r columns(3, 1)` -->
-
-<!-- `r columns(4, 1)` -->
-
 ```{r}
 #| message: false
 library(ggplot2)
@@ -609,7 +599,7 @@ ggplot(df, aes(x, y)) +
 
 在ggtext包[@ggtext]和ggplot2主题系统下，可以使用Markdown语法进行标记：
 
-`r columns(2, 1)`
+`r columns(2)`
 
 ```{r}
 #| layout-ncol: 2
@@ -627,8 +617,147 @@ base + theme(axis.title.x = ggtext::element_markdown())
 未出现斜体和加粗效果，暂未发现原因。日后会处理。
 :::
 
-
 #### 文本标签
+
+**字体**
+
+`r columns(1, 2/3)`
+
+```{r}
+df <- data.frame(x = 1, y = 3:1, family = c("sans", "serif", "mono"))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = family, family = family))
+```
+
+如需更多字体，使用showtext包[@showtext]：
+
+```{r}
+library(showtext)
+
+# font_install(source_han_serif()) # 安装字体库
+font_families()
+head(font_files()) # 查看系统字体
+```
+
+```{r}
+showtext_auto()
+
+font_add("simkai", "simkai.ttf")
+font_add("constan", "constan.ttf", italic = "constani.ttf")
+
+ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
+    theme(axis.title = element_blank(), axis.ticks = element_blank(),
+          axis.text = element_blank()) +
+    annotate("text", 1, 1.1, family = "simkai", size = 15,
+             label = "你好，世界！") +
+    annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
+             family = "constan", fontface = "italic", size = 8)
+```
+
+**加粗、斜体**
+
+```{r}
+df <- data.frame(x = 1, y = 3:1, face = c("plain", "bold", "italic"))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = face, fontface = face))
+```
+
+**对齐方式**
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(
+  x = c(1, 1, 2, 2, 1.5),
+  y = c(1, 2, 1, 2, 1.5),
+  text = c(
+    "bottom-left", "top-left",
+    "bottom-right", "top-right", "center"
+  )
+)
+
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text), vjust = "inward", hjust = "inward")
+```
+
+**微调**
+
+```{r}
+#| layout-ncol: 2
+
+df <- data.frame(resp = c(1.2, 3.4, 2.5), trt = letters[1:3])
+
+ggplot(df, aes(resp, trt)) +
+  geom_point() +
+  geom_text(aes(label = paste0("(", resp, ")"))) +
+  xlim(1, 3.6)
+ggplot(df, aes(resp, trt)) +
+  geom_point() +
+  geom_text(aes(label = paste0("(", resp, ")")), nudge_y = -.25) +
+  xlim(1, 3.6)
+```
+
+**重叠检查**
+
+按照标签在数据框中出现的先后顺序绘制标签。如后来的标签覆盖已绘制的标签，则忽略后来的标签。实际使用中，可以对标签进行优先级排序，后绘制带有标签的图，以强调重要的数据。
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_text(aes(label = model)) +
+  xlim(1, 8)
+ggplot(mpg, aes(displ, hwy)) +
+  geom_text(aes(label = model), check_overlap = TRUE) +
+  xlim(1, 8)
+```
+
+另一种方法是利用ggrepel包的`geom_text_repel()`函数进行绘制：
+
+`r columns(1, 2/3)`
+
+```{r}
+mini_mpg <- mpg[sample(nrow(mpg), 20), ]
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(color = "red") +
+  ggrepel::geom_text_repel(data = mini_mpg, aes(label = class))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
