@@ -60,7 +60,7 @@
     "href": "vis-ggplot2-layers.html#权重数据",
     "title": "1  ggplot2-layers",
     "section": "\n1.3 权重数据",
-    "text": "1.3 权重数据\n汇总数据的每一行代表多个观测值，因此需要考虑权重变量。权重变量的选择将影响绘图和得出的结论。\n对于点图、线图等简单图形，使用大小（size)美学。\n\n# Unweighted\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point()\n\n# Weighted by population\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point(aes(size = poptotal / 1e6)) +\n  scale_size_area(\"Population\\n(millions)\",\n                  breaks = c(.5, 1, 2, 4))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n对于涉及统计转换等复杂图形，使用weight美学指定权重。权重支持平滑、量化回归、箱型图、直方图、密度图等情形。我们无法直接从图中看出权重变量，它也不会产生图例，但会改变统计汇总的结果。\n\n# Unweighted\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point() +\n  geom_smooth(method = lm, size = 1)\n\n# Weighted by population\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point(aes(size = poptotal / 1e6)) +\n  geom_smooth(aes(weight = poptotal), method = lm, size = 1) +\n  scale_size_area(guide = \"none\")"
+    "text": "1.3 权重数据\n汇总数据的每一行代表多个观测值，因此需要考虑权重变量。权重变量的选择将影响绘图和得出的结论。\n对于点图、线图等简单图形，使用大小（size）美学。\n\n# Unweighted\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point()\n\n# Weighted by population\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point(aes(size = poptotal / 1e6)) +\n  scale_size_area(\"Population\\n(millions)\",\n                  breaks = c(.5, 1, 2, 4))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n对于涉及统计转换等复杂图形，使用weight美学指定权重。权重支持平滑、量化回归、箱型图、直方图、密度图等情形。我们无法直接从图中看出权重变量，它也不会产生图例，但会改变统计汇总的结果。\n\n# Unweighted\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point() +\n  geom_smooth(method = lm, size = 1)\n\n# Weighted by population\nggplot(midwest, aes(percwhite, percbelowpoverty)) +\n  geom_point(aes(size = poptotal / 1e6)) +\n  geom_smooth(aes(weight = poptotal), method = lm, size = 1) +\n  scale_size_area(guide = \"none\")"
   },
   {
     "objectID": "vis-ggplot2-layers.html#地图",
@@ -95,7 +95,14 @@
     "href": "vis-ggplot2-scales.html",
     "title": "2  ggplot2-scales",
     "section": "",
-    "text": "library(ggplot2)"
+    "text": "各位看客：\n\n\n\nLearn-R 仍在写作流程中。本章节正在进行写作和结构调整，可能出现混乱或不完整的情况。\n标度控制数据到美学的映射，它将数据转为大小（size）、颜色（color）、位置（position）或形状（shape），它也提供了解释绘图的工具：坐标轴和图例。"
+  },
+  {
+    "objectID": "vis-ggplot2-scales.html#位置标度和坐标轴",
+    "href": "vis-ggplot2-scales.html#位置标度和坐标轴",
+    "title": "2  ggplot2-scales",
+    "section": "\n2.1 位置标度和坐标轴",
+    "text": "2.1 位置标度和坐标轴\n\n2.1.1 数值型\nLimits\nlims()或limits参数可用于修改坐标轴范围，需要接受长度为2的数值型向量。如果只设置单侧范围，另一侧设置为NA。\n\nmpg %>% filter(year == 1999) %>% \n  ggplot(aes(displ, hwy)) +\n  geom_point() +\n  scale_x_continuous(limits = c(1, 7)) +\n  scale_y_continuous(limits = c(10, 45))\n\nmpg %>% filter(year == 2008) %>% \n  ggplot(aes(displ, hwy)) +\n  geom_point() +\n  lims(x = c(1, 7), y = c(10, 45))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nZooming in\n如果目标是放大绘图的一部分，使用coord_cartesian()的xlim和ylim参数通常会更好。\n\nbase <- ggplot(mpg, aes(drv, hwy)) +\n  geom_hline(yintercept = 28, color = \"red\") +\n  geom_boxplot()\n\nbase\nbase + coord_cartesian(ylim = c(10, 35))\nbase + ylim(10, 35)\n#> Warning: Removed 6 rows containing non-finite values (stat_boxplot).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVisual range expansion\n\nbase <- ggplot(faithfuld, aes(waiting, eruptions)) +\n  geom_raster(aes(fill = density)) +\n  theme(legend.position = \"none\") +\n  labs(x = NULL, y = NULL)\n\nbase\nbase + \n  scale_x_continuous(expand = expansion(0)) +\n  scale_y_continuous(expand = expansion(0))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbase + \n  scale_x_continuous(expand = expansion(add = 3)) +\n  scale_y_continuous(expand = expansion(add = 3))\n\nbase +\n  scale_x_continuous(expand = expansion(mult = .2)) +\n  scale_y_continuous(expand = expansion(mult = .2))\n\nbase +\n  scale_x_continuous(expand = expansion(mult = c(.05, .2))) +\n  scale_y_continuous(expand = c(.05, 0, .2, 0))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nadd参数是在与数据变量相同的尺度上指定的，mult参数是相对于轴的范围指定的。\nBreaks"
   },
   {
     "objectID": "vis-ggplot2-grammar.html",

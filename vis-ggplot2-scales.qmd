@@ -4,11 +4,117 @@
 #| echo: false
 
 source("common.R")
-status("drafting")
+status("writing")
 columns(1, 2/3)
 ```
 
 ```{r}
 #| message: false
 library(ggplot2)
+library(dplyr)
 ```
+
+标度控制数据到美学的映射，它将数据转为大小（size）、颜色（color）、位置（position）或形状（shape），它也提供了解释绘图的工具：坐标轴和图例。
+
+## 位置标度和坐标轴
+
+### 数值型
+
+#### Limits
+
+`lims()`或`limits`参数可用于修改坐标轴范围，需要接受长度为2的数值型向量。如果只设置单侧范围，另一侧设置为`NA`。
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+mpg %>% filter(year == 1999) %>% 
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  scale_x_continuous(limits = c(1, 7)) +
+  scale_y_continuous(limits = c(10, 45))
+
+mpg %>% filter(year == 2008) %>% 
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  lims(x = c(1, 7), y = c(10, 45))
+```
+
+#### Zooming in
+
+如果目标是放大绘图的一部分，使用`coord_cartesian()`的`xlim`和`ylim`参数通常会更好。
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base <- ggplot(mpg, aes(drv, hwy)) +
+  geom_hline(yintercept = 28, color = "red") +
+  geom_boxplot()
+
+base
+base + coord_cartesian(ylim = c(10, 35))
+base + ylim(10, 35)
+```
+
+#### Visual range expansion
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+base <- ggplot(faithfuld, aes(waiting, eruptions)) +
+  geom_raster(aes(fill = density)) +
+  theme(legend.position = "none") +
+  labs(x = NULL, y = NULL)
+
+base
+base + 
+  scale_x_continuous(expand = expansion(0)) +
+  scale_y_continuous(expand = expansion(0))
+```
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base + 
+  scale_x_continuous(expand = expansion(add = 3)) +
+  scale_y_continuous(expand = expansion(add = 3))
+
+base +
+  scale_x_continuous(expand = expansion(mult = .2)) +
+  scale_y_continuous(expand = expansion(mult = .2))
+
+base +
+  scale_x_continuous(expand = expansion(mult = c(.05, .2))) +
+  scale_y_continuous(expand = c(.05, 0, .2, 0))
+```
+
+`add`参数是在与数据变量相同的尺度上指定的，`mult`参数是相对于轴的范围指定的。
+
+#### Breaks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

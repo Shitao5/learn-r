@@ -3,6 +3,8 @@ project:
 
 bibliography: references.bib
 number-sections: true
+execute:
+  freeze: auto
 
 book:
   title: "Learn-R"
