@@ -12,6 +12,25 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -155,7 +174,12 @@ ul.task-list{list-style: none;}
     </ul>
 </div>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#ggplot2" id="toc-ggplot2" class="nav-link active" data-scroll-target="#ggplot2">ggplot2</a></li>
+  <li><a href="#echarts" id="toc-echarts" class="nav-link" data-scroll-target="#echarts">echarts</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/Visualisation.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -173,7 +197,7 @@ ul.task-list{list-style: none;}
 
 </header><div class="cell">
 <div class="cell-output-display">
-<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -183,15 +207,28 @@ ul.task-list{list-style: none;}
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><em>Learn-R</em> 仍在写作流程中。本章节目前为初步构想，不建议阅读。</p>
+<p><em>Learn-R</em> 仍在写作流程中。本章节正在进行写作和结构调整，可能出现混乱或不完整的情况。</p>
 </div>
 </div>
 </div>
 </div>
+<section id="ggplot2" class="level2"><h2 class="anchored" data-anchor-id="ggplot2">ggplot2</h2>
+<p>ggplot2<span class="citation" data-cites="ggplot2">(<a href="references.html#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>具有底层的图形语法，<a href="https://ggplot2-book.org/"><em>ggplot2: Elegant Graphics for Data Analysis</em></a>重点解释了这套语法，<a href="vis-ggplot2-layers.html"><span>Chapter&nbsp;1</span></a>、<a href="vis-ggplot2-scales.html"><span>Chapter&nbsp;2</span></a>、<a href="vis-ggplot2-grammar.html"><span>Chapter&nbsp;3</span></a> 为其学习笔记。</p>
+<p>ggplot2具有颜色（color）、大小（size）、形状（shape）、填充（fill）等美学属性，适用于不同类型的图形。</p>
+</section><section id="echarts" class="level2"><h2 class="anchored" data-anchor-id="echarts">echarts</h2>
+<p><a href="https://echarts.apache.org/en/index.html">echarts</a>是一款开源的JavaScript可视化库，其在可交互图形的绘制上具有很强的灵活性。echarts4r包<span class="citation" data-cites="echarts4r">(<a href="references.html#ref-echarts4r" role="doc-biblioref">Coene 2022</a>)</span>是利用R操作echarts进行绘图的工具包。</p>
+<p>关于JavaScript的使用，还需阅读一下<a href="https://book.javascript-for-r.com/">JavaScript for R</a>，列入俺的TODO🐢。</p>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-echarts4r" class="csl-entry" role="doc-biblioentry">
+Coene, John. 2022. <span>“Echarts4r: Create Interactive Graphs with ’Echarts JavaScript’ Version 5.”</span> <a href="https://CRAN.R-project.org/package=echarts4r">https://CRAN.R-project.org/package=echarts4r</a>.
+</div>
+<div id="ref-ggplot2" class="csl-entry" role="doc-biblioentry">
+Wickham, Hadley. 2016. <span>“Ggplot2: Elegant Graphics for Data Analysis.”</span> <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
+</div>
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

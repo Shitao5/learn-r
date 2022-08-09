@@ -4,7 +4,7 @@
 #| echo: false
 
 source("common.R")
-status("writing")
+status("polishing")
 columns(1, 2/3)
 ```
 
@@ -13,15 +13,11 @@ columns(1, 2/3)
 library(ggplot2)
 ```
 
-ggplot2[@ggplot2]具有底层的图形语法，[*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/)重点解释了这套语法，@sec-layers、@sec-scales、@sec-grammar 为其学习笔记。
-
-ggplot2具有颜色（color）、大小（size）、形状（shape）、填充（fill）等美学属性，适用于不同类型的图形。
-
 在绘图美学中，少即是多，使用美学映射需要节制。与其用一幅非常复杂的图形一次展示所有，不如创造一些简单的情节，讲述一个故事，让读者的认识从无到有。
 
-ggplot2的分层结构[^vis-ggplot2-1]使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：
+ggplot2的分层结构[^vis-ggplot2-layers-1]使得我们可以以结构化的方式设计和构建图形。一般来说，图层有三个功能：
 
-[^vis-ggplot2-1]: 和Photoshop的图层类似。
+[^vis-ggplot2-layers-1]: 和Photoshop的图层类似。
 
 1.  展示数据
 2.  展示数据的统计摘要
@@ -309,9 +305,9 @@ walk2(
 )
 ```
 
-所有14个文件[^vis-ggplot2-2]都是由日本气象厅运营的Himawari-8地球静止卫星拍摄的图像构建的，并在13个不同的波段拍摄图像。澳大利亚BOM发布的图像包括可见光谱（频道3）和红外光谱（频道13）的数据。
+所有14个文件[^vis-ggplot2-layers-2]都是由日本气象厅运营的Himawari-8地球静止卫星拍摄的图像构建的，并在13个不同的波段拍摄图像。澳大利亚BOM发布的图像包括可见光谱（频道3）和红外光谱（频道13）的数据。
 
-[^vis-ggplot2-2]: 由于众所周知的原因，国内无法使用R直接下载，这里只手动下载了2个文件，用于后续的绘图。
+[^vis-ggplot2-layers-2]: 由于众所周知的原因，国内无法使用R直接下载，这里只手动下载了2个文件，用于后续的绘图。
 
 为了将可见图片导入R，使用stars包[@stars]将其导入为stars对象：
 
@@ -836,3 +832,166 @@ ggplot(mpg, aes(displ, hwy, color = factor(cyl))) +
   facet_wrap(vars(cyl))
 ```
 
+## 图形排列
+
+ggplot2的语法是关于创建单个图形的，虽然分面系统提供了产生多个子图的方法，但都属于同一个可视化的部分，它们共享图层、数据和标度。我们经常需要将多幅独立创建的图形组合为一张图，许多包已应运而生，这里重点介绍patchwork包[@patchwork]。
+
+绘制四幅图形用于排列：
+
+```{r}
+p1 <- ggplot(mpg) + 
+  geom_point(aes(x = displ, y = hwy))
+
+p2 <- ggplot(mpg) + 
+  geom_bar(aes(x = as.character(year), fill = drv), position = "dodge") + 
+  labs(x = "year")
+
+p3 <- ggplot(mpg) + 
+  geom_density(aes(x = hwy, fill = drv), colour = NA) + 
+  facet_grid(rows = vars(drv))
+
+p4 <- ggplot(mpg) + 
+  stat_summary(aes(x = drv, y = hwy, fill = drv), geom = "col", fun.data = mean_se) +
+  stat_summary(aes(x = drv, y = hwy), geom = "errorbar", fun.data = mean_se, width = 0.5)
+```
+
+`r columns(1, 2/3)`
+
+```{r}
+library(patchwork)
+
+p1 + p2
+```
+
+`+`并未指定任何具体的布局，只是将图形显示在一起。在没有布局的情况下，`facet_wrap()`中管理行和列的算法将用于决定行数和列数。如果我们添加3幅图形，则会创建1×3的网格；添加4幅图形，则会创建2×2的网格。
+
+```{r}
+p1 + p2 + p3 + p4
+```
+
+可以看出，patchwork关注绘图区域的对齐。
+
+### 布局控制
+
+```{r}
+p1 + p2 + p3 + plot_layout(ncol = 2)
+```
+
+`/`设置列数为1，`|`设置行数为1：
+
+```{r}
+# 两幅图排为1列
+p1 / p2
+```
+
+```{r}
+# 两幅图排为1行
+p3 | p4
+```
+
+`/`和`|`可以进行组合以创建更加复杂的图形排列：
+
+```{r}
+p3 | (p2 / (p1 | p4))
+```
+
+针对特别复杂的布局，可以在`plot_layout()`的`design`参数中制定文本形式的非表格布局：
+
+```{r}
+layout <- "
+AAB
+C#B
+CDD
+"
+layout
+
+p1 + p2 + p3 + p4 + plot_layout(design = layout)
+```
+
+从上可以看出，图形间的图例经常有多余，patchwork提供了简便的处理方法，可以删除完全一样的图例：
+
+```{r}
+p1 + p2 + p3 + plot_layout(ncol = 2, guides = "collect")
+```
+
+可以指定绘图区域，优化空间使用：
+
+```{r}
+p1 + p2 + p3 + guide_area() + plot_layout(ncol = 2, guides = "collect")
+```
+
+### 修改子图
+
+在patchwork渲染前，所有子图仍为ggplot对象，因此在组合起来后可以被修改，使用`[[]]`索引后进行调整：
+
+```{r}
+p12 <- p1 + p2
+p12[[2]] <- p12[[2]] + theme_light()
+p12
+```
+
+使用`&`一次性修改所有子图：
+
+```{r}
+p1 + p4 & theme_minimal()
+```
+
+如果图形在轴上具有相同的映射，可以用这种方法指定共同轴：
+
+```{r}
+p1 + p4 & scale_y_continuous(limits = c(0, 45))
+```
+
+### 添加注释
+
+一旦图形组合完毕，它们就成为一个整体，可以通过`plot_annotation()`向整体添加标题、副标题等注释。
+
+```{r}
+p34 <- p3 + p4 + plot_annotation(
+  title = "A closer look at the effect of drive train in cars",
+  caption = "Source: mpg dataset in ggplot2"
+)
+p34
+```
+
+```{r}
+p34 + plot_annotation(theme = theme_gray(base_family = "mono"))
+```
+
+为子图添加标签在科学文献中尤其常用，ggplot2带有`tag`元素，patchwork提供`tag_levels`参数进行自动设置：
+
+```{r}
+p123 <- p1 | (p2 / p3)
+p123 + plot_annotation(tag_levels = "I") # 使用大写罗马数字
+```
+
+使用嵌套定义新的标签级别：
+
+```{r}
+p123[[2]] <- p123[[2]] + plot_layout(tag_level = "new")
+p123 + plot_annotation(tag_levels = c("I", "a"))
+```
+
+### 图形叠加
+
+patchwork提供了`inset_element()`函数用于在给定的区域上放置图形：
+
+```{r}
+p1 + inset_element(p2, left = .5, bottom = .4, right = .9, top = .95)
+```
+
+```{r}
+p24 <- p2 / p4 + plot_layout(guides = "collect")
+p1 + inset_element(p24, left = .5, right = .9, bottom = .05, top = .9)
+```
+
+```{r}
+p12 <- p1 + inset_element(p2, left = .5, right = .9, bottom = .5, top = .95)
+p12 & theme_bw()
+```
+
+```{r}
+p12 + plot_annotation(tag_levels = "A")
+```
+
+更多patchwork的功能，可以查看它的网站：<https://patchwork.data-imaginist.com/>。
