@@ -99,8 +99,185 @@ base +
 
 #### Breaks
 
+```{r}
+toy <- data.frame(
+  const = 1,
+  up = 1:4,
+  txt = letters[1:4],
+  big = (1:4) * 1000,
+  log = c(2, 5, 10, 2000)
+)
+toy
+```
 
+通过向`breaks`参数传递数值，可手动设置断点。设置`breaks = NULL`移除断点和相关的刻度线。
 
+`r columns(1)`
+
+```{r}
+base <- ggplot(toy, aes(big, const)) +
+  geom_point() +
+  labs(x = NULL, y = NULL) +
+  scale_y_continuous(breaks = NULL)
+base
+```
+
+需注意，手动设置断点会移动主要和次要网格线：
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+base + scale_x_continuous(breaks = c(1000, 2000, 4000))
+base + scale_x_continuous(breaks = c(1000, 1500, 2000, 4000))
+```
+
+也可以向`breaks`传递函数，该函数应有一个指定标度范围的参数（长度为2的数值型向量），并且返回断点的数值型向量。scales包[@scales]提供了一些有用的工具：
+
+-   `scales::breaks_extended()`为数值轴自动创建断点（ggplot2的标准方法）；
+-   `scales::breaks_log()`为对数轴自动创建断点；
+-   `scales::breaks_pretty()`为日期/时间创建断点；
+-   `scales::breaks_width()`创建等距的断点。
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base + 
+  scale_x_continuous(breaks = scales::breaks_width(800))
+base + 
+  scale_x_continuous(breaks = scales::breaks_width(800, offset = 200)) # 偏移
+base +
+  scale_x_continuous(breaks = scales::breaks_width(800, offset = -200))
+```
+
+#### Minor breaks
+
+次要断点（主网格线之间未标记的网格线）对于对数轴特别有用，因为它清晰地展示了刻度是非线性的。
+
+```{r}
+mb <- unique(as.numeric(1:10 %o% 10 ^ (0:3)))
+mb
+```
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+base <- ggplot(toy, aes(log, const)) +
+  geom_point() +
+  labs(x = NULL, y = NULL) +
+  scale_y_continuous(breaks = NULL)
+
+base + scale_x_log10()
+base + scale_x_log10(minor_breaks = mb)
+```
+
+#### Labels
+
+```{r}
+#| layout-ncol: 2
+
+base <- ggplot(toy, aes(big, const)) +
+  geom_point() +
+  labs(x = NULL, y = NULL) +
+  scale_y_continuous(breaks = NULL)
+
+base
+base + scale_x_continuous(
+  breaks = c(2000, 4000),
+  labels = c("2k", "4k")
+)
+```
+
+通常不需要手动设置`labels`参数，和`breaks`参数一样，scales包提供了有效的函数：
+
+-   `scales::label_bytes()`将数字转化为kb、mb等字节格式；
+-   `scales::label_comma()`为数字添加逗号；
+-   `scales::label_dollar()`将数字转为货币；
+-   `scales::label_ordinal()`将数字转为等级顺序；
+-   `scales::label_percent()`将数字转为百分数；
+-   `scales::label_pvalue()`将数字转为p值。
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base <- ggplot(toy, aes(big, const)) +
+  geom_point() +
+  labs(x = NULL, y = NULL) +
+  scale_x_continuous(breaks = NULL)
+
+base
+base + scale_y_continuous(labels = scales::label_percent())
+base + scale_y_continuous(labels = scales::label_dollar(prefix = "", suffix = "€")) # 默认前缀$
+```
+
+注意`breaks = NULL`和`labels = NULL`的差别：
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+base + scale_y_continuous(breaks = NULL)
+base + scale_y_continuous(labels = NULL)
+```
+
+#### Transformations
+
+每一个连续的标度都带有允许使用各种转换的`trans`参数。
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  scale_y_continuous(trans = "reciprocal") # y轴取倒数
+
+# x和y轴取10为底的对数
+ggplot(diamonds, aes(price, carat)) +
+  geom_bin2d() +
+  scale_x_continuous(trans = "log10") +
+  scale_y_continuous(trans = "log10")
+```
+
+可以使用`scales::trans_new()`构建转换，scales包同样提供了许多常见的转换：
+
+| Name                   | Transformer                  | Function $f(x)$         | Inverse $f^{-1}(x)$
+|------------------------|------------------------------|-------------------------|------------------------
+| `"asn"`                | `scales::asn_trans()`        | $\tanh^{-1}(x)$         | $\tanh(y)$
+| `"exp"`                | `scales::exp_trans()`        | $e ^ x$                 | $\log(y)$
+| `"identity"`           | `scales::identity_trans()`   | $x$                     | $y$
+| `"log"`                | `scales::log_trans()`        | $\log(x)$               | $e ^ y$
+| `"log10"`              | `scales::log10_trans()`      | $\log_{10}(x)$          | $10 ^ y$
+| `"log2"`               | `scales::log2_trans()`       | $\log_2(x)$             | $2 ^ y$
+| `"logit"`              | `scales::logit_trans()`      | $\log(\frac{x}{1 - x})$ | $\frac{1}{1 + e(y)}$
+| `"probit"`             | `scales::probit_trans()`     | $\Phi(x)$               | $\Phi^{-1}(y)$
+| `"reciprocal"`         | `scales::reciprocal_trans()` | $x^{-1}$                | $y^{-1}$
+| `"reverse"`            | `scales::reverse_trans()`    | $-x$                    | $-y$
+| `"sqrt"`               | `scales::scale_x_sqrt()`     | $x^{1/2}$               | $y ^ 2$
+
+当然，也可以手动进行这些转换，绘制的图形外观是一样的，但是刻度标签将有所差异。具体来讲，如果使用转换标度，刻度标签将展示原始的数据空间；如果手动转换数据，刻度标签将展示转换后的数据空间。
+
+```{r}
+#| layout-ncol: 2
+
+# 手动转换数据
+ggplot(mpg, aes(log10(displ), hwy)) +
+  geom_point()
+
+# 转换标度
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  scale_x_log10()
+```
+
+### 日期-时间型
 
 
 

@@ -75,6 +75,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -112,7 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script><script defer="" data-domain="https://shitao.quarto.pub/learn-r/" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="https://shitao.quarto.pub/learn-r/" src="https://plausible.io/js/plausible.js"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -231,8 +250,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#zooming-in" id="toc-zooming-in" class="nav-link" data-scroll-target="#zooming-in">Zooming in</a></li>
   <li><a href="#visual-range-expansion" id="toc-visual-range-expansion" class="nav-link" data-scroll-target="#visual-range-expansion">Visual range expansion</a></li>
   <li><a href="#breaks" id="toc-breaks" class="nav-link" data-scroll-target="#breaks">Breaks</a></li>
+  <li><a href="#minor-breaks" id="toc-minor-breaks" class="nav-link" data-scroll-target="#minor-breaks">Minor breaks</a></li>
+  <li><a href="#labels" id="toc-labels" class="nav-link" data-scroll-target="#labels">Labels</a></li>
+  <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
   </ul>
 </li>
+  <li><a href="#%E6%97%A5%E6%9C%9F-%E6%97%B6%E9%97%B4%E5%9E%8B" id="toc-日期-时间型" class="nav-link" data-scroll-target="#%E6%97%A5%E6%9C%9F-%E6%97%B6%E9%97%B4%E5%9E%8B"> <span class="header-section-number">2.1.2</span> 日期-时间型</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/vis-ggplot2-scales.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -280,13 +303,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="limits" class="level4"><h4 class="anchored" data-anchor-id="limits">Limits</h4>
 <p><code><a href="https://ggplot2.tidyverse.org/reference/lims.html">lims()</a></code>或<code>limits</code>参数可用于修改坐标轴范围，需要接受长度为2的数值型向量。如果只设置单侧范围，另一侧设置为<code>NA</code>。</p>
 <div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mpg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/dplyr/man/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1999</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mpg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1999</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mpg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/dplyr/man/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2008</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">mpg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2008</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">lims</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -342,7 +365,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section><section id="visual-range-expansion" class="level4"><h4 class="anchored" data-anchor-id="visual-range-expansion">Visual range expansion</h4>
-<div class="cell" data-layout-align="center" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-5_9f0f6b32ac5e924c0d7a70ab90b82030">
+<div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">waiting</span>, <span class="va">eruptions</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -352,16 +375,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span><span class="va">base</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html">expansion</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
-<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:33.3%"></p>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-5_f093e4d5f6e6575f12260f9a3f779406">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
-<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" style="width:33.3%"></p>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img"></p>
 </figure>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -402,9 +429,380 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><code>add</code>参数是在与数据变量相同的尺度上指定的，<code>mult</code>参数是相对于轴的范围指定的。</p>
 </section><section id="breaks" class="level4"><h4 class="anchored" data-anchor-id="breaks">Breaks</h4>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-7_1b3de8023ed944e213919af73042c5bb">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  const <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  up <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  txt <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,</span>
+<span>  big <span class="op">=</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1000</span>,</span>
+<span>  log <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">2000</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">toy</span></span>
+<span><span class="co">#&gt;   const up txt  big  log</span></span>
+<span><span class="co">#&gt; 1     1  1   a 1000    2</span></span>
+<span><span class="co">#&gt; 2     1  2   b 2000    5</span></span>
+<span><span class="co">#&gt; 3     1  3   c 3000   10</span></span>
+<span><span class="co">#&gt; 4     1  4   d 4000 2000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>通过向<code>breaks</code>参数传递数值，可手动设置断点。设置<code>breaks = NULL</code>移除断点和相关的刻度线。</p>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-8_b264ba7eef197b8d34cff17ea533bdfc">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">toy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">big</span>, <span class="va">const</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="va">base</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>需注意，手动设置断点会移动主要和次要网格线：</p>
+<div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">2000</span>, <span class="fl">4000</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1500</span>, <span class="fl">2000</span>, <span class="fl">4000</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-9_794527087bb8bdc1ac9f247e1f3d34c3">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>也可以向<code>breaks</code>传递函数，该函数应有一个指定标度范围的参数（长度为2的数值型向量），并且返回断点的数值型向量。scales包<span class="citation" data-cites="scales">(<a href="references.html#ref-scales" role="doc-biblioref">Wickham and Seidel 2022</a>)</span>提供了一些有用的工具：</p>
+<ul>
+<li>
+<code><a href="https://scales.r-lib.org/reference/breaks_extended.html">scales::breaks_extended()</a></code>为数值轴自动创建断点（ggplot2的标准方法）；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/breaks_log.html">scales::breaks_log()</a></code>为对数轴自动创建断点；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/breaks_pretty.html">scales::breaks_pretty()</a></code>为日期/时间创建断点；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/breaks_width.html">scales::breaks_width()</a></code>创建等距的断点。</li>
+</ul>
+<div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_width.html">breaks_width</a></span><span class="op">(</span><span class="fl">800</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_width.html">breaks_width</a></span><span class="op">(</span><span class="fl">800</span>, offset <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span> <span class="co"># 偏移</span></span>
+<span><span class="va">base</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_width.html">breaks_width</a></span><span class="op">(</span><span class="fl">800</span>, offset <span class="op">=</span> <span class="op">-</span><span class="fl">200</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-10_68f2f38d15d9d5d0c643b7af28c01ba3">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="minor-breaks" class="level4"><h4 class="anchored" data-anchor-id="minor-breaks">Minor breaks</h4>
+<p>次要断点（主网格线之间未标记的网格线）对于对数轴特别有用，因为它清晰地展示了刻度是非线性的。</p>
+<div class="cell" data-layout-align="center" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-11_53bfa019792676f1bd0396b832446b6e">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op"><a href="https://rdrr.io/r/base/outer.html">%o%</a></span> <span class="fl">10</span> <span class="op">^</span> <span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mb</span></span>
+<span><span class="co">#&gt;  [1]     1     2     3     4     5     6     7     8     9    10</span></span>
+<span><span class="co">#&gt; [11]    20    30    40    50    60    70    80    90   100   200</span></span>
+<span><span class="co">#&gt; [21]   300   400   500   600   700   800   900  1000  2000  3000</span></span>
+<span><span class="co">#&gt; [31]  4000  5000  6000  7000  8000  9000 10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">toy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">log</span>, <span class="va">const</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span>minor_breaks <span class="op">=</span> <span class="va">mb</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-12_0c03639e82cdd0a6e54b1bc369eaba8c">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="labels" class="level4"><h4 class="anchored" data-anchor-id="labels">Labels</h4>
+<div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">toy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">big</span>, <span class="va">const</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span></span>
+<span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">4000</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2k"</span>, <span class="st">"4k"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-13_7cba9b15c23f26a734328ca9c5034840">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>通常不需要手动设置<code>labels</code>参数，和<code>breaks</code>参数一样，scales包提供了有效的函数：</p>
+<ul>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_bytes.html">scales::label_bytes()</a></code>将数字转化为kb、mb等字节格式；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_number.html">scales::label_comma()</a></code>为数字添加逗号；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_dollar.html">scales::label_dollar()</a></code>将数字转为货币；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_ordinal.html">scales::label_ordinal()</a></code>将数字转为等级顺序；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_percent.html">scales::label_percent()</a></code>将数字转为百分数；</li>
+<li>
+<code><a href="https://scales.r-lib.org/reference/label_pvalue.html">scales::label_pvalue()</a></code>将数字转为p值。</li>
+</ul>
+<div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">toy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">big</span>, <span class="va">const</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html">label_dollar</a></span><span class="op">(</span>prefix <span class="op">=</span> <span class="st">""</span>, suffix <span class="op">=</span> <span class="st">"€"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 默认前缀$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-14_da39618eab97b9e4183e743a46d7ed35">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 2in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-14-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>注意<code>breaks = NULL</code>和<code>labels = NULL</code>的差别：</p>
+<div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="va">base</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-15_a51b2a21ebf267fd87316825f7ee0486">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="transformations" class="level4"><h4 class="anchored" data-anchor-id="transformations">Transformations</h4>
+<p>每一个连续的标度都带有允许使用各种转换的<code>trans</code>参数。</p>
+<div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"reciprocal"</span><span class="op">)</span> <span class="co"># y轴取倒数</span></span>
+<span></span>
+<span><span class="co"># x和y轴取10为底的对数</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">price</span>, <span class="va">carat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log10"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-16_da6813b2a4339bf8785b27640ae91269">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>可以使用<code><a href="https://scales.r-lib.org/reference/trans_new.html">scales::trans_new()</a></code>构建转换，scales包同样提供了许多常见的转换：</p>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 29%">
+<col style="width: 24%">
+<col style="width: 23%">
+</colgroup>
+<thead><tr class="header">
+<th>Name</th>
+<th>Transformer</th>
+<th>Function <span class="math inline">\(f(x)\)</span>
+</th>
+<th>Inverse <span class="math inline">\(f^{-1}(x)\)</span>
+</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>"asn"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/asn_trans.html">scales::asn_trans()</a></code></td>
+<td><span class="math inline">\(\tanh^{-1}(x)\)</span></td>
+<td><span class="math inline">\(\tanh(y)\)</span></td>
+</tr>
+<tr class="even">
+<td><code>"exp"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/exp_trans.html">scales::exp_trans()</a></code></td>
+<td><span class="math inline">\(e ^ x\)</span></td>
+<td><span class="math inline">\(\log(y)\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>"identity"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/identity_trans.html">scales::identity_trans()</a></code></td>
+<td><span class="math inline">\(x\)</span></td>
+<td><span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="even">
+<td><code>"log"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/log_trans.html">scales::log_trans()</a></code></td>
+<td><span class="math inline">\(\log(x)\)</span></td>
+<td><span class="math inline">\(e ^ y\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>"log10"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/log_trans.html">scales::log10_trans()</a></code></td>
+<td><span class="math inline">\(\log_{10}(x)\)</span></td>
+<td><span class="math inline">\(10 ^ y\)</span></td>
+</tr>
+<tr class="even">
+<td><code>"log2"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/log_trans.html">scales::log2_trans()</a></code></td>
+<td><span class="math inline">\(\log_2(x)\)</span></td>
+<td><span class="math inline">\(2 ^ y\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>"logit"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/probability_trans.html">scales::logit_trans()</a></code></td>
+<td><span class="math inline">\(\log(\frac{x}{1 - x})\)</span></td>
+<td><span class="math inline">\(\frac{1}{1 + e(y)}\)</span></td>
+</tr>
+<tr class="even">
+<td><code>"probit"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/probability_trans.html">scales::probit_trans()</a></code></td>
+<td><span class="math inline">\(\Phi(x)\)</span></td>
+<td><span class="math inline">\(\Phi^{-1}(y)\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>"reciprocal"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/reciprocal_trans.html">scales::reciprocal_trans()</a></code></td>
+<td><span class="math inline">\(x^{-1}\)</span></td>
+<td><span class="math inline">\(y^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td><code>"reverse"</code></td>
+<td><code><a href="https://scales.r-lib.org/reference/reverse_trans.html">scales::reverse_trans()</a></code></td>
+<td><span class="math inline">\(-x\)</span></td>
+<td><span class="math inline">\(-y\)</span></td>
+</tr>
+<tr class="odd">
+<td><code>"sqrt"</code></td>
+<td><code>scales::scale_x_sqrt()</code></td>
+<td><span class="math inline">\(x^{1/2}\)</span></td>
+<td><span class="math inline">\(y ^ 2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>当然，也可以手动进行这些转换，绘制的图形外观是一样的，但是刻度标签将有所差异。具体来讲，如果使用转换标度，刻度标签将展示原始的数据空间；如果手动转换数据，刻度标签将展示转换后的数据空间。</p>
+<div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 手动转换数据</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">displ</span><span class="op">)</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 转换标度</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-hash="vis-ggplot2-scales_cache/html/unnamed-chunk-17_154b5a562116d75af0a703b6e61161e8">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center" style="max-width: 3in">
+<figure class="figure"><p><img src="vis-ggplot2-scales_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="日期-时间型" class="level3" data-number="2.1.2"><h3 data-number="2.1.2" class="anchored" data-anchor-id="日期-时间型">
+<span class="header-section-number">2.1.2</span> 日期-时间型</h3>
 
 
-</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-scales" class="csl-entry" role="doc-biblioentry">
+Wickham, Hadley, and Dana Seidel. 2022. <span>“Scales: Scale Functions for Visualization.”</span> <a href="https://CRAN.R-project.org/package=scales">https://CRAN.R-project.org/package=scales</a>.
+</div>
+</div>
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

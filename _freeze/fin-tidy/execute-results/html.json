@@ -1,0 +1,14 @@
+{
+  "hash": "e3f7092a57a087a0fe3fc6704ebcdc49",
+  "result": {
+    "markdown": "# Tidy Finance with R\n\n\n::: {.cell}\n::: {.cell-output-display}\n::: callout-warning\n## 各位看客：\n*Learn-R* 仍在写作流程中。本章节正在进行写作和结构调整，可能出现混乱或不完整的情况。 \n:::\n:::\n:::\n\n\n原先的笔记在[这里](https://shitao5.github.io/tidy-finance/)，会迁移过来。\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

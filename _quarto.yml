@@ -4,7 +4,7 @@ project:
 bibliography: references.bib
 number-sections: true
 execute:
-  freeze: auto
+  freeze: true
 
 book:
   title: "Learn-R"
