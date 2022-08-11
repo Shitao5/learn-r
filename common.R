@@ -1,3 +1,5 @@
+Sys.setenv(LANG = "en")
+
 ## This script borrows from Hadley's adv-r & ggplot2
 
 knitr::opts_chunk$set(
