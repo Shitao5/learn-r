@@ -248,19 +248,19 @@ ggplot(diamonds, aes(price, carat)) +
 
 可以使用`scales::trans_new()`构建转换，scales包同样提供了许多常见的转换：
 
-| Name                   | Transformer                  | Function $f(x)$         | Inverse $f^{-1}(x)$
-|------------------------|------------------------------|-------------------------|------------------------
-| `"asn"`                | `scales::asn_trans()`        | $\tanh^{-1}(x)$         | $\tanh(y)$
-| `"exp"`                | `scales::exp_trans()`        | $e ^ x$                 | $\log(y)$
-| `"identity"`           | `scales::identity_trans()`   | $x$                     | $y$
-| `"log"`                | `scales::log_trans()`        | $\log(x)$               | $e ^ y$
-| `"log10"`              | `scales::log10_trans()`      | $\log_{10}(x)$          | $10 ^ y$
-| `"log2"`               | `scales::log2_trans()`       | $\log_2(x)$             | $2 ^ y$
-| `"logit"`              | `scales::logit_trans()`      | $\log(\frac{x}{1 - x})$ | $\frac{1}{1 + e(y)}$
-| `"probit"`             | `scales::probit_trans()`     | $\Phi(x)$               | $\Phi^{-1}(y)$
-| `"reciprocal"`         | `scales::reciprocal_trans()` | $x^{-1}$                | $y^{-1}$
-| `"reverse"`            | `scales::reverse_trans()`    | $-x$                    | $-y$
-| `"sqrt"`               | `scales::scale_x_sqrt()`     | $x^{1/2}$               | $y ^ 2$
+| Name           | Transformer                  | Function $f(x)$         | Inverse $f^{-1}(x)$  |
+|------------------|-------------------|------------------|------------------|
+| `"asn"`        | `scales::asn_trans()`        | $\tanh^{-1}(x)$         | $\tanh(y)$           |
+| `"exp"`        | `scales::exp_trans()`        | $e ^ x$                 | $\log(y)$            |
+| `"identity"`   | `scales::identity_trans()`   | $x$                     | $y$                  |
+| `"log"`        | `scales::log_trans()`        | $\log(x)$               | $e ^ y$              |
+| `"log10"`      | `scales::log10_trans()`      | $\log_{10}(x)$          | $10 ^ y$             |
+| `"log2"`       | `scales::log2_trans()`       | $\log_2(x)$             | $2 ^ y$              |
+| `"logit"`      | `scales::logit_trans()`      | $\log(\frac{x}{1 - x})$ | $\frac{1}{1 + e(y)}$ |
+| `"probit"`     | `scales::probit_trans()`     | $\Phi(x)$               | $\Phi^{-1}(y)$       |
+| `"reciprocal"` | `scales::reciprocal_trans()` | $x^{-1}$                | $y^{-1}$             |
+| `"reverse"`    | `scales::reverse_trans()`    | $-x$                    | $-y$                 |
+| `"sqrt"`       | `scales::scale_x_sqrt()`     | $x^{1/2}$               | $y ^ 2$              |
 
 当然，也可以手动进行这些转换，绘制的图形外观是一样的，但是刻度标签将有所差异。具体来讲，如果使用转换标度，刻度标签将展示原始的数据空间；如果手动转换数据，刻度标签将展示转换后的数据空间。
 
@@ -331,23 +331,23 @@ base + scale_y_date(date_breaks = "1 month", date_minor_breaks = "1 week")
 
 日期刻度标签使用`date_labels`参数传递格式化字符串更加便捷。比如，14/10/1979可以使用字符串`"%d%m%y"`展示。字符串列表如下：
 
-| String        | Meaning
-|:--------------|:-----------------------------------------
-| `%S`          | second (00-59)
-| `%M`          | minute (00-59)
-| `%l`          | hour, in 12-hour clock (1-12)
-| `%I`          | hour, in 12-hour clock (01-12)
-| `%p`          | am/pm
-| `%H`          | hour, in 24-hour clock (00-23)
-| `%a`          | day of week, abbreviated (Mon-Sun)
-| `%A`          | day of week, full (Monday-Sunday)
-| `%e`          | day of month (1-31)
-| `%d`          | day of month (01-31)
-| `%m`          | month, numeric (01-12)
-| `%b`          | month, abbreviated (Jan-Dec)
-| `%B`          | month, full (January-December)
-| `%y`          | year, without century (00-99)
-| `%Y`          | year, with century (0000-9999)
+| String | Meaning                            |
+|:-------|:-----------------------------------|
+| `%S`   | second (00-59)                     |
+| `%M`   | minute (00-59)                     |
+| `%l`   | hour, in 12-hour clock (1-12)      |
+| `%I`   | hour, in 12-hour clock (01-12)     |
+| `%p`   | am/pm                              |
+| `%H`   | hour, in 24-hour clock (00-23)     |
+| `%a`   | day of week, abbreviated (Mon-Sun) |
+| `%A`   | day of week, full (Monday-Sunday)  |
+| `%e`   | day of month (1-31)                |
+| `%d`   | day of month (01-31)               |
+| `%m`   | month, numeric (01-12)             |
+| `%b`   | month, abbreviated (Jan-Dec)       |
+| `%B`   | month, full (January-December)     |
+| `%y`   | year, without century (00-99)      |
+| `%Y`   | year, with century (0000-9999)     |
 
 一个常用场景是：当没有足够的空间来指定四位数的年份时，使用`%y`可以确保只显示最后两位数字。
 
@@ -386,3 +386,232 @@ base +
 这通常可以产生更清晰的图表：在上面的例子中，每个年份只被标示一次，而不是出现在每个标签中，减少了视觉上的混乱，使读者更容易看到每个年份的开始和结束。
 
 ### 离散型
+
+在内部，ggplot2将每个离散标度映射到整数值，然后在相应的坐标位置进行绘制。
+
+```{r}
+ggplot(mpg, aes(hwy, class)) +
+  geom_point() +
+  annotate("text", x = 5, y = 1:7, label = 1:7)
+```
+
+分类变量映射到整数值意味着其他宽度量可以被指定为分类范围的比例，在上面的例子中，我们可以指定在一半高度内的垂直抖动：
+
+```{r}
+ggplot(mpg, aes(hwy, class)) +
+  geom_jitter(width = 0, height = .25) +
+  annotate("text", x = 5, y = 1:7, label = 1:7)
+```
+
+同样的机制也应用于柱状图、箱型图的宽度：
+
+`r columns(2, 1)`
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(drv, hwy)) + geom_boxplot()
+ggplot(mpg, aes(drv, hwy)) + geom_boxplot(width = .4)
+```
+
+#### Limits, breaks, and labels
+
+尽管存在一些不同，大多数情况下，这些参数与数值型标度一致。比如离散型的`limits`不是通过端点来确定的，取而代之的是变量的一组允许的值。因此，离散值的`limits`应该是一个字符串向量，并按照它们出现的顺序绘制所有可能的值。
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base <- ggplot(toy, aes(const, txt)) +
+  geom_label(aes(label = txt)) +
+  scale_x_continuous(breaks = NULL) +
+  labs(x = NULL, y = NULL)
+
+base
+base + scale_y_discrete(limits = letters[1:5])
+base + scale_y_discrete(limits = c("d", "c", "a", "b"))
+```
+
+`breaks`参数基本没有变化，主要用于列举一组要现实在坐标轴标签上的值。`labels`参数多了一些额外的功能：可以选择使用命名向量设置特定的标签：
+
+`r columns(2)`
+
+```{r}
+#| layout-ncol: 2
+
+base + scale_y_discrete(breaks = c("b", "c"))
+base + scale_y_discrete(labels = c(c = "carrot", b = "banana"))
+```
+
+与其他标度一样，离散位置标度允许向`labels`参数传递函数。`scales::label_wrap()`函数可以将长标签分割为多行。
+
+#### Label positions
+
+在绘制分类数据时，经常需要以某种方式移动轴的标签，防止它们重叠。
+
+`r columns(1, 2/3)`
+
+```{r}
+base <- ggplot(mpg, aes(manufacturer, hwy)) + geom_boxplot()
+base
+```
+
+即使分配了大量的水平空间，轴的标签也会有相当程度的重叠。我们可以利用`guides()`函数进行控制，它的工作方式与 @sec-labs 中的labs()函数类似。两者都以不同美学的名称（如color、x、fill）为参数，并允许指定想要的值。对于位置美学，我们使用guide_axis()来告诉ggplot2我们想如何修改轴的标签。例如，我们可以设置guide_axis(n.dodge`= 3)`来告诉ggplot2躲避标签的位置，或者设置`guide_axis(rotate = 90)`来旋转它们。
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+base + guides(x = guide_axis(n.dodge = 3))
+base + guides(x = guide_axis(angle = 90))
+```
+
+与`labs()`是将`name`参数指定到一个或多个尺度的快捷方式一样，`guides()`函数也将`guide`参数指定为一个或多个尺度的快捷方式。下面的代码可以实现同样的结果：
+
+```{r}
+#| eval: false
+
+base + scale_x_discrete(guide = guide_axis(n.dodge = 3))
+base + scale_x_discrete(guide = guide_axis(angle = 90))
+```
+
+### Binned position scales
+
+离散位置标度的一个变种是分档标度，即把一个连续变量切成多个分档并绘制离散变量。下面的例子显示了如何使用`geom_bar()`与分档位置标度相结合来接近`geom_histogram()`的行为。
+
+`r columns(2, 1)`
+
+```{r}
+#| layout-ncol: 2
+
+ggplot(mpg, aes(hwy)) + geom_histogram(bins = 8)
+ggplot(mpg, aes(hwy)) + geom_bar() + scale_x_binned()
+```
+
+将该技术拓展，假设我们想用`geom_count()`来代替`geom_point()`，以展示每个位置的观测值的数量。`geom_count()`的优点是每个点的大小与每个位置的观测值的数量成比例，但是当数据连续变化时，效果并不理想。为此可以使用`scale_x_binned()`在数值传递给图形前将其分割。
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+base <- ggplot(mpg, aes(displ, hwy)) +
+  geom_count()
+
+base
+base + 
+  scale_x_binned(n.breaks = 15) +
+  scale_y_binned(n.breaks = 15)
+```
+
+## 颜色标签与图例
+
+### 连续颜色标度
+
+本节中使用的`scale_fill_*()`，都有一个对应的`scale_color_*()`与之对应。
+
+`r columns(3)`
+
+```{r}
+erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) +
+  scale_y_continuous(NULL, expand = c(0, 0)) +
+  theme(legend.position = "none")
+```
+
+#### 调色板
+
+viridis标度的设计在颜色和被还原为黑白时都是统一的，并且对有各种形式的色盲的人来说都是可以感知的。
+
+```{r}
+#| layout-ncol: 3
+
+erupt
+erupt + scale_fill_viridis_c()
+erupt + scale_fill_viridis_c(option = "magma")
+```
+
+大多数情况下，viridis标度会比ggplot2中内置的其他连续标度效果更好，但在某些情况下，还有其他选项也很有用。ggplot2内置的第二组连续颜色标度是由ColorBrewer标度派生出来的：`scale_fill_brewer()`将这些颜色作为离散调色板提供，而`scale_fill_distiller()`和`scale_fill_fermenter()`是连续和分档的类似物。
+
+```{r}
+#| layout-ncol: 3
+
+erupt + scale_fill_distiller()
+erupt + scale_fill_distiller(palette = "RdPu")
+erupt + scale_fill_distiller(palette = "YlOrBr")
+```
+
+还有许多其他软件包提供了有用的调色板。例如，scico包[@scico]提供了更多知觉上统一，适合于科学可视化的调色板：
+
+```{r}
+#| layout-ncol: 3
+
+erupt + scico::scale_fill_scico(palette = "bilbao") # 默认
+erupt + scico::scale_fill_scico(palette = "vik")
+erupt + scico::scale_fill_scico(palette = "lajolla")
+```
+
+由于R中存在大量的调色板包，提供一个通用的接口的paletteer包[@paletteer]特别有用:
+
+```{r}
+#| layout-ncol: 3
+
+erupt + paletteer::scale_fill_paletteer_c("viridis::plasma")
+erupt + paletteer::scale_fill_paletteer_c("scico::tokyo")
+erupt + paletteer::scale_fill_paletteer_c("gameofthrones::targaryen")
+```
+
+#### Robust recipes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

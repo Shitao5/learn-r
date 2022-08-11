@@ -3,8 +3,10 @@ project:
 
 bibliography: references.bib
 number-sections: true
+number-depth: 3
+toc-depth: 4
 execute:
-  freeze: true
+  freeze: false
 
 book:
   title: "Learn-R"
@@ -54,9 +56,6 @@ format:
     code-copy: hover
     code-link: true
     include-in-header: "plausible.html"
-    number-sections: true
-    number-depth: 3
-    toc-depth: 4
 
   # pdf:
   #   documentclass: scrreprt

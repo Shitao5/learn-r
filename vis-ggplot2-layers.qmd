@@ -561,11 +561,11 @@ ggraph(hs_graph, layout = "stress") +
   facet_nodes(~ group_spinglass())
 ```
 
-## 注释
+## 注释 
 
 从概念上讲，注释为绘图提供了元数据，它提供了关于数据的额外信息。
 
-### 图形和轴标题
+### 图形和轴标题 {#sec-labs}
 
 ```{r}
 ggplot(mpg, aes(displ, hwy)) +
