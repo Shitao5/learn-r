@@ -6,7 +6,7 @@ number-sections: true
 number-depth: 3
 toc-depth: 4
 execute:
-  freeze: false
+  freeze: true
 
 book:
   title: "Learn-R"
@@ -36,6 +36,10 @@ book:
         - vis-ggplot2-layers.qmd
         - vis-ggplot2-scales.qmd
         - vis-ggplot2-grammar.qmd
+
+    - part: Modeling
+      chapters:
+        - mod-tidy1.qmd
 
     - part: Shiny.qmd
       chapters:

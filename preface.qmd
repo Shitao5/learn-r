@@ -7,4 +7,4 @@ source("common.R")
 status("writing")
 ```
 
-本书内容包括数据可视化、金融。
+本书内容包括数据可视化、建模、Shiny、金融等。
