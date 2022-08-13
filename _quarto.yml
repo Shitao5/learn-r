@@ -5,8 +5,13 @@ bibliography: references.bib
 number-sections: true
 number-depth: 3
 toc-depth: 4
+crossref:
+  fig-title: 图
+  fig-prefix: 图
+  tbl-title: 表
+  tbl-prefix: 表
 execute:
-  freeze: true
+  freeze: false
 
 book:
   title: "Learn-R"
