@@ -75,6 +75,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -248,7 +267,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li>
 <a href="#%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80" id="toc-模型基础" class="nav-link" data-scroll-target="#%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80"> <span class="header-section-number">4.2</span> 模型基础</a>
   <ul class="collapse">
-<li><a href="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90eda" id="toc-探索性数据分析eda" class="nav-link" data-scroll-target="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90eda"> <span class="header-section-number">4.2.1</span> 探索性数据分析（EDA）</a></li>
+<li><a href="#the-ames-housing-data" id="toc-the-ames-housing-data" class="nav-link" data-scroll-target="#the-ames-housing-data"> <span class="header-section-number">4.2.1</span> The Ames Housing Data</a></li>
+  <li>
+<a href="#spending-our-data" id="toc-spending-our-data" class="nav-link" data-scroll-target="#spending-our-data"> <span class="header-section-number">4.2.2</span> Spending our Data</a>
+  <ul class="collapse">
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2" id="toc-数据分割" class="nav-link" data-scroll-target="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2">数据分割</a></li>
+  <li><a href="#%E9%AA%8C%E8%AF%81%E9%9B%86validation-sets" id="toc-验证集validation-sets" class="nav-link" data-scroll-target="#%E9%AA%8C%E8%AF%81%E9%9B%86validation-sets">验证集（validation sets）</a></li>
+  <li><a href="#%E5%85%B6%E4%BB%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9" id="toc-其他注意事项" class="nav-link" data-scroll-target="#%E5%85%B6%E4%BB%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">其他注意事项</a></li>
+  </ul>
+</li>
+  <li><a href="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B" id="toc-用parsnip拟合模型" class="nav-link" data-scroll-target="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B"> <span class="header-section-number">4.2.3</span> 用parsnip拟合模型</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/mod-tidy1.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -327,8 +355,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>探索性数据分析对建立高质量的模型至关重要。</p>
 </section></section><section id="模型基础" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="模型基础">
 <span class="header-section-number">4.2</span> 模型基础</h2>
-<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-3_1bf3eaabea98103baf95865938e35f61">
+<section id="the-ames-housing-data" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="the-ames-housing-data">
+<span class="header-section-number">4.2.1</span> The Ames Housing Data</h3>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-3_3a850ebf34a7e437c50d02364d8ea33d">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -341,8 +372,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>销售价格</li>
 </ul>
 <p>我们根据掌握的信息，预测房子的销售价格。</p>
-<section id="探索性数据分析eda" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="探索性数据分析eda">
-<span class="header-section-number">4.2.1</span> 探索性数据分析（EDA）</h3>
 <div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-ames-price_dc630158787fb769bb2eccd6da498a35">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ames</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -354,11 +383,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>数据是右偏的，便宜的房子比贵的房子数量多。售价中位数是160,000，美元，最贵的房屋为755,000美元。对这样的结果建模时，应该进行对数转换，这样就没有预测房屋售价为负数的情况，也可以防止预测售价昂贵的房子对模型产生影响。另外，从统计学的角度来看，对数转换也可以稳定方差，使推论更加合理。</p>
-<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-ames-price-log10_3d500c39e9fd5223aaade057cf522936">
+<p>数据是右偏的，便宜的房子比贵的房子数量多。售价中位数是160,000美元，最贵的房屋为755,000美元。对这样的结果建模时，应该进行对数转换，这样就没有预测房屋售价为负数的情况，也可以防止预测售价昂贵的房子对模型产生影响。另外，从统计学的角度来看，对数转换也可以稳定方差，使推论更加合理。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-ames-price-log10_b45511b5c94eb9ed77bcfa3f33dc5f57">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ames</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"售价对数（10为底）"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-ames-price-log10" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="mod-tidy1_files/figure-html/fig-ames-price-log10-1.png" class="img-fluid figure-img" width="672"></p>
@@ -383,8 +413,64 @@ Note
 <div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-6_c9ea23d5351d704e9293aadd120b3073">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section><section id="spending-our-data" class="level3" data-number="4.2.2"><h3 data-number="4.2.2" class="anchored" data-anchor-id="spending-our-data">
+<span class="header-section-number">4.2.2</span> Spending our Data</h3>
+<section id="数据分割" class="level4"><h4 class="anchored" data-anchor-id="数据分割">数据分割</h4>
+<p>在项目的开始，通常有一个的有限数据集，可以把它看成是可用的数据预算。如何将这数据应用于不同的步骤和任务？数据支出的想法是建模时一个重要考虑因素，尤其是它与经验验证有关。</p>
+<p>当数据重复用于多个任务，而不是从谨慎地从数据预算中支出时，某些风险就会增加，比如加重偏差的风险或方法错误带来的复合效应。</p>
+<p>当有大量的数据可用时，明智的策略是将特定的数据子集分配给不同的任务，而不是将尽可能多的数据（甚至全部）只分配给模型参数估计。 如果最初可用的数据并不庞大，那么”花费”或分配数据时就会有一些重叠，一个坚实的数据支出方法十分重要。</p>
+<p>如何进行数据分割取决于研究背景。假设我们把80%的数据分配给训练集，剩下的20%用于测试。最常见的方法是使用简单的随机抽样。rsample包<span class="citation" data-cites="rsample">(<a href="references.html#ref-rsample" role="doc-biblioref">Silge et al. 2022</a>)</span>包含可以进行数据分割的工具，函数<code>initial_split()</code>就是为此目的而创建的：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-7_014c7a7ef163ca5402dece0aa3febd8f">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">501</span><span class="op">)</span> <span class="co"># 设置随机数流，以便结果的可重复</span></span>
+<span></span>
+<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+<span><span class="va">ames_split</span></span>
+<span><span class="co">#&gt; &lt;Training/Testing/Total&gt;</span></span>
+<span><span class="co">#&gt; &lt;2344/586/2930&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>ames_split</code>是一个<code>rsplit</code>对象，只包含划分信息，为了得到数据集，需进行下一步操作：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-8_af00481741829878c242476c972f8891">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span> <span class="co"># 训练集</span></span>
+<span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span> <span class="co"># 测试集</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>简单的随机抽样在大多数情况下是合适的，但也存在例外。 当存在巨大的分类不平衡时，一个类的出现频率远低于另一个。这时候使用简单的随机抽样可能将不经常出现的样本不成比例地分配到训练或测试集中。</p>
+<p>为了避免这种情况，可以使用分层抽样。在每个类中分别进行训练/测试集的分割，然后将子样本合并到整个训练/测试集中。对于回归问题，结果数据可以被人为地划分为四分位数，然后进行四次分层抽样。这是保持训练集和测试集之间结果分布相似的有效办法。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-quartiles_0d27e185f6fd2b7635b04911b914747d">
+<div class="cell-output-display">
+<div id="fig-quartiles" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="mod-tidy1_files/figure-html/fig-quartiles-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">图 4.4: Ames市lowa的房屋售价对数分布，虚线为四分位数</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-quartiles">图&nbsp;<span>4.4</span></a> 中的三条竖线（四分位数）将数据集分成四份，分层随机抽样将在每个子集中进行80/20的分割，然后将结果汇集起来。通过<code>initial_split()</code>中的<code>strata</code>参数实现：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-10_af8ee38c29ce42880049aa7f8c12d37f">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
+<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">.8</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
+<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>只有一列可以用于分层，分层抽样的弊端很小。</p>
+<p>当数据有时间成分时（比如时间序列数据），随机抽样不是最好的选择。这种情况下，常见的做法是使用最近的数据作为测试集。 rsample包的<code>initial_time_split()</code>函数不使用随机抽样，其<code>prop</code>参数控制多少比例的数据被用作训练集。该函数假定数据已按照恰当的顺序预先排序了。</p>
+</section><section id="验证集validation-sets" class="level4"><h4 class="anchored" data-anchor-id="验证集validation-sets">验证集（validation sets）</h4>
+<p>在数据分割时，我们指出测试集是用来评估最终模型性能的数据。这就有一个问题：“如果在测试集之前不测量性能，我们怎么才能知道什么是最好的？”</p>
+<p>验证集经常作为这个问题的答案，尤其是是在神经网络和深度学习的文献中。神经网络发展早期，研究人员意识到，通过重新预测训练集样本来衡量性能，会使结果过于乐观（明显是不现实的）。这导致了模型的过度拟合，也就是说，它们在训练集上的表现非常好，但在测试集上的表现却很差。</p>
+<p>为了解决这个问题，一小部分验证集的数据被保留下来，用来衡量网络训练时的表现。一旦验证集的错误率开始上升，训练就会被停止。换句话说，验证集是一种手段，可以粗略了解模型在测试集之前的表现如何。</p>
+<p>验证集是训练集的一个子集，还是数据初始分割时的第三种分配，主要取决于语义。</p>
+</section><section id="其他注意事项" class="level4"><h4 class="anchored" data-anchor-id="其他注意事项">其他注意事项</h4>
+<p>首先，将测试集与任何模型构建活动隔离开来至关重要。当训练集以外的数据被用于建模过程时，就会出现信息泄露的问题。</p>
+<p>例如，在机器学习比赛中，可能提供没有真实值的测试集数据，以对模型进行评分和排名。一个潜在的提高分数的方法是使用与测试集值最相似的训练集来拟合模型。虽然测试集并不直接用于拟合模型，但它仍然有很大的影响。一般来说，这种技术是非常有问题的，因为它降低了模型的泛化误差，以优化特定数据集上的性能。在训练过程中，有一些更微妙的方法可以使用测试集数据。将训练数据保存在与测试集分开的数据框中，以确保不会意外发生信息泄露。</p>
+<p>其次，对训练集进行子采样的技术可以缓解特定的问题（例如，类不平衡）。这是一种有效且常见的技术，它故意使训练集数据与数据来源的群体发生分歧。测试集反映模型在野外遇到的情况至关重要；换句话说，测试集应该总是赋予模型新数据。</p>
+</section></section><section id="用parsnip拟合模型" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="用parsnip拟合模型">
+<span class="header-section-number">4.2.3</span> 用parsnip拟合模型</h3>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-rsample" class="csl-entry" role="doc-biblioentry">
+Silge, Julia, Fanny Chow, Max Kuhn, and Hadley Wickham. 2022. <span>“Rsample: General Resampling Infrastructure.”</span> <a href="https://CRAN.R-project.org/package=rsample">https://CRAN.R-project.org/package=rsample</a>.
+</div>
+</div>
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
