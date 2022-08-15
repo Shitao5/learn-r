@@ -517,8 +517,8 @@ base +
 ```{r}
 erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
   geom_raster() +
-  scale_x_continuous(NULL, expand = c(0, 0)) +
-  scale_y_continuous(NULL, expand = c(0, 0)) +
+  scale_x_continuous(NULL, expand = c(0, 0)) + 
+  scale_y_continuous(NULL, expand = c(0, 0)) + 
   theme(legend.position = "none")
 ```
 
@@ -566,22 +566,119 @@ erupt + paletteer::scale_fill_paletteer_c("gameofthrones::targaryen")
 
 #### Robust recipes
 
+`scale_fill_continuous()`默认使用了`scale_fill_gradient()`。梯度标度使用了插值：
 
+```{r}
+#| layout-ncol: 3
 
+erupt + scale_fill_gradient(low = "grey", high = "brown")
+erupt + 
+  scale_fill_gradient2(
+    low = "grey",
+    mid = "white",
+    high = "brown",
+    midpoint = .02
+  )
+erupt + scale_fill_gradientn(colors = terrain.colors(7))
+```
 
+创造好的调色板需要谨慎。一般来说，对于一个两点式的渐变色标，你想传达d 是数值是按顺序排列的，所以你想保持色相不变，而改变色度和亮度。Munsell颜色系统提供了基于色相、色度和亮度的简单方法来指定颜色，在这方面很有用。munsell包[@munsell]提供了对Munsell颜色的简单访问，然后可以用它来指定一个渐变色标：
 
+`r columns(2, 1)`
 
+```{r}
+#| layout-ncol: 2
 
+munsell::hue_slice("5P") +
+  annotate(geom = "segment", 
+           x = c(7, 7), y = c(1, 10),
+           xend = c(7, 7), yend = c(2, 9),
+           arrow = arrow(length = unit(2, "mm"))
+           )
 
+# 组成标度
+erupt + scale_fill_gradient(
+  low = munsell::mnsl("5P 2/12"),
+  high = munsell::mnsl("5P 7/12")
+)
+```
 
+#### 缺失值
 
+连续色标利用`na.value`参数控制缺失值（包括超出色标限制范围的值）的颜色。默认情况为灰色，当使用彩色比例尺时，它会很突出。可以设置`na.value = NA`使缺失的数值不可见；或者选择一个特定的颜色。
 
+`r columns(3, 2/3)`
 
+```{r}
+#| layout-ncol: 3
 
+df <- data.frame(x = 1, y = 1:5, z = c(1, 3, 2, NA, 5))
 
+base <- ggplot(df, aes(x, y )) +
+  geom_tile(aes(fill = z), size = 5) +
+  labs(x = NULL, y = NULL) +
+  scale_x_continuous(labels = NULL)
 
+base
+base + scale_fill_gradient(na.value = NA)
+base + scale_fill_gradient(na.value = "yellow")
+```
 
+#### Limits, breaks, and labels
 
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+base <- ggplot(toy, aes(up, up, fill = big)) +
+  geom_tile() +
+  labs(x = NULL, y = NULL)
+
+base
+base + scale_fill_continuous(limits = c(0, 10000))
+```
+
+```{r}
+#| layout-ncol: 2
+
+base + scale_fill_continuous(breaks = c(1000, 2000, 4000))
+base + scale_fill_continuous(labels = scales::label_dollar())
+```
+
+#### Legends
+
+每个刻度都与一个指南（guide）关联，以显示美学和数据之间的关系。对于位置标尺，轴起到了这个作用；对于彩色刻度，这个作用由图例来扮演，图例可以在指南功能的帮助下进行定制。对于连续色标，默认图例采用“色条”的形式，显示连续的颜色梯度。
+
+图例的外观可以用`guide_colourbar()`来控制。这个函数有许多参数，允许对图例进行精准控制。最重要的参数说明如下:
+
+- `reverse`：反向翻转色条，将最小值放在顶部。
+- `barwidth`和`barheight`指定色条的大小。使用网格单位，例如`unit(1, "cm")`。
+- `direction`指定guide的方向，`"horizontal"`或者`"vertical"`。
+
+`r columns(3)`
+
+```{r}
+#| layout-ncol: 3
+
+base <- ggplot(mpg, aes(cyl, displ, color = hwy)) +
+  geom_point(size = 2)
+
+base + guides(color = guide_colorbar(reverse = TRUE))
+base + guides(color = guide_colorbar(barheight = unit(2, "cm")))
+base + guides(color = guide_colorbar(direction = "horizontal"))
+```
+
+下面两种写法的结果是一样的：
+
+`r columns(2, 2/3)`
+
+```{r}
+#| layout-ncol: 2
+
+base + guides(color = guide_colorbar(reverse = TRUE))
+base + scale_color_continuous(guide = guide_colorbar(reverse = TRUE))
+```
 
 
 

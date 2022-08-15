@@ -132,8 +132,7 @@ ames_train <- training(ames_split) # 训练集
 ames_test <- testing(ames_split) # 测试集
 ```
 
-简单的随机抽样在大多数情况下是合适的，但也存在例外。
-当存在巨大的分类不平衡时，一个类的出现频率远低于另一个。这时候使用简单的随机抽样可能将不经常出现的样本不成比例地分配到训练或测试集中。
+简单的随机抽样在大多数情况下是合适的，但也存在例外。 当存在巨大的分类不平衡时，一个类的出现频率远低于另一个。这时候使用简单的随机抽样可能将不经常出现的样本不成比例地分配到训练或测试集中。
 
 为了避免这种情况，可以使用分层抽样。在每个类中分别进行训练/测试集的分割，然后将子样本合并到整个训练/测试集中。对于回归问题，结果数据可以被人为地划分为四分位数，然后进行四次分层抽样。这是保持训练集和测试集之间结果分布相似的有效办法。
 
@@ -171,12 +170,11 @@ ames_test <- testing(ames_split)
 
 只有一列可以用于分层，分层抽样的弊端很小。
 
-当数据有时间成分时（比如时间序列数据），随机抽样不是最好的选择。这种情况下，常见的做法是使用最近的数据作为测试集。
-rsample包的`initial_time_split()`函数不使用随机抽样，其`prop`参数控制多少比例的数据被用作训练集。该函数假定数据已按照恰当的顺序预先排序了。
+当数据有时间成分时（比如时间序列数据），随机抽样不是最好的选择。这种情况下，常见的做法是使用最近的数据作为测试集。 rsample包的`initial_time_split()`函数不使用随机抽样，其`prop`参数控制多少比例的数据被用作训练集。该函数假定数据已按照恰当的顺序预先排序了。
 
 #### 验证集（validation sets）
 
-在数据分割时，我们指出测试集是用来评估最终模型性能的数据。这就有一个问题：“如果在测试集之前不测量性能，我们怎么才能知道什么是最好的？”
+在数据分割时，我们指出测试集是用来评估最终模型性能的数据。这就有一个问题："如果在测试集之前不测量性能，我们怎么才能知道什么是最好的？"
 
 验证集经常作为这个问题的答案，尤其是是在神经网络和深度学习的文献中。神经网络发展早期，研究人员意识到，通过重新预测训练集样本来衡量性能，会使结果过于乐观（明显是不现实的）。这导致了模型的过度拟合，也就是说，它们在训练集上的表现非常好，但在测试集上的表现却很差。
 
@@ -194,12 +192,104 @@ rsample包的`initial_time_split()`函数不使用随机抽样，其`prop`参数
 
 ### 用parsnip拟合模型
 
+对于tidymodels来说，指定模型的方法更加统一：
 
+1.  根据数学结构指定模型的类型（例如，线性回归、随机森林、KNN等）。
 
+2.  指定拟合模型的引擎。大多数情况下是指定应该使用的软件包，如Stan或glmnet。这些包本身就是模型，parsnip为使用这些包作为建模的引擎提供一致的接口。
 
+3.  在需要时声明模型的模式。模式反映了预测结果的类型。对于数值型结果，模式是回归；对于定性结果，模式是分类。如果一个模型算法只能处理一种类型的预测结果（如线性回归）时，模式已经设定。
 
+这些指定是在没有参考数据的情况下建立的：
 
+```{r}
+linear_reg() %>% set_engine("lm")
+linear_reg() %>% set_engine("glmnet")
+linear_reg() %>% set_engine("stan")
+```
 
+一旦指定了模型的细节，就可以用`fit()`函数（使用公式）或`fit_xy()`函数（数据已被预处理）来进行模型估计。
 
+使用`translate()`函数可以查看parsnip转换代码的细节：
 
+```{r}
+linear_reg() %>% set_engine("lm") %>% translate()
+```
 
+`missing_arg()`是一个占位符，表示尚未提供的数据。
+
+尝试建立仅用经纬度来预测房屋售价的模型：
+
+```{r}
+lm_model <- linear_reg() %>% set_engine("lm")
+
+lm_form_fit <- 
+  lm_model %>% 
+  fit(Sale_Price ~ Longitude + Latitude, data = ames_train)
+
+lm_xy_fit <- 
+  lm_model %>% 
+  fit_xy(
+  x = ames_train %>% select(Longitude, Latitude),
+  y = ames_train$Sale_Price
+)
+
+lm_form_fit
+lm_xy_fit
+```
+
+模型被创建和拟合后，parsnip模型对象中储存了包括拟合模型等信息，通过`extract_fit_engine()`函数提取`fit`元素中的信息：
+
+```{r}
+lm_form_fit %>% extract_fit_engine()
+```
+
+::: call-important
+千万不要把parsnip模型的`fit`元素传递给模型预测函数，应该使用`predict(lm_form_fit)`而不是`predict(lm_form_fit$fit)`。如果数据被以任何方式预处理过，就会产生不正确的预测结果（有时还没有错误）。底层模型的预测函数不知道在运行模型之前是否对数据进行了任何转换。
+:::
+
+broom包可以将许多类型的模型对象转换为整洁的结构：
+
+```{r}
+tidy(lm_form_fit)
+```
+
+利用parsnip的`predict()`进行预测：
+
+```{r}
+ames_test_small <- ames_test %>% slice(1:5) # 取测试集的前5行
+predict(lm_form_fit, new_data = ames_test_small)
+```
+
+预测结果行数与用于预测的数据行数相同。此外，预测结果中的列名前带`.`，用于放置合并数据时出现重复列名。这使得合并数据更加容易：
+
+```{r}
+ames_test_small %>% 
+  select(Sale_Price) %>% 
+  bind_cols(predict(lm_form_fit, ames_test_small)) %>% 
+  bind_cols(predict(lm_form_fit, ames_test_small, type = "pred_int")) # 95%置信区间
+```
+
+| type value | column name(s)           |
+|------------|--------------------------|
+| numeric    | .pred                    |
+| class      | .pred_class              |
+| prob       | .pred\_{class levels}    |
+| conf_int   | .pred_lower, .pred_upper |
+| pred_int   | .pred_lower, .pred_upper |
+
+: 预测类型和对应列名 {#tbl-column-names}
+
+所有可用于parsnip的模型列表（横跨CRAN上的包）可以在<https://www.tidymodels.org/find/>找到。
+
+parsnip提供了一个RStudio插件来帮助编写模型，或者运行代码来打开：
+
+```{r}
+#| eval: false
+
+parsnip_addin()
+```
+
+这将在RStudio IDE的Viewer面板上打开一个窗口，其中有每个模型模式的可能模型列表，这些可以被写入源代码面板。该模型列表包括来自parsnip和CRAN上与parsnip相邻的包模型。
+
+### 模型工作流程

@@ -277,6 +277,7 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B" id="toc-用parsnip拟合模型" class="nav-link" data-scroll-target="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B"> <span class="header-section-number">4.2.3</span> 用parsnip拟合模型</a></li>
+  <li><a href="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B" id="toc-模型工作流程" class="nav-link" data-scroll-target="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"> <span class="header-section-number">4.2.4</span> 模型工作流程</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/mod-tidy1.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -464,6 +465,166 @@ Note
 <p>其次，对训练集进行子采样的技术可以缓解特定的问题（例如，类不平衡）。这是一种有效且常见的技术，它故意使训练集数据与数据来源的群体发生分歧。测试集反映模型在野外遇到的情况至关重要；换句话说，测试集应该总是赋予模型新数据。</p>
 </section></section><section id="用parsnip拟合模型" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="用parsnip拟合模型">
 <span class="header-section-number">4.2.3</span> 用parsnip拟合模型</h3>
+<p>对于tidymodels来说，指定模型的方法更加统一：</p>
+<ol type="1">
+<li><p>根据数学结构指定模型的类型（例如，线性回归、随机森林、KNN等）。</p></li>
+<li><p>指定拟合模型的引擎。大多数情况下是指定应该使用的软件包，如Stan或glmnet。这些包本身就是模型，parsnip为使用这些包作为建模的引擎提供一致的接口。</p></li>
+<li><p>在需要时声明模型的模式。模式反映了预测结果的类型。对于数值型结果，模式是回归；对于定性结果，模式是分类。如果一个模型算法只能处理一种类型的预测结果（如线性回归）时，模式已经设定。</p></li>
+</ol>
+<p>这些指定是在没有参考数据的情况下建立的：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-11_cf303dda19f174d609ee091ef8b35a51">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: glmnet</span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"stan"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: stan</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>一旦指定了模型的细节，就可以用<code>fit()</code>函数（使用公式）或<code>fit_xy()</code>函数（数据已被预处理）来进行模型估计。</p>
+<p>使用<code>translate()</code>函数可以查看parsnip转换代码的细节：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-12_5372e422e15f44f062f2852c1da902f3">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model fit template:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = missing_arg(), data = missing_arg(), weights = missing_arg())</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>missing_arg()</code>是一个占位符，表示尚未提供的数据。</p>
+<p>尝试建立仅用经纬度来预测房屋售价的模型：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-13_1630b6f3f36a38739d463c23f0a30d89">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_model</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_form_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_model</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_xy_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_model</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit_xy</span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">ames_train</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">ames_train</span><span class="op">$</span><span class="va">Sale_Price</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_form_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span>
+<span><span class="va">lm_xy_fit</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>模型被创建和拟合后，parsnip模型对象中储存了包括拟合模型等信息，通过<code>extract_fit_engine()</code>函数提取<code>fit</code>元素中的信息：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-14_cb7ccd2b41c05f6da3443fb17608edc2">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="call-important">
+<p>千万不要把parsnip模型的<code>fit</code>元素传递给模型预测函数，应该使用<code>predict(lm_form_fit)</code>而不是<code>predict(lm_form_fit$fit)</code>。如果数据被以任何方式预处理过，就会产生不正确的预测结果（有时还没有错误）。底层模型的预测函数不知道在运行模型之前是否对数据进行了任何转换。</p>
+</div>
+<p>broom包可以将许多类型的模型对象转换为整洁的结构：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-15_d419506bc5e3c0217f9fd3338961ee90">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tidy</span><span class="op">(</span><span class="va">lm_form_fit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 (Intercept)  -303.      14.4       -21.0 3.64e-90</span></span>
+<span><span class="co">#&gt; 2 Longitude      -2.07     0.129     -16.1 1.40e-55</span></span>
+<span><span class="co">#&gt; 3 Latitude        2.71     0.180      15.0 9.29e-49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>利用parsnip的<code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>进行预测：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-16_b184c5c88a3844d62fc703d604d96ba2">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_small</span> <span class="op">&lt;-</span> <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="co"># 取测试集的前5行</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, new_data <span class="op">=</span> <span class="va">ames_test_small</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 1</span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  5.22</span></span>
+<span><span class="co">#&gt; 2  5.21</span></span>
+<span><span class="co">#&gt; 3  5.28</span></span>
+<span><span class="co">#&gt; 4  5.27</span></span>
+<span><span class="co">#&gt; 5  5.28</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>预测结果行数与用于预测的数据行数相同。此外，预测结果中的列名前带<code>.</code>，用于放置合并数据时出现重复列名。这使得合并数据更加容易：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-17_f7ea8c6f01433b47aab2b599ee4fe058">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_small</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, <span class="va">ames_test_small</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, <span class="va">ames_test_small</span>, type <span class="op">=</span> <span class="st">"pred_int"</span><span class="op">)</span><span class="op">)</span> <span class="co"># 95%置信区间</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span><span class="co">#&gt;   Sale_Price .pred .pred_lower .pred_upper</span></span>
+<span><span class="co">#&gt;        &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1       5.02  5.22        4.91        5.54</span></span>
+<span><span class="co">#&gt; 2       5.39  5.21        4.90        5.53</span></span>
+<span><span class="co">#&gt; 3       5.28  5.28        4.97        5.60</span></span>
+<span><span class="co">#&gt; 4       5.28  5.27        4.96        5.59</span></span>
+<span><span class="co">#&gt; 5       5.28  5.28        4.97        5.60</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tbl-column-names" class="anchored">
+<table class="table">
+<caption>表 4.1: 预测类型和对应列名</caption>
+<thead><tr class="header">
+<th>type value</th>
+<th>column name(s)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>numeric</td>
+<td>.pred</td>
+</tr>
+<tr class="even">
+<td>class</td>
+<td>.pred_class</td>
+</tr>
+<tr class="odd">
+<td>prob</td>
+<td>.pred_{class levels}</td>
+</tr>
+<tr class="even">
+<td>conf_int</td>
+<td>.pred_lower, .pred_upper</td>
+</tr>
+<tr class="odd">
+<td>pred_int</td>
+<td>.pred_lower, .pred_upper</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所有可用于parsnip的模型列表（横跨CRAN上的包）可以在<a href="https://www.tidymodels.org/find/" class="uri">https://www.tidymodels.org/find/</a>找到。</p>
+<p>parsnip提供了一个RStudio插件来帮助编写模型，或者运行代码来打开：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-18_02ac102fc2368a2f14be401c2680c3ac">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parsnip_addin</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这将在RStudio IDE的Viewer面板上打开一个窗口，其中有每个模型模式的可能模型列表，这些可以被写入源代码面板。该模型列表包括来自parsnip和CRAN上与parsnip相邻的包模型。</p>
+</section><section id="模型工作流程" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="模型工作流程">
+<span class="header-section-number">4.2.4</span> 模型工作流程</h3>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
