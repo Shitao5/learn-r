@@ -292,4 +292,212 @@ parsnip_addin()
 
 这将在RStudio IDE的Viewer面板上打开一个窗口，其中有每个模型模式的可能模型列表，这些可以被写入源代码面板。该模型列表包括来自parsnip和CRAN上与parsnip相邻的包模型。
 
-### 模型工作流程
+### 模型工作流
+
+#### 模型的起始与结束
+
+重要的是关注更广泛的建模过程（modeling process），而不仅仅是拟合估计参数的特定模型。
+更广泛的过程包括任何预处理步骤、模型拟合本身，以及潜在的后处理活动。
+本书把这个更全面的概念称为**模型工作流**（model workflow）并强调如何处理其所有组成部分以产生最终的模型方程。
+
+将数据分析部分捆绑在一起的另一个原因是：未来的章节将展示如何准确测量性能，以及如何优化结构参数（即模型调整）。主张使用重采样方法正确量化训练集上的模型性能，为了正确做到这一点，分析中没有任何数据驱动的部分应该被排除在验证之外，工作流必须包括所有重要的估计步骤。
+
+例如， @fig-bad-workflow 展示了不正确的主成分分析（PCA）流程，它将PCA的预处理步骤排除在模型工作流之外。
+这里的错误是，尽管PCA做了大量的计算来产生主成分，但它的操作被假定为没有与之相关的不确定性，PCA成分被视为已知的。如果不包括在模型工作流程中，PCA的效果就不能被充分衡量。
+
+```{r}
+#| echo: false
+#| label: fig-bad-workflow
+#| fig-cap: 不正确的心智模式：数据分析中模型估计发生位置
+
+knitr::include_graphics("images/mod-tidy/bad-workflow.svg")
+```
+
+正确的方法如 @fig-proper-workflow 所示：
+
+```{r}
+#| echo: false
+#| label: fig-proper-workflow
+#| fig-cap: 正确的心智模式：数据分析中模型估计发生位置
+
+knitr::include_graphics("images/mod-tidy/proper-workflow.svg")
+```
+
+这样一来，PCA预处理被认为是建模过程的一部分。
+
+#### 工作流基本操作
+
+workflows包可以将模型和预处理对象绑定：
+
+```{r}
+lm_model <- 
+  linear_reg() %>% 
+  set_engine("lm")
+
+lm_wflow <- 
+  workflow() %>% 
+  add_model(lm_model)
+
+lm_wflow
+```
+
+注意，我们还没有指定这个工作流应该如何预处理数据：`Preprocessor: None`。
+如果我们的模型非常简单，可以用一个标准的R公式作为预处理器：
+
+```{r}
+lm_wflow <- 
+  lm_wflow %>% 
+  add_formula(Sale_Price ~ Longitude + Latitude)
+
+lm_wflow
+```
+
+工作流用`fit()` 创建模型：
+
+```{r}
+lm_fit <- fit(lm_wflow, ames_train)
+lm_fit
+```
+
+利用`predict()`将拟合的工作流用于预测：
+
+```{r}
+predict(lm_fit, ames_test[1:3, ])
+```
+
+模型和预处理程序都可以被删除或更新。
+
+```{r}
+lm_fit %>% update_formula(Sale_Price ~ Longitude)
+```
+
+请注意，在这个新的对象中，输出显示之前的拟合模型被删除，因为新的公式与之前的模型拟合不一致。
+
+#### 向`workflow()`添加原始变量
+
+还有一个向模型传递数据的接口，即`add_variables()`函数，该函数有两个主要参数：`outcomes`和`predictors`。这些参数使用类似dplyr的语法来选择变量，用`c()`来捕获多个选择器。
+
+```{r}
+lm_wflow <- 
+  lm_wflow %>% 
+  remove_formula() %>% 
+  add_variables(outcomes = Sale_Price, predictors = c(Longitude, Latitude))
+
+lm_wflow
+```
+
+预测器也可以用一个更通用的选择器来指定，比如`predictors = c(ends_with("tude"))`、`predictors = everything()`。当模型被拟合后，指定的数据将组合成一个数据框，并传递给底层函数。
+
+```{r}
+fit(lm_wflow, ames_train)
+```
+
+#### `workflow()`是如何使用公式的
+
+R的公式有多种用途，其中之一是将原始数据编码为可分析的格式，这可能涉及到执行内联转换（如`log(x)`）、创建虚拟变量列、创建交互作用或其他扩展列等等。然而，许多统计方法需要不同类型的编码：
+
+- 大多数基于树状模型的软件包使用公式接口，但不把分类预测因子编码为虚拟变量。
+
+- 包可以使用特殊的内联函数，告诉模型函数在分析中如何处理预测因子。例如，在生存分析模型中，`strata(site)`这样的公式项将表示`site`列是一个分层变量。这意味着它不应该被当作常规预测因子，在模型估计中没有相应的位置参数。
+
+- 一些R包使用了基础R函数无法解析或执行的扩展公式。在多层次模型（如混合模型或层次贝叶斯模型）中，一个模型项如`(week | subject)`表示`week`列是一个随机效应，对`subject`列的每个值有不同的斜率参数估计。
+
+工作流是一个通用的接口。当使用`add_formula()`时，工作流应该如何对数据进行预处理？由于预处理取决于模型，工作流程试图尽可能地模仿基础模型的做法。如果难以做到，公式不应该对公式中使用的列做任何处理。
+
+以树模型为例，当我们对数据进行树状拟合时，parsnip包会理解建模函数要做什么。例如，如果使用ranger或randomForest包来拟合一个随机森林模型，工作流知道作为因子的预测列应该保持原样。
+
+作为一个反例，用xgboost包创建的boosted tree需要用户从因子预测器中创建虚拟变量（因为`xgboost::xgb.train()`不会）。这个要求被嵌入到模型规范对象中，使用xgboost的工作流程将为这个引擎创建指示列。另外需注意，另一个用于boosted trees的引擎，C5.0，不需要虚拟变量，所以工作流不会产生虚拟变量。
+
+这一决定是针对每个模型和引擎组合作出的。
+
+#### 同时创建多个工作流
+
+在某些情况下，数据需要多次尝试才能找到一个合适的模型。比如：
+
+- 对于预测模型，最好是评估各种不同的模型类型。这需要用户创建多个模型。
+
+- 模型的顺序测试通常从一个扩大的预测因子集开始。这个“完整模型”与依次删除每个预测因子的模型进行比较。使用基本的假设检验方法或经验验证，每个预测因子的影响可以被分离和评估。
+
+在这些以及其他情况下，创建大量的工作流可能会变得乏味或繁琐。为了解决这个问题，workflowset包创建了工作流组件的组合。一个预处理器的列表（例如公式、dplyr 选择器、特征工程recipe对象）可以与模型指定的列表相结合，产生一组工作流程。
+
+假设我们想关注Ames数据中房屋位置的不同表现形式。我们可以创建一组公式来捕捉这些预测因素：
+
+```{r}
+location <- list(
+  longitude = Sale_Price ~ Longitude,
+  latitude = Sale_Price ~ Latitude,
+  coords = Sale_Price ~ Longitude + Latitude,
+  neighborhood = Sale_Price ~ Neighborhood
+)
+
+library(workflowsets)
+location_models <- workflow_set(preproc = location, models = list(lm = lm_model))
+location_models
+location_models$info[[1]]
+extract_workflow(location_models, id = "coords_lm")
+```
+
+工作流集主要是为了配合重采样而设计的，`option`和`result`列必须用重采样产生的特定类型的对象来填充。
+
+让我们为每个公式创建模型拟合，并将它们保存在一个名为`fit`的新列中。使用基本的dplyr和purrr操作。
+
+```{r}
+location_models <- location_models %>% 
+  mutate(fit = map(info, ~ fit(.x$workflow[[1]], ames_train)))
+location_models
+location_models$fit[[1]]
+```
+
+我们在这里使用一个purrr函数来映射我们的模型，后续会有更简单、更好的方法来适用工作流集。
+
+#### 评估测试集
+
+假设我们已经完成了模型的开发，并确定了一个最终的模型。可利用`last_fit()`对整个训练集进行拟合，并通过测试集来评估模型。
+
+以`lm_wflow`为例，我们可以将模型和最初的训练/测试分割传递给该函数。
+
+```{r}
+final_lm_res <- last_fit(lm_wflow, ames_split)
+final_lm_res
+```
+
+`.workflow`列包含了拟合的工作流程，可以通过以下方式从结果中提取：
+
+```{r}
+fitted_lm_wflow <- extract_workflow(final_lm_res)
+```
+
+同样，`collect_metrics()`和`collect_predictions()`分别提供对性能指标和预测的访问。
+
+```{r}
+#| eval: false
+
+collect_metrics(final_lm_res)
+collect_predictions(final_lm_res) %>% slice(1:5)
+```
+
+### Feature Engineering with recipes
+
+特征工程需要对数据进行重新格式化，使其更容易被模型有效使用。这包括数据的转换和编码，以最好地代表其重要特征。
+
+#### 一个简单的`recipe()`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

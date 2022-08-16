@@ -277,7 +277,23 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B" id="toc-用parsnip拟合模型" class="nav-link" data-scroll-target="#%E7%94%A8parsnip%E6%8B%9F%E5%90%88%E6%A8%A1%E5%9E%8B"> <span class="header-section-number">4.2.3</span> 用parsnip拟合模型</a></li>
-  <li><a href="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B" id="toc-模型工作流程" class="nav-link" data-scroll-target="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"> <span class="header-section-number">4.2.4</span> 模型工作流程</a></li>
+  <li>
+<a href="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81" id="toc-模型工作流" class="nav-link" data-scroll-target="#%E6%A8%A1%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81"> <span class="header-section-number">4.2.4</span> 模型工作流</a>
+  <ul class="collapse">
+<li><a href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B5%B7%E5%A7%8B%E4%B8%8E%E7%BB%93%E6%9D%9F" id="toc-模型的起始与结束" class="nav-link" data-scroll-target="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B5%B7%E5%A7%8B%E4%B8%8E%E7%BB%93%E6%9D%9F">模型的起始与结束</a></li>
+  <li><a href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C" id="toc-工作流基本操作" class="nav-link" data-scroll-target="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C">工作流基本操作</a></li>
+  <li><a href="#%E5%90%91workflow%E6%B7%BB%E5%8A%A0%E5%8E%9F%E5%A7%8B%E5%8F%98%E9%87%8F" id="toc-向workflow添加原始变量" class="nav-link" data-scroll-target="#%E5%90%91workflow%E6%B7%BB%E5%8A%A0%E5%8E%9F%E5%A7%8B%E5%8F%98%E9%87%8F">向<code>workflow()</code>添加原始变量</a></li>
+  <li><a href="#workflow%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%85%AC%E5%BC%8F%E7%9A%84" id="toc-workflow是如何使用公式的" class="nav-link" data-scroll-target="#workflow%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%85%AC%E5%BC%8F%E7%9A%84"><code>workflow()</code>是如何使用公式的</a></li>
+  <li><a href="#%E5%90%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AA%E5%B7%A5%E4%BD%9C%E6%B5%81" id="toc-同时创建多个工作流" class="nav-link" data-scroll-target="#%E5%90%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AA%E5%B7%A5%E4%BD%9C%E6%B5%81">同时创建多个工作流</a></li>
+  <li><a href="#%E8%AF%84%E4%BC%B0%E6%B5%8B%E8%AF%95%E9%9B%86" id="toc-评估测试集" class="nav-link" data-scroll-target="#%E8%AF%84%E4%BC%B0%E6%B5%8B%E8%AF%95%E9%9B%86">评估测试集</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#feature-engineering-with-recipes" id="toc-feature-engineering-with-recipes" class="nav-link" data-scroll-target="#feature-engineering-with-recipes"> <span class="header-section-number">4.2.5</span> Feature Engineering with recipes</a>
+  <ul class="collapse">
+<li><a href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84recipe" id="toc-一个简单的recipe" class="nav-link" data-scroll-target="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84recipe">一个简单的<code>recipe()</code></a></li>
+  </ul>
+</li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Shitao5/learn-r/edit/main/mod-tidy1.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Shitao5/learn-r/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -534,7 +550,7 @@ Note
 <span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
 <span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>模型被创建和拟合后，parsnip模型对象中储存了包括拟合模型等信息，通过<code>extract_fit_engine()</code>函数提取<code>fit</code>元素中的信息：</p>
+<p>模型被创建和拟合后，parsnip模型对象中储存了包括拟合模型等信息，通过<code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine()</a></code>函数提取<code>fit</code>元素中的信息：</p>
 <div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-14_cb7ccd2b41c05f6da3443fb17608edc2">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -623,8 +639,275 @@ Note
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parsnip_addin</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>这将在RStudio IDE的Viewer面板上打开一个窗口，其中有每个模型模式的可能模型列表，这些可以被写入源代码面板。该模型列表包括来自parsnip和CRAN上与parsnip相邻的包模型。</p>
-</section><section id="模型工作流程" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="模型工作流程">
-<span class="header-section-number">4.2.4</span> 模型工作流程</h3>
+</section><section id="模型工作流" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="模型工作流">
+<span class="header-section-number">4.2.4</span> 模型工作流</h3>
+<section id="模型的起始与结束" class="level4"><h4 class="anchored" data-anchor-id="模型的起始与结束">模型的起始与结束</h4>
+<p>重要的是关注更广泛的建模过程（modeling process），而不仅仅是拟合估计参数的特定模型。 更广泛的过程包括任何预处理步骤、模型拟合本身，以及潜在的后处理活动。 本书把这个更全面的概念称为<strong>模型工作流</strong>（model workflow）并强调如何处理其所有组成部分以产生最终的模型方程。</p>
+<p>将数据分析部分捆绑在一起的另一个原因是：未来的章节将展示如何准确测量性能，以及如何优化结构参数（即模型调整）。主张使用重采样方法正确量化训练集上的模型性能，为了正确做到这一点，分析中没有任何数据驱动的部分应该被排除在验证之外，工作流必须包括所有重要的估计步骤。</p>
+<p>例如， <a href="#fig-bad-workflow">图&nbsp;<span>4.5</span></a> 展示了不正确的主成分分析（PCA）流程，它将PCA的预处理步骤排除在模型工作流之外。 这里的错误是，尽管PCA做了大量的计算来产生主成分，但它的操作被假定为没有与之相关的不确定性，PCA成分被视为已知的。如果不包括在模型工作流程中，PCA的效果就不能被充分衡量。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-bad-workflow_ef3e4a46abdec273db1d96e05c1867db">
+<div class="cell-output-display">
+<div id="fig-bad-workflow" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/mod-tidy/bad-workflow.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">图 4.5: 不正确的心智模式：数据分析中模型估计发生位置</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>正确的方法如 <a href="#fig-proper-workflow">图&nbsp;<span>4.6</span></a> 所示：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/fig-proper-workflow_e60a1c9f439949ee97551759d51dd3ac">
+<div class="cell-output-display">
+<div id="fig-proper-workflow" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/mod-tidy/proper-workflow.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">图 4.6: 正确的心智模式：数据分析中模型估计发生位置</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>这样一来，PCA预处理被认为是建模过程的一部分。</p>
+</section><section id="工作流基本操作" class="level4"><h4 class="anchored" data-anchor-id="工作流基本操作">工作流基本操作</h4>
+<p>workflows包可以将模型和预处理对象绑定：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-21_118f0df5062a3147a893534e0b5ea2f4">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_model</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lm_model</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: None</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>注意，我们还没有指定这个工作流应该如何预处理数据：<code>Preprocessor: None</code>。 如果我们的模型非常简单，可以用一个标准的R公式作为预处理器：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-22_93bb69bb10149b0d8089937329ab408e">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Formula</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>工作流用<code>fit()</code> 创建模型：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-23_77c20777410af75323f0bc20e069e9e6">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
+<span><span class="va">lm_fit</span></span>
+<span><span class="co">#&gt; ══ Workflow [trained] ══════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Formula</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>利用<code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>将拟合的工作流用于预测：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-24_537673078312cda1cf1dc7b8f4477cab">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, <span class="va">ames_test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span><span class="co">#&gt;   .pred</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  5.22</span></span>
+<span><span class="co">#&gt; 2  5.21</span></span>
+<span><span class="co">#&gt; 3  5.28</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>模型和预处理程序都可以被删除或更新。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-25_af94440a0e260b6c0de18f0482ed9b61">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">%&gt;%</span> <span class="fu">update_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Formula</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Sale_Price ~ Longitude</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>请注意，在这个新的对象中，输出显示之前的拟合模型被删除，因为新的公式与之前的模型拟合不一致。</p>
+</section><section id="向workflow添加原始变量" class="level4"><h4 class="anchored" data-anchor-id="向workflow添加原始变量">向<code>workflow()</code>添加原始变量</h4>
+<p>还有一个向模型传递数据的接口，即<code>add_variables()</code>函数，该函数有两个主要参数：<code>outcomes</code>和<code>predictors</code>。这些参数使用类似dplyr的语法来选择变量，用<code><a href="https://rdrr.io/r/base/c.html">c()</a></code>来捕获多个选择器。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-26_78a75b621f9cba2e2a222be8f18fe474">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">remove_formula</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_variables</span><span class="op">(</span>outcomes <span class="op">=</span> <span class="va">Sale_Price</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Variables</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Outcomes: Sale_Price</span></span>
+<span><span class="co">#&gt; Predictors: c(Longitude, Latitude)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>预测器也可以用一个更通用的选择器来指定，比如<code>predictors = c(ends_with("tude"))</code>、<code>predictors = everything()</code>。当模型被拟合后，指定的数据将组合成一个数据框，并传递给底层函数。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-27_379b79e9c1ec2480e718a32b27dd999c">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ══ Workflow [trained] ══════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Variables</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Outcomes: Sale_Price</span></span>
+<span><span class="co">#&gt; Predictors: c(Longitude, Latitude)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">#&gt;     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="workflow是如何使用公式的" class="level4"><h4 class="anchored" data-anchor-id="workflow是如何使用公式的">
+<code>workflow()</code>是如何使用公式的</h4>
+<p>R的公式有多种用途，其中之一是将原始数据编码为可分析的格式，这可能涉及到执行内联转换（如<code>log(x)</code>）、创建虚拟变量列、创建交互作用或其他扩展列等等。然而，许多统计方法需要不同类型的编码：</p>
+<ul>
+<li><p>大多数基于树状模型的软件包使用公式接口，但不把分类预测因子编码为虚拟变量。</p></li>
+<li><p>包可以使用特殊的内联函数，告诉模型函数在分析中如何处理预测因子。例如，在生存分析模型中，<code>strata(site)</code>这样的公式项将表示<code>site</code>列是一个分层变量。这意味着它不应该被当作常规预测因子，在模型估计中没有相应的位置参数。</p></li>
+<li><p>一些R包使用了基础R函数无法解析或执行的扩展公式。在多层次模型（如混合模型或层次贝叶斯模型）中，一个模型项如<code>(week | subject)</code>表示<code>week</code>列是一个随机效应，对<code>subject</code>列的每个值有不同的斜率参数估计。</p></li>
+</ul>
+<p>工作流是一个通用的接口。当使用<code>add_formula()</code>时，工作流应该如何对数据进行预处理？由于预处理取决于模型，工作流程试图尽可能地模仿基础模型的做法。如果难以做到，公式不应该对公式中使用的列做任何处理。</p>
+<p>以树模型为例，当我们对数据进行树状拟合时，parsnip包会理解建模函数要做什么。例如，如果使用ranger或randomForest包来拟合一个随机森林模型，工作流知道作为因子的预测列应该保持原样。</p>
+<p>作为一个反例，用xgboost包创建的boosted tree需要用户从因子预测器中创建虚拟变量（因为<code>xgboost::xgb.train()</code>不会）。这个要求被嵌入到模型规范对象中，使用xgboost的工作流程将为这个引擎创建指示列。另外需注意，另一个用于boosted trees的引擎，C5.0，不需要虚拟变量，所以工作流不会产生虚拟变量。</p>
+<p>这一决定是针对每个模型和引擎组合作出的。</p>
+</section><section id="同时创建多个工作流" class="level4"><h4 class="anchored" data-anchor-id="同时创建多个工作流">同时创建多个工作流</h4>
+<p>在某些情况下，数据需要多次尝试才能找到一个合适的模型。比如：</p>
+<ul>
+<li><p>对于预测模型，最好是评估各种不同的模型类型。这需要用户创建多个模型。</p></li>
+<li><p>模型的顺序测试通常从一个扩大的预测因子集开始。这个“完整模型”与依次删除每个预测因子的模型进行比较。使用基本的假设检验方法或经验验证，每个预测因子的影响可以被分离和评估。</p></li>
+</ul>
+<p>在这些以及其他情况下，创建大量的工作流可能会变得乏味或繁琐。为了解决这个问题，workflowset包创建了工作流组件的组合。一个预处理器的列表（例如公式、dplyr 选择器、特征工程recipe对象）可以与模型指定的列表相结合，产生一组工作流程。</p>
+<p>假设我们想关注Ames数据中房屋位置的不同表现形式。我们可以创建一组公式来捕捉这些预测因素：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-28_2e80fc30eef6bbbb0917b9b1a8787bfe">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  longitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span>,</span>
+<span>  latitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Latitude</span>,</span>
+<span>  coords <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>,</span>
+<span>  neighborhood <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflowsets">workflowsets</a></span><span class="op">)</span></span>
+<span><span class="va">location_models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span>preproc <span class="op">=</span> <span class="va">location</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lm <span class="op">=</span> <span class="va">lm_model</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location_models</span></span>
+<span><span class="co">#&gt; # A workflow set/tibble: 4 × 4</span></span>
+<span><span class="co">#&gt;   wflow_id        info             option    result    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span></span>
+<span><span class="co">#&gt; 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">#&gt; 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">#&gt; 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">#&gt; 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="va">location_models</span><span class="op">$</span><span class="va">info</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span><span class="co">#&gt;   workflow   preproc model      comment</span></span>
+<span><span class="co">#&gt;   &lt;list&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1 &lt;workflow&gt; formula linear_reg ""</span></span>
+<span><span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">location_models</span>, id <span class="op">=</span> <span class="st">"coords_lm"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Formula</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>工作流集主要是为了配合重采样而设计的，<code>option</code>和<code>result</code>列必须用重采样产生的特定类型的对象来填充。</p>
+<p>让我们为每个公式创建模型拟合，并将它们保存在一个名为<code>fit</code>的新列中。使用基本的dplyr和purrr操作。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-29_31a3df9af4068ae637fc73e1bfdd55f2">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location_models</span> <span class="op">&lt;-</span> <span class="va">location_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>fit <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">info</span>, <span class="op">~</span> <span class="fu">fit</span><span class="op">(</span><span class="va">.x</span><span class="op">$</span><span class="va">workflow</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">ames_train</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location_models</span></span>
+<span><span class="co">#&gt; # A workflow set/tibble: 4 × 5</span></span>
+<span><span class="co">#&gt;   wflow_id        info             option    result     fit       </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;     &lt;list&gt;    </span></span>
+<span><span class="co">#&gt; 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">#&gt; 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">#&gt; 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">#&gt; 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="va">location_models</span><span class="op">$</span><span class="va">fit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; ══ Workflow [trained] ══════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; Preprocessor: Formula</span></span>
+<span><span class="co">#&gt; Model: linear_reg()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Sale_Price ~ Longitude</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)    Longitude  </span></span>
+<span><span class="co">#&gt;     -184.40        -2.02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们在这里使用一个purrr函数来映射我们的模型，后续会有更简单、更好的方法来适用工作流集。</p>
+</section><section id="评估测试集" class="level4"><h4 class="anchored" data-anchor-id="评估测试集">评估测试集</h4>
+<p>假设我们已经完成了模型的开发，并确定了一个最终的模型。可利用<code>last_fit()</code>对整个训练集进行拟合，并通过测试集来评估模型。</p>
+<p>以<code>lm_wflow</code>为例，我们可以将模型和最初的训练/测试分割传递给该函数。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-30_cb7d906640a19d8d40624c768eeaf7d5">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final_lm_res</span> <span class="op">&lt;-</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">final_lm_res</span></span>
+<span><span class="co">#&gt; # Resampling results</span></span>
+<span><span class="co">#&gt; # Manual resampling </span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 6</span></span>
+<span><span class="co">#&gt;   splits             id        .metrics .notes   .predi…¹ .workflow </span></span>
+<span><span class="co">#&gt;   &lt;list&gt;             &lt;chr&gt;     &lt;list&gt;   &lt;list&gt;   &lt;list&gt;   &lt;list&gt;    </span></span>
+<span><span class="co">#&gt; 1 &lt;split [2342/588]&gt; train/te… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">#&gt; # … with abbreviated variable name ¹​.predictions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>.workflow</code>列包含了拟合的工作流程，可以通过以下方式从结果中提取：</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-31_5b823c46dcc9570c562325149016d77a">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_lm_wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>同样，<code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code>和<code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code>分别提供对性能指标和预测的访问。</p>
+<div class="cell" data-layout-align="center" data-hash="mod-tidy1_cache/html/unnamed-chunk-32_4f6d4acf8ade7f7028fecf16740e25a0">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="feature-engineering-with-recipes" class="level3" data-number="4.2.5"><h3 data-number="4.2.5" class="anchored" data-anchor-id="feature-engineering-with-recipes">
+<span class="header-section-number">4.2.5</span> Feature Engineering with recipes</h3>
+<p>特征工程需要对数据进行重新格式化，使其更容易被模型有效使用。这包括数据的转换和编码，以最好地代表其重要特征。</p>
+<section id="一个简单的recipe" class="level4"><h4 class="anchored" data-anchor-id="一个简单的recipe">一个简单的<code>recipe()</code>
+</h4>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
@@ -632,7 +915,7 @@ Note
 Silge, Julia, Fanny Chow, Max Kuhn, and Hadley Wickham. 2022. <span>“Rsample: General Resampling Infrastructure.”</span> <a href="https://CRAN.R-project.org/package=rsample">https://CRAN.R-project.org/package=rsample</a>.
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
