@@ -1,0 +1,14 @@
+{
+  "hash": "18a346494da4ce26e1932de95096a7c1",
+  "result": {
+    "markdown": "# Preface {-}\n\n\n::: {.cell}\n::: {.cell-output-display}\n::: callout-warning\n## 各位看客：\n*Learn-R* 仍在写作流程中。本章节正在进行写作和结构调整，可能出现混乱或不完整的情况。 \n:::\n:::\n:::\n\n\n本书内容包括数据可视化、建模、Shiny、金融等。\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

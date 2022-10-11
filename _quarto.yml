@@ -11,7 +11,7 @@ crossref:
   tbl-title: 表
   tbl-prefix: 表
 execute:
-  freeze: false
+  freeze: true
 
 book:
   title: "Learn-R"

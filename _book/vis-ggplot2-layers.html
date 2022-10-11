@@ -612,7 +612,7 @@ Note
 <p><code><a href="https://ggplot2.tidyverse.org/reference/coord_map.html">coord_quickmap()</a></code>调整坐标轴，以确保经度和纬度在同一比例上呈现。但地理空间数据往往需要更精准的方法，因此ggplot2提供了<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>和<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf()</a></code>来处理简单特征格式的空间数据。</p>
 <section id="simple-feature-maps" class="level3" data-number="2.4.1"><h3 data-number="2.4.1" class="anchored" data-anchor-id="simple-feature-maps">
 <span class="header-section-number">2.4.1</span> Simple feature maps</h3>
-<p>上述方法具有局限性，最典型的是：现实世界的地图不是简单地按照”经度-纬度”的数据格式绘制的。 地图的矢量数据通常使用由开放地理空间联盟制定的”简单特征”（<strong>s</strong>imple <strong>f</strong>eatures）标准进行编码。 sf包<span class="citation" data-cites="sf">(<a href="#ref-sf" role="doc-biblioref">Pebesma 2018</a>)</span>为处理这类数据提供了优质的工具集，ggplot2中的<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>和<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf()</a></code>函数就是为与sf包一起工作而设计的。</p>
+<p>上述方法具有局限性，最典型的是：现实世界的地图不是简单地按照”经度-纬度”的数据格式绘制的。 地图的矢量数据通常使用由开放地理空间联盟制定的”简单特征”（<strong>s</strong>imple <strong>f</strong>eatures）标准进行编码。 sf包<span class="citation" data-cites="sf">(<a href="references.html#ref-sf" role="doc-biblioref">Pebesma 2018</a>)</span>为处理这类数据提供了优质的工具集，ggplot2中的<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>和<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf()</a></code>函数就是为与sf包一起工作而设计的。</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-9_6922271e32680304100581e6dde888ac">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mdsumner/ozmaps">ozmaps</a></span><span class="op">)</span> <span class="co"># 提供澳大利亚的地图数据</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
@@ -656,7 +656,7 @@ Note
 <li>如果数据是一个sf对象，<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>自动检测geometry格式的列，即使该列名不为<code>geometry</code>。</li>
 <li>使用<code>aes(geometry = my_column)</code>手动指定映射，在数据中有多个geometry格式的列时很有用。</li>
 </ol>
-<p>ggplot2支持多层<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>叠加。使用rmapshaper包<span class="citation" data-cites="rmapshaper">(<a href="#ref-rmapshaper" role="doc-biblioref">Teucher and Russell 2022</a>)</span>简化边界，以减少渲染绘图的时间。当原始数据集（本例中为<code>abs_ced</code>）的存储分辨率高于绘图要求时，这通常是个好主意。</p>
+<p>ggplot2支持多层<code><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf()</a></code>叠加。使用rmapshaper包<span class="citation" data-cites="rmapshaper">(<a href="references.html#ref-rmapshaper" role="doc-biblioref">Teucher and Russell 2022</a>)</span>简化边界，以减少渲染绘图的时间。当原始数据集（本例中为<code>abs_ced</code>）的存储分辨率高于绘图要求时，这通常是个好主意。</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-11_9d220a4bcd03b7e467f08671654d7c4d">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">oz_states</span> <span class="op">&lt;-</span> <span class="va">ozmap_states</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op">!=</span> <span class="st">"Other Territories"</span><span class="op">)</span></span>
 <span><span class="va">oz_votes</span> <span class="op">&lt;-</span> <span class="fu">rmapshaper</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span><span class="op">(</span><span class="va">abs_ced</span><span class="op">)</span></span>
@@ -689,8 +689,8 @@ Note
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">150.97</span>, <span class="fl">151.3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33.98</span>, <span class="op">-</span><span class="fl">33.79</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_label</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">NAME</span><span class="op">)</span>, label.padding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in st_point_on_surface.sfc(sf::st_zm(x)):</span></span>
-<span><span class="co">#&gt; st_point_on_surface may not give correct results for</span></span>
-<span><span class="co">#&gt; longitude/latitude data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; st_point_on_surface may not give correct results for longitude/</span></span>
+<span><span class="co">#&gt; latitude data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center" style="max-width: 4.8in">
 <figure class="figure"><p><img src="vis-ggplot2-layers_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
@@ -806,7 +806,7 @@ Warning
 <span class="header-section-number">2.4.3</span> Raster maps</h3>
 <p>绘制地理空间信息的第二种方式是依靠栅格数据（raster data）。与sf数据不同，栅格数据中，地理实体是以一组线、点和多边形的形式来指定的，而栅格则是以图像的形式出现。在最简单的情况下，光栅数据可能是一个有许多不同的图像格式位图文件。具体到地理空间方面，有一些图像格式包括元数据（如大地测量基准、坐标参考系统），可用于将图像信息映射到地球表面。</p>
 <p>在<a href="https://gdal.org/">GDAL（地理空间数据抽象库）</a>的帮助下，大多数格式可以很容易地读入R。例如，sf包中的<code><a href="https://r-spatial.github.io/sf/reference/gdal.html">sf::gdal_read()</a></code>函数提供了从R中访问GDAL的功能。不过，很少需要直接调用这个函数，因为还有其他高级函数可以处理这个问题。</p>
-<p>举个例子，假设我们想绘制澳大利亚气象局（BOM）在其FTP服务器上公开提供的卫星图像。bomrang包<span class="citation" data-cites="bomrang">(<a href="#ref-bomrang" role="doc-biblioref">Sparks et al. 2017</a>)</span>提供了一个方便的服务器接口，包括一个返回文件名向量的<code>get_available_imagery()</code>函数和一个下载文件并直接导入R中的<code>get_satellite_imagery()</code>函数。</p>
+<p>举个例子，假设我们想绘制澳大利亚气象局（BOM）在其FTP服务器上公开提供的卫星图像。bomrang包<span class="citation" data-cites="bomrang">(<a href="references.html#ref-bomrang" role="doc-biblioref">Sparks et al. 2017</a>)</span>提供了一个方便的服务器接口，包括一个返回文件名向量的<code>get_available_imagery()</code>函数和一个下载文件并直接导入R中的<code>get_satellite_imagery()</code>函数。</p>
 <p>这里使用更灵活的方式，可以适用任何FTP服务器，并使用<code><a href="https://rdrr.io/r/utils/download.file.html">download.file()</a></code>函数：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-17_6093652ccc15d9c2a479bc296a4502ba">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># list of all file names with time stamp 2022-08-04 21:00 GMT </span></span>
@@ -822,7 +822,7 @@ Warning
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>所有14个文件<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>都是由日本气象厅运营的Himawari-8地球静止卫星拍摄的图像构建的，并在13个不同的波段拍摄图像。澳大利亚BOM发布的图像包括可见光谱（频道3）和红外光谱（频道13）的数据。</p>
-<p>为了将可见图片导入R，使用stars包<span class="citation" data-cites="stars">(<a href="#ref-stars" role="doc-biblioref">Pebesma 2022</a>)</span>将其导入为stars对象：</p>
+<p>为了将可见图片导入R，使用stars包<span class="citation" data-cites="stars">(<a href="references.html#ref-stars" role="doc-biblioref">Pebesma 2022</a>)</span>将其导入为stars对象：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-18_5e45540cc67439edfe40ef649138692a">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">img_vis</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"IDE00422.202208042100.tif"</span><span class="op">)</span></span>
 <span><span class="va">img_inf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"IDE00421.202208042100.tif"</span><span class="op">)</span></span>
@@ -920,10 +920,10 @@ Warning
 <p>如果有自己的形状文件（<code>.shp</code>），可以用<code><a href="https://r-spatial.github.io/sf/reference/st_read.html">sf::read_sf()</a></code>把它们加载到R中。</p>
 </section></section><section id="网络图" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="网络图">
 <span class="header-section-number">2.5</span> 网络图</h2>
-<p>网络在可视化中占据了一席之地，和地图、空间数据一样，网络具有特定的数据结构和可视化范式，ggplot2并不直接支持网络图，接下来将使用ggraph包<span class="citation" data-cites="ggraph">(<a href="#ref-ggraph" role="doc-biblioref">Pedersen 2021b</a>)</span>进行网络的可视化。</p>
+<p>网络在可视化中占据了一席之地，和地图、空间数据一样，网络具有特定的数据结构和可视化范式，ggplot2并不直接支持网络图，接下来将使用ggraph包<span class="citation" data-cites="ggraph">(<a href="references.html#ref-ggraph" role="doc-biblioref">Pedersen 2021b</a>)</span>进行网络的可视化。</p>
 <section id="网络数据" class="level3" data-number="2.5.1"><h3 data-number="2.5.1" class="anchored" data-anchor-id="网络数据">
 <span class="header-section-number">2.5.1</span> 网络数据</h3>
-<p>网络数据可以编码为两个相互关联的数据帧，分别编码节点和边，这就是tidygraph包<span class="citation" data-cites="tidygraph">(<a href="#ref-tidygraph" role="doc-biblioref">Pedersen 2022</a>)</span>使用的方法，它是ggraph的基础数据处理包。</p>
+<p>网络数据可以编码为两个相互关联的数据帧，分别编码节点和边，这就是tidygraph包<span class="citation" data-cites="tidygraph">(<a href="references.html#ref-tidygraph" role="doc-biblioref">Pedersen 2022</a>)</span>使用的方法，它是ggraph的基础数据处理包。</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-25_966a1ccf2ccf030e4b813cbb40efb149">
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidygraph.data-imaginist.com">tidygraph</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com">ggraph</a></span><span class="op">)</span></span>
@@ -934,26 +934,26 @@ Warning
 <span>  <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/activate.html">activate</a></span><span class="op">(</span><span class="va">edges</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/context_accessors.html">.N</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">class</span><span class="op">[</span><span class="va">from</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">graph</span></span>
-<span><span class="co">#&gt; # A tbl_graph: 10 nodes and 12 edges</span></span>
+<span><span class="co">#&gt; # A tbl_graph: 10 nodes and 20 edges</span></span>
 <span><span class="co">#&gt; #</span></span>
 <span><span class="co">#&gt; # A directed simple graph with 1 component</span></span>
 <span><span class="co">#&gt; #</span></span>
-<span><span class="co">#&gt; # Edge Data: 12 × 2 (active)</span></span>
+<span><span class="co">#&gt; # Edge Data: 20 × 2 (active)</span></span>
 <span><span class="co">#&gt;    from    to</span></span>
 <span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1     2     9</span></span>
-<span><span class="co">#&gt; 2     1     2</span></span>
-<span><span class="co">#&gt; 3     6     3</span></span>
-<span><span class="co">#&gt; 4     7     5</span></span>
-<span><span class="co">#&gt; 5     6    10</span></span>
-<span><span class="co">#&gt; 6     5     7</span></span>
-<span><span class="co">#&gt; # … with 6 more rows</span></span>
+<span><span class="co">#&gt; 1     5     1</span></span>
+<span><span class="co">#&gt; 2     2     3</span></span>
+<span><span class="co">#&gt; 3     2     8</span></span>
+<span><span class="co">#&gt; 4     5     8</span></span>
+<span><span class="co">#&gt; 5     5     9</span></span>
+<span><span class="co">#&gt; 6     1     2</span></span>
+<span><span class="co">#&gt; # … with 14 more rows</span></span>
 <span><span class="co">#&gt; #</span></span>
 <span><span class="co">#&gt; # Node Data: 10 × 1</span></span>
 <span><span class="co">#&gt;   class</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1 c    </span></span>
-<span><span class="co">#&gt; 2 b    </span></span>
+<span><span class="co">#&gt; 1 b    </span></span>
+<span><span class="co">#&gt; 2 a    </span></span>
 <span><span class="co">#&gt; 3 d    </span></span>
 <span><span class="co">#&gt; # … with 7 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1028,28 +1028,28 @@ Warning
 <span>  <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/activate.html">activate</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>centrality <span class="op">=</span> <span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/centrality.html">centrality_pagerank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">centrality</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tbl_graph: 10 nodes and 12 edges</span></span>
+<span><span class="co">#&gt; # A tbl_graph: 10 nodes and 20 edges</span></span>
 <span><span class="co">#&gt; #</span></span>
 <span><span class="co">#&gt; # A directed simple graph with 1 component</span></span>
 <span><span class="co">#&gt; #</span></span>
 <span><span class="co">#&gt; # Node Data: 10 × 2 (active)</span></span>
 <span><span class="co">#&gt;   class centrality</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 c         0.201 </span></span>
-<span><span class="co">#&gt; 2 c         0.191 </span></span>
-<span><span class="co">#&gt; 3 c         0.120 </span></span>
-<span><span class="co">#&gt; 4 c         0.120 </span></span>
-<span><span class="co">#&gt; 5 d         0.0920</span></span>
-<span><span class="co">#&gt; 6 a         0.0778</span></span>
+<span><span class="co">#&gt; 1 b         0.169 </span></span>
+<span><span class="co">#&gt; 2 d         0.158 </span></span>
+<span><span class="co">#&gt; 3 a         0.155 </span></span>
+<span><span class="co">#&gt; 4 c         0.125 </span></span>
+<span><span class="co">#&gt; 5 d         0.123 </span></span>
+<span><span class="co">#&gt; 6 c         0.0870</span></span>
 <span><span class="co">#&gt; # … with 4 more rows</span></span>
 <span><span class="co">#&gt; #</span></span>
-<span><span class="co">#&gt; # Edge Data: 12 × 2</span></span>
+<span><span class="co">#&gt; # Edge Data: 20 × 2</span></span>
 <span><span class="co">#&gt;    from    to</span></span>
 <span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1     7     1</span></span>
-<span><span class="co">#&gt; 2     9     7</span></span>
-<span><span class="co">#&gt; 3    10     8</span></span>
-<span><span class="co">#&gt; # … with 9 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1     8     1</span></span>
+<span><span class="co">#&gt; 2     3     2</span></span>
+<span><span class="co">#&gt; 3     3     4</span></span>
+<span><span class="co">#&gt; # … with 17 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>tidygraph支持一系列丰富的算法，比如中心度计算（哪个节点最中心）、排序（对节点进行排序，使节点位于与之相连的节点附近）、分组（在网络内寻找群组）等，具体见<a href="https://tidygraph.data-imaginist.com/">这里</a>。</p>
 <p>网络图更关注拓扑结构而不是两个变量之间的关系，我们采用<strong>布局（Layouts）</strong>的概念来显示网络拓扑结构。布局是利用网络结构来计算每个节点的<code>x</code>和<code>y</code>值（通常是任意的）的算法，最终用于可视化。换句话说，在绘制表格数据时，<code>x</code>和<code>y</code>的美学几乎总是被数据中的现有变量（或现有数据的统计转换）映射，而在绘制网络数据时，<code>x</code>和<code>y</code>被来自网络拓扑结构的值映射，这些值本身没有意义。</p>
@@ -1310,7 +1310,7 @@ Warning
 </div>
 </div>
 </div>
-<p>在ggtext包<span class="citation" data-cites="ggtext">(<a href="#ref-ggtext" role="doc-biblioref">Wilke 2020</a>)</span>和ggplot2主题系统下，可以使用Markdown语法进行标记：</p>
+<p>在ggtext包<span class="citation" data-cites="ggtext">(<a href="references.html#ref-ggtext" role="doc-biblioref">Wilke 2020</a>)</span>和ggplot2主题系统下，可以使用Markdown语法进行标记：</p>
 <div>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1363,9 +1363,11 @@ Important
 </div>
 </div>
 </div>
-<p>如需更多字体，使用showtext包<span class="citation" data-cites="showtext">(<a href="#ref-showtext" role="doc-biblioref">Qiu and details. 2022</a>)</span>：</p>
+<p>如需更多字体，使用showtext包<span class="citation" data-cites="showtext">(<a href="references.html#ref-showtext" role="doc-biblioref">Qiu and details. 2022</a>)</span>：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-42_e80aa20df7033e1bbb145492618802f1">
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: sysfonts</span></span>
+<span><span class="co">#&gt; Loading required package: showtextdb</span></span>
 <span></span>
 <span><span class="co"># font_install(source_han_serif()) # 安装字体库</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_families.html">font_families</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1507,13 +1509,13 @@ Important
 </div>
 </div>
 </div>
-<p>另一种方法是利用ggrepel包<span class="citation" data-cites="ggrepel">(<a href="#ref-ggrepel" role="doc-biblioref">Slowikowski 2021</a>)</span>的<code>geom_text_repel()</code>函数进行绘制：</p>
+<p>另一种方法是利用ggrepel包<span class="citation" data-cites="ggrepel">(<a href="references.html#ref-ggrepel" role="doc-biblioref">Slowikowski 2021</a>)</span>的<code>geom_text_repel()</code>函数进行绘制：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-48_b1fac5490a38a7fa94b7254c822a3413">
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mini_mpg</span> <span class="op">&lt;-</span> <span class="va">mpg</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mini_mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 3 unlabeled data points (too many overlaps).</span></span>
+<span><span class="co">#&gt; Warning: ggrepel: 6 unlabeled data points (too many overlaps).</span></span>
 <span><span class="co">#&gt; Consider increasing max.overlaps</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center" style="max-width: 4.2in">
@@ -1522,7 +1524,7 @@ Important
 </div>
 </div>
 </div>
-<p>ggfittext包<span class="citation" data-cites="ggfittext">(<a href="#ref-ggfittext" role="doc-biblioref">Wilkins 2021</a>)</span>可以确保文本标签适应其放置的空间：</p>
+<p>ggfittext包<span class="citation" data-cites="ggfittext">(<a href="references.html#ref-ggfittext" role="doc-biblioref">Wilkins 2021</a>)</span>可以确保文本标签适应其放置的空间：</p>
 <div>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkox.org/ggfittext/">ggfittext</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">animals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">type</span>, <span class="va">flies</span>, label <span class="op">=</span> <span class="va">animal</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1623,7 +1625,7 @@ Important
 </div>
 </section><section id="直接标注" class="level3" data-number="2.6.4"><h3 data-number="2.6.4" class="anchored" data-anchor-id="直接标注">
 <span class="header-section-number">2.6.4</span> 直接标注</h3>
-<p>directlabels包<span class="citation" data-cites="directlabels">(<a href="#ref-directlabels" role="doc-biblioref">Hocking 2021</a>)</span>：</p>
+<p>directlabels包<span class="citation" data-cites="directlabels">(<a href="references.html#ref-directlabels" role="doc-biblioref">Hocking 2021</a>)</span>：</p>
 <div>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span>, color <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1648,7 +1650,7 @@ Important
 </div>
 </div>
 </div>
-<p>ggforce包<span class="citation" data-cites="ggforce">(<a href="#ref-ggforce" role="doc-biblioref">Pedersen 2021a</a>)</span>:</p>
+<p>ggforce包<span class="citation" data-cites="ggforce">(<a href="references.html#ref-ggforce" role="doc-biblioref">Pedersen 2021a</a>)</span>:</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-53_8f7d1ddd2a7f79386345296072429dcc">
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1660,7 +1662,7 @@ Important
 </div>
 </div>
 </div>
-<p>gghighlight包<span class="citation" data-cites="gghighlight">(<a href="#ref-gghighlight" role="doc-biblioref">Yutani 2022</a>)</span>：</p>
+<p>gghighlight包<span class="citation" data-cites="gghighlight">(<a href="references.html#ref-gghighlight" role="doc-biblioref">Yutani 2022</a>)</span>：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-54_c51d5025febe779a36bb018f6e9d880c">
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Oxboys</span>, package <span class="op">=</span> <span class="st">"nlme"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">Oxboys</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">height</span>, group <span class="op">=</span> <span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1689,7 +1691,7 @@ Important
 </div>
 </section></section><section id="图形排列" class="level2" data-number="2.7"><h2 data-number="2.7" class="anchored" data-anchor-id="图形排列">
 <span class="header-section-number">2.7</span> 图形排列</h2>
-<p>ggplot2的语法是关于创建单个图形的，虽然分面系统提供了产生多个子图的方法，但都属于同一个可视化的部分，它们共享图层、数据和标度。我们经常需要将多幅独立创建的图形组合为一张图，许多包已应运而生，这里重点介绍patchwork包<span class="citation" data-cites="patchwork">(<a href="#ref-patchwork" role="doc-biblioref">Pedersen 2020</a>)</span>。</p>
+<p>ggplot2的语法是关于创建单个图形的，虽然分面系统提供了产生多个子图的方法，但都属于同一个可视化的部分，它们共享图层、数据和标度。我们经常需要将多幅独立创建的图形组合为一张图，许多包已应运而生，这里重点介绍patchwork包<span class="citation" data-cites="patchwork">(<a href="references.html#ref-patchwork" role="doc-biblioref">Pedersen 2020</a>)</span>。</p>
 <p>绘制四幅图形用于排列：</p>
 <div class="cell" data-layout-align="center" data-hash="vis-ggplot2-layers_cache/html/unnamed-chunk-56_b5f3afe6bba84e115d30145ba1f82810">
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -1934,7 +1936,7 @@ Important
 <p>更多patchwork的功能，可以查看它的网站：<a href="https://patchwork.data-imaginist.com/" class="uri">https://patchwork.data-imaginist.com/</a>。</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-directlabels" class="csl-entry" role="doc-biblioentry">
 Hocking, Toby Dylan. 2021. <span>“Directlabels: Direct Labels for Multicolor Plots.”</span> <a href="https://CRAN.R-project.org/package=directlabels">https://CRAN.R-project.org/package=directlabels</a>.
 </div>

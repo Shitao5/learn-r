@@ -63,8 +63,13 @@ knitr::include_graphics("images/mod-tidy/modeling-process.svg")
 library(tidymodels)
 tidymodels_prefer()
 library(ggplot2)
-data(ames)
 ```
+
+```{r}
+# save(ames, file = "ames.rda")
+load("ames.rda")
+```
+
 
 Ames数据集包含了爱荷华州Ames市lowa的`r format(nrow(ames), big.mark = ",")`个房产信息，主要包括：
 

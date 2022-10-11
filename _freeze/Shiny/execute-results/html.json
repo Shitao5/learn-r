@@ -1,0 +1,14 @@
+{
+  "hash": "6c536bdc0c2a5cfd726e7d88f2a95fc9",
+  "result": {
+    "markdown": "# Shiny {-}\n\n\n::: {.cell}\n::: {.cell-output-display}\n::: callout-important\n## 各位看客：\n*Learn-R* 仍在写作流程中。本章节目前为初步构想，不建议阅读。 \n:::\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
