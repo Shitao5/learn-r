@@ -1,0 +1,6 @@
+# The R Inferno
+
+*The R Inferno* 来源：<https://www.burns-stat.com/documents/books/the-r-inferno/> 。
+
+
+

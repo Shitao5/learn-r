@@ -36,6 +36,10 @@ book:
     - index.qmd
     - preface.qmd
 
+    - part: R Project
+      chapters:
+        - r-inferno.qmd
+
     - part: Visualisation.qmd
       chapters:
         - vis-ggplot2-layers.qmd
